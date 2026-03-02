@@ -52,53 +52,6 @@ nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
 .hero-rotate h1.active{display:block;animation:heroFadeIn .6s ease both}
 @keyframes heroFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-/* ══ MODAL ══ */
-.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:200;justify-content:center;align-items:center;padding:20px}
-.modal-overlay.open{display:flex}
-.modal{background:var(--card);border:1px solid var(--bdr-l);border-radius:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;animation:modalIn .3s ease}
-@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:var(--bg);border:1px solid var(--bdr);color:var(--g);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;z-index:5}
-.modal-close:hover{background:var(--card-h);color:var(--w)}
-.modal-header{padding:36px 36px 0;text-align:center}
-.modal-header h2{font-size:24px;font-weight:900;letter-spacing:-1px;margin-bottom:4px}
-.modal-header p{font-size:13px;color:var(--m)}
-.modal-progress{display:flex;gap:6px;padding:20px 36px 0;justify-content:center}
-.modal-progress .dot{height:4px;flex:1;max-width:60px;border-radius:2px;background:var(--bdr);transition:.3s}
-.modal-progress .dot.active{background:var(--blue)}
-.modal-progress .dot.done{background:var(--green)}
-.modal-body{padding:28px 36px 36px}
-.form-step{display:none}
-.form-step.active{display:block}
-.form-label{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--m);margin-bottom:8px;display:block}
-.form-input{width:100%;padding:14px 16px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;color:var(--w);font-family:inherit;font-size:15px;outline:none;transition:.2s;min-height:44px}
-.form-input:focus{border-color:var(--blue)}
-.form-input::placeholder{color:var(--d)}
-textarea.form-input{min-height:100px;resize:vertical}
-select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23666' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px}
-.checkbox-group{display:flex;flex-direction:column;gap:10px}
-.checkbox-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;cursor:pointer;transition:.2s;min-height:44px}
-.checkbox-item:hover{border-color:var(--bdr-h)}
-.checkbox-item.checked{border-color:var(--blue);background:var(--blue-g)}
-.checkbox-item input{display:none}
-.checkbox-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--bdr-l);display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:.2s;flex-shrink:0}
-.checkbox-item.checked .checkbox-box{border-color:var(--blue);background:var(--blue);color:var(--w)}
-.checkbox-item span{font-size:14px;font-weight:500;color:var(--g)}
-.checkbox-item.checked span{color:var(--w)}
-.time-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.time-slot{padding:14px 16px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;cursor:pointer;text-align:center;transition:.2s;min-height:44px;font-size:13px;font-weight:600;color:var(--g)}
-.time-slot:hover{border-color:var(--bdr-h);color:var(--w)}
-.time-slot.selected{border-color:var(--blue);background:var(--blue-g);color:var(--blue)}
-.form-nav{display:flex;gap:12px;margin-top:24px}
-.form-nav button{flex:1;padding:14px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;min-height:44px;border:none}
-.btn-back{background:var(--bg);color:var(--g);border:1px solid var(--bdr)!important}
-.btn-back:hover{background:var(--card-h);color:var(--w)}
-.btn-next{background:var(--blue);color:var(--w)}
-.btn-next:hover{background:var(--blue-h)}
-.btn-next:disabled{opacity:.4;cursor:not-allowed}
-.form-success{text-align:center;padding:40px 0}
-.form-success .check-icon{width:64px;height:64px;border-radius:50%;background:rgba(34,197,94,.15);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 20px}
-.form-success h3{font-size:22px;font-weight:800;margin-bottom:8px}
-.form-success p{font-size:14px;color:var(--g);line-height:1.6}
 .h-sub{font-size:clamp(16px,1.8vw,19px);color:var(--g);max-width:620px;margin-top:28px;line-height:1.7;position:relative;z-index:1;animation:fu .8s ease .2s both}
 .h-ctas{display:flex;gap:16px;margin-top:44px;position:relative;z-index:1;animation:fu .8s ease .3s both;flex-wrap:wrap;justify-content:center}
 .btn-p{display:inline-flex;align-items:center;gap:8px;padding:16px 40px;background:var(--blue);color:var(--w);border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;min-height:44px}
@@ -258,7 +211,7 @@ footer a{margin-left:0}
 <a href="#how">Process</a>
 <a href="#pricing">Pricing</a>
 <a href="product.html">Docs</a>
-<a href="#" class="nv-cta" onclick="openModal();return false">Book Free AI Audit →</a>
+<a href="audit.html" class="nv-cta">Book Free AI Audit &rarr;</a>
 </ul>
 <button class="ham" onclick="this.classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
 <span></span><span></span><span></span>
@@ -269,7 +222,7 @@ footer a{margin-left:0}
 <a href="#how" onclick="closeMobile()">Process</a>
 <a href="#pricing" onclick="closeMobile()">Pricing</a>
 <a href="product.html">Documentation</a>
-<a href="#" class="nv-cta" onclick="closeMobile();openModal();return false">Book Free AI Audit →</a>
+<a href="audit.html" class="nv-cta" onclick="closeMobile()">Book Free AI Audit &rarr;</a>
 </div>
 
 <!-- ══════════════════ HERO ══════════════════ -->
@@ -278,7 +231,7 @@ footer a{margin-left:0}
 <div class="hero-rotate" id="heroRotate"><h1 class="rotate-text active">We build done-for-you AI systems that <em>run your business</em></h1><h1 class="rotate-text">We automate <em>200+ tasks</em> monthly</h1><h1 class="rotate-text">We save you <em>25+ hours</em> a week</h1><h1 class="rotate-text">We cut process time by <em>95%</em></h1></div>
 <p class="h-sub">Not a platform. Not a dashboard. Not a chatbot. We're AI architects who map your workflows, build custom systems, and manage them — cutting process time by 95%.</p>
 <div class="h-ctas">
-<a href="#" class="btn-p" onclick="openModal();return false">Book Your Free AI Audit →</a>
+<a href="audit.html" class="btn-p">Book Your Free AI Audit &rarr;</a>
 <a href="#how" class="btn-s">See How It Works</a>
 </div>
 </section>
@@ -505,7 +458,7 @@ footer a{margin-left:0}
 <li><span class="ck">✓</span> Documentation & SOPs</li>
 <li><span class="ck">✓</span> 14-day email support</li>
 </ul>
-<a href="#" onclick="openModal();return false" class="price-btn secondary">Get Started</a>
+<a href="audit.html" class="price-btn secondary">Get Started</a>
 </div>
 <!-- Growth -->
 <div class="price-card featured">
@@ -523,7 +476,7 @@ footer a{margin-left:0}
 <li><span class="ck">✓</span> 30-day optimization sprint</li>
 <li><span class="ck">✓</span> Ongoing managed support</li>
 </ul>
-<a href="#" onclick="openModal();return false" class="price-btn primary">Book Your Free AI Audit →</a>
+<a href="audit.html" class="price-btn primary">Book Your Free AI Audit &rarr;</a>
 </div>
 <!-- Scale -->
 <div class="price-card">
@@ -540,7 +493,7 @@ footer a{margin-left:0}
 <li><span class="ck">✓</span> Dedicated account manager</li>
 <li><span class="ck">✓</span> SLA & priority support</li>
 </ul>
-<a href="#" onclick="openModal();return false" class="price-btn secondary">Book Your Free AI Audit →</a>
+<a href="audit.html" class="price-btn secondary">Book Your Free AI Audit &rarr;</a>
 </div>
 </div>
 </div>
@@ -550,121 +503,9 @@ footer a{margin-left:0}
 <section class="final-cta" id="start">
 <h2>Stop hiring for tasks<br>AI should handle.</h2>
 <p>Book a free AI audit. We'll map your workflows, show you the ROI, and build a system that cuts process time by 95%.</p>
-<a href="#" class="btn-p" style="position:relative;z-index:1" onclick="openModal();return false">Book Your Free AI Audit →</a>
+<a href="audit.html" class="btn-p" style="position:relative;z-index:1">Book Your Free AI Audit &rarr;</a>
 <p style="margin-top:20px;font-size:14px;color:var(--m);position:relative;z-index:1">Free 30-minute diagnostic · No commitment · See your ROI in real time</p>
 </section>
-
-<!-- ══════════════════ BOOKING MODAL ══════════════════ -->
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
-<div class="modal">
-<button class="modal-close" onclick="closeModal()">✕</button>
-<div class="modal-header">
-<h2>Book Your Free AI Audit</h2>
-<p>Tell us about your business. We'll show you the ROI.</p>
-</div>
-<div class="modal-progress">
-<div class="dot active" data-step="0"></div>
-<div class="dot" data-step="1"></div>
-<div class="dot" data-step="2"></div>
-<div class="dot" data-step="3"></div>
-<div class="dot" data-step="4"></div>
-<div class="dot" data-step="5"></div>
-</div>
-<div class="modal-body">
-
-<!-- Step 0: Name -->
-<div class="form-step active" data-step="0">
-<label class="form-label">Your Name</label>
-<input class="form-input" type="text" id="f-name" placeholder="Full name" autocomplete="name">
-<div class="form-nav"><button class="btn-next" onclick="nextStep()">Continue →</button></div>
-</div>
-
-<!-- Step 1: Email -->
-<div class="form-step" data-step="1">
-<label class="form-label">Email Address</label>
-<input class="form-input" type="email" id="f-email" placeholder="you@company.com" autocomplete="email">
-<div class="form-nav"><button class="btn-back" onclick="prevStep()">← Back</button><button class="btn-next" onclick="nextStep()">Continue →</button></div>
-</div>
-
-<!-- Step 2: Phone -->
-<div class="form-step" data-step="2">
-<label class="form-label">Phone Number</label>
-<input class="form-input" type="tel" id="f-phone" placeholder="(555) 000-0000" autocomplete="tel">
-<div class="form-nav"><button class="btn-back" onclick="prevStep()">← Back</button><button class="btn-next" onclick="nextStep()">Continue →</button></div>
-</div>
-
-<!-- Step 3: Company + Position -->
-<div class="form-step" data-step="3">
-<label class="form-label">Company Name</label>
-<input class="form-input" type="text" id="f-company" placeholder="Your company" style="margin-bottom:16px" autocomplete="organization">
-<label class="form-label">Your Position</label>
-<input class="form-input" type="text" id="f-position" placeholder="CEO, COO, Founder, etc." autocomplete="organization-title">
-<div class="form-nav"><button class="btn-back" onclick="prevStep()">← Back</button><button class="btn-next" onclick="nextStep()">Continue →</button></div>
-</div>
-
-<!-- Step 4: Services + Project Description -->
-<div class="form-step" data-step="4">
-<label class="form-label">Which services are you interested in?</label>
-<p style="font-size:12px;color:var(--d);margin-bottom:12px">Select all that apply</p>
-<div class="checkbox-group" id="servicesGroup">
-<label class="checkbox-item" onclick="toggleCheck(event)">
-<input type="checkbox" value="Workflow Automation">
-<div class="checkbox-box">✓</div>
-<span>Workflow Automation</span>
-</label>
-<label class="checkbox-item" onclick="toggleCheck(event)">
-<input type="checkbox" value="AI Agent Installation">
-<div class="checkbox-box">✓</div>
-<span>AI Agent Installation</span>
-</label>
-<label class="checkbox-item" onclick="toggleCheck(event)">
-<input type="checkbox" value="Custom Applications">
-<div class="checkbox-box">✓</div>
-<span>Custom Applications</span>
-</label>
-<label class="checkbox-item" onclick="toggleCheck(event)">
-<input type="checkbox" value="Complete Business Audit and Transformation">
-<div class="checkbox-box">✓</div>
-<span>Complete Business Audit &amp; Transformation</span>
-</label>
-</div>
-<label class="form-label" style="margin-top:20px">Tell us about your business</label>
-<textarea class="form-input" id="f-project" placeholder="Describe your current workflows, where you want automation, or your needs and goals..."></textarea>
-<div class="form-nav"><button class="btn-back" onclick="prevStep()">← Back</button><button class="btn-next" onclick="nextStep()">Continue →</button></div>
-</div>
-
-<!-- Step 5: Pick a Time -->
-<div class="form-step" data-step="5">
-<label class="form-label">Pick a time to connect</label>
-<p style="font-size:12px;color:var(--d);margin-bottom:16px">Select your preferred time for an initial call (MST)</p>
-<div class="time-grid" id="timeGrid">
-<div class="time-slot" onclick="selectTime(this)">Mon 10:00 AM</div>
-<div class="time-slot" onclick="selectTime(this)">Mon 2:00 PM</div>
-<div class="time-slot" onclick="selectTime(this)">Tue 10:00 AM</div>
-<div class="time-slot" onclick="selectTime(this)">Tue 2:00 PM</div>
-<div class="time-slot" onclick="selectTime(this)">Wed 10:00 AM</div>
-<div class="time-slot" onclick="selectTime(this)">Wed 2:00 PM</div>
-<div class="time-slot" onclick="selectTime(this)">Thu 10:00 AM</div>
-<div class="time-slot" onclick="selectTime(this)">Thu 2:00 PM</div>
-<div class="time-slot" onclick="selectTime(this)">Fri 10:00 AM</div>
-<div class="time-slot" onclick="selectTime(this)">Fri 2:00 PM</div>
-</div>
-<div class="form-nav"><button class="btn-back" onclick="prevStep()">← Back</button><button class="btn-next" onclick="submitForm()">Submit Request →</button></div>
-</div>
-
-<!-- Success -->
-<div class="form-step" data-step="6">
-<div class="form-success">
-<div class="check-icon">✓</div>
-<h3>You're booked!</h3>
-<p>We've received your request. A member of the YourEdge team will reach out within 24 hours to confirm your call time and get started on your AI audit.</p>
-<p style="margin-top:16px;color:var(--m)">Check your email for a confirmation.</p>
-</div>
-</div>
-
-</div>
-</div>
-</div>
 
 <!-- ══════════════════ FOOTER ══════════════════ -->
 <footer>
@@ -695,60 +536,6 @@ texts[current].classList.add('active');
 },3500);
 })();
 
-/* ══ MODAL FORM ══ */
-let currentStep=0;
-function openModal(){document.getElementById('modalOverlay').classList.add('open');document.body.style.overflow='hidden'}
-function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow=''}
-function showStep(n){
-document.querySelectorAll('.form-step').forEach(s=>s.classList.remove('active'));
-const step=document.querySelector('.form-step[data-step="'+n+'"]');
-if(step)step.classList.add('active');
-document.querySelectorAll('.modal-progress .dot').forEach((d,i)=>{
-d.classList.remove('active','done');
-if(i<n)d.classList.add('done');
-if(i===n)d.classList.add('active');
-});
-}
-function nextStep(){
-if(currentStep===0&&!document.getElementById('f-name').value.trim())return document.getElementById('f-name').focus();
-if(currentStep===1&&!document.getElementById('f-email').value.trim())return document.getElementById('f-email').focus();
-if(currentStep===2&&!document.getElementById('f-phone').value.trim())return document.getElementById('f-phone').focus();
-if(currentStep===3&&!document.getElementById('f-company').value.trim())return document.getElementById('f-company').focus();
-currentStep++;showStep(currentStep);
-}
-function prevStep(){if(currentStep>0){currentStep--;showStep(currentStep)}}
-function toggleCheck(event){event.preventDefault();event.stopPropagation();const el=event.currentTarget;el.classList.toggle('checked');el.querySelector('input').checked=el.classList.contains('checked')}
-function selectTime(el){document.querySelectorAll('.time-slot').forEach(s=>s.classList.remove('selected'));el.classList.add('selected')}
-function submitForm(){
-const selectedTime=document.querySelector('.time-slot.selected');
-if(!selectedTime)return;
-const services=[];
-document.querySelectorAll('#servicesGroup input:checked').forEach(i=>services.push(i.value));
-const data={
-name:document.getElementById('f-name').value,
-email:document.getElementById('f-email').value,
-phone:document.getElementById('f-phone').value,
-company:document.getElementById('f-company').value,
-position:document.getElementById('f-position').value,
-services:services,
-project:document.getElementById('f-project').value,
-time:selectedTime.textContent,
-submitted:new Date().toISOString()
-};
-console.log('YourEdge Audit Request:',JSON.stringify(data));
-// Store in localStorage as backup
-const submissions=JSON.parse(localStorage.getItem('youredge_submissions')||'[]');
-submissions.push(data);
-localStorage.setItem('youredge_submissions',JSON.stringify(submissions));
-currentStep=6;showStep(6);
-}
-// Close modal on Escape
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})
-// Auto-open modal if #book in URL (check immediately and on load)
-function checkBookHash(){if(window.location.hash==='#book'){openModal()}}
-checkBookHash();
-window.addEventListener('load',checkBookHash);
-window.addEventListener('hashchange',checkBookHash);
 </script>
 </body>
 </html>

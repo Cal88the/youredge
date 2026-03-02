@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YourEdge — Book Your Free AI Audit</title>
+<meta name="description" content="Book your free AI audit with YourEdge. Tell us about your business and we'll map your workflows, show you the ROI, and build a system that cuts process time by 95%.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#000;--surface:#080808;--card:#111;--card-h:#161616;
+--bdr:#1a1a1a;--bdr-l:#222;--bdr-h:#333;
+--w:#fafafa;--g:#a0a0a0;--m:#666;--d:#444;
+--blue:#2563eb;--blue-h:#3b82f6;--blue-g:rgba(37,99,235,.12);--blue-gs:rgba(37,99,235,.25);
+--green:#22c55e;--green-s:rgba(34,197,94,.1);
+--red:#ef4444;--red-g:rgba(239,68,68,.1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--blue);color:var(--w)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.04);transition:.3s}
+nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
+.nl{font-size:20px;font-weight:900;letter-spacing:-.5px;color:var(--w);text-decoration:none}
+.dot{color:var(--blue)}
+.nv{display:flex;align-items:center;gap:32px;list-style:none}
+.nv a{font-size:13px;font-weight:500;color:var(--g);text-decoration:none;transition:.2s}
+.nv a:hover{color:var(--w)}
+.nv-cta{font-size:13px;font-weight:700;color:var(--w)!important;background:var(--blue);padding:10px 28px;border-radius:8px;transition:.2s}
+.nv-cta:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-gs)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;min-width:44px;min-height:44px;justify-content:center;align-items:center;background:none;border:none}
+.ham span{display:block;width:22px;height:2px;background:var(--w);border-radius:2px;transition:.3s}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);padding:24px;border-bottom:1px solid var(--bdr);flex-direction:column;gap:16px;z-index:99}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:16px;font-weight:500;color:var(--g);text-decoration:none;padding:12px 0;min-height:44px;display:flex;align-items:center}
+.mobile-menu a:hover{color:var(--w)}
+.mobile-menu .nv-cta{text-align:center;justify-content:center;padding:14px 28px;border-radius:10px}
+
+/* PAGE HEADER */
+.audit-hero{padding:140px 48px 60px;text-align:center;position:relative;overflow:hidden}
+.audit-hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,var(--blue-g) 0%,transparent 70%);pointer-events:none;opacity:.5}
+.audit-hero h1{font-size:clamp(32px,5vw,48px);font-weight:900;letter-spacing:-2.5px;line-height:1.1;margin-bottom:12px;position:relative;z-index:1}
+.audit-hero h1 em{font-style:normal;color:var(--blue)}
+.audit-hero p{font-size:clamp(15px,1.6vw,17px);color:var(--g);max-width:540px;margin:0 auto;line-height:1.7;position:relative;z-index:1}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--m);text-decoration:none;margin-bottom:24px;position:relative;z-index:1;transition:.2s}
+.back-link:hover{color:var(--w)}
+
+/* FORM CARD */
+.audit-wrap{max-width:640px;margin:0 auto 80px;padding:0 24px;transition:max-width .3s ease}
+.audit-wrap.wide{max-width:900px}
+.audit-card{background:var(--card);border:1px solid var(--bdr-l);border-radius:24px;overflow:hidden}
+
+/* PROGRESS BAR */
+.progress-wrap{padding:32px 40px 0}
+.progress-bar{height:6px;background:var(--bdr);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .4s ease;width:0}
+.progress-label{display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--m);font-weight:600}
+.progress-label .step-name{color:var(--g)}
+
+/* FORM BODY */
+.audit-body{padding:32px 40px 40px}
+.form-step{display:none}
+.form-step.active{display:block;animation:stepIn .3s ease}
+@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.form-label{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--m);margin-bottom:8px;display:block}
+.form-input{width:100%;padding:14px 16px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;color:var(--w);font-family:inherit;font-size:15px;outline:none;transition:.2s;min-height:44px}
+.form-input:focus{border-color:var(--blue)}
+.form-input::placeholder{color:var(--d)}
+.form-input.invalid{border-color:var(--red)}
+.form-input.invalid:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-g)}
+textarea.form-input{min-height:100px;resize:vertical}
+
+/* VALIDATION ERRORS */
+.form-error{font-size:12px;color:var(--red);margin-top:6px;min-height:18px;font-weight:500}
+
+/* CHECKBOXES */
+.checkbox-group{display:flex;flex-direction:column;gap:10px}
+.checkbox-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;cursor:pointer;transition:.2s;min-height:44px}
+.checkbox-item:hover{border-color:var(--bdr-h)}
+.checkbox-item.checked{border-color:var(--blue);background:var(--blue-g)}
+.checkbox-item input{display:none}
+.checkbox-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--bdr-l);display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:.2s;flex-shrink:0}
+.checkbox-item.checked .checkbox-box{border-color:var(--blue);background:var(--blue);color:var(--w)}
+.checkbox-item span{font-size:14px;font-weight:500;color:var(--g)}
+.checkbox-item.checked span{color:var(--w)}
+.checkbox-group.invalid .checkbox-item{border-color:var(--red)}
+
+/* TIME SLOTS */
+.time-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.time-slot{padding:14px 16px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;cursor:pointer;text-align:center;transition:.2s;min-height:44px;font-size:13px;font-weight:600;color:var(--g)}
+.time-slot:hover{border-color:var(--bdr-h);color:var(--w)}
+.time-slot.selected{border-color:var(--blue);background:var(--blue-g);color:var(--blue)}
+.time-grid.invalid .time-slot{border-color:var(--red)}
+
+/* CALENDLY EMBED */
+#calendly-embed{min-height:900px;border:1px solid var(--bdr);border-radius:10px;overflow:hidden;background:var(--bg)}
+#calendly-embed iframe{border-radius:10px;min-height:900px}
+
+/* FORM NAV */
+.form-nav{display:flex;gap:12px;margin-top:24px}
+.form-nav button{flex:1;padding:14px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;min-height:44px;border:none}
+.btn-back{background:var(--bg);color:var(--g);border:1px solid var(--bdr)!important}
+.btn-back:hover{background:var(--card-h);color:var(--w)}
+.btn-next{background:var(--blue);color:var(--w)}
+.btn-next:hover{background:var(--blue-h)}
+
+/* SUCCESS */
+.form-success{text-align:center;padding:40px 0}
+.form-success .check-icon{width:64px;height:64px;border-radius:50%;background:rgba(34,197,94,.15);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 20px}
+.form-success h3{font-size:22px;font-weight:800;margin-bottom:8px}
+.form-success p{font-size:14px;color:var(--g);line-height:1.6}
+
+/* FOOTER */
+footer{padding:40px 48px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer .fl{font-size:16px;font-weight:900;letter-spacing:-.5px}
+footer .fr{font-size:12px;color:var(--m)}
+footer a{color:var(--m);text-decoration:none;transition:.2s;margin-left:20px}
+footer a:hover{color:var(--g)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+nav{padding:0 20px}
+.nv{display:none}
+.ham{display:flex}
+.audit-hero{padding:110px 20px 40px}
+.audit-wrap{padding:0 16px}
+.progress-wrap{padding:24px 24px 0}
+.audit-body{padding:24px}
+.time-grid{grid-template-columns:1fr}
+footer{padding:32px 20px;flex-direction:column;text-align:center}
+footer .fr{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+footer a{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+<a href="index.html" class="nl">YourEdge<span class="dot">.</span></a>
+<ul class="nv">
+<a href="index.html#capabilities">What We Build</a>
+<a href="index.html#how">Process</a>
+<a href="index.html#pricing">Pricing</a>
+<a href="product.html">Docs</a>
+<a href="#form" class="nv-cta">Book Free AI Audit &rarr;</a>
+</ul>
+<button class="ham" onclick="this.classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
+<span></span><span></span><span></span>
+</button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+<a href="index.html#capabilities" onclick="closeMobile()">What We Build</a>
+<a href="index.html#how" onclick="closeMobile()">Process</a>
+<a href="index.html#pricing" onclick="closeMobile()">Pricing</a>
+<a href="product.html">Documentation</a>
+<a href="#form" class="nv-cta" onclick="closeMobile()">Book Free AI Audit &rarr;</a>
+</div>
+
+<!-- PAGE HEADER -->
+<section class="audit-hero">
+<a href="index.html" class="back-link">&larr; Back to site</a>
+<h1>Book Your Free <em>AI Audit</em></h1>
+<p>Tell us about your business. We'll map your workflows, show you the ROI, and build a system that cuts process time by 95%.</p>
+</section>
+
+<!-- FORM -->
+<div class="audit-wrap" id="form">
+<div class="audit-card">
+
+<div class="progress-wrap">
+<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<div class="progress-label">
+<span id="progressStep">Step 1 of 6</span>
+<span class="step-name" id="progressName">Your Name</span>
+</div>
+</div>
+
+<div class="audit-body">
+
+<!-- Step 0: Name -->
+<div class="form-step active" data-step="0">
+<label class="form-label" for="f-name">Your Name</label>
+<input class="form-input" type="text" id="f-name" placeholder="Full name" autocomplete="name" aria-describedby="err-name">
+<div class="form-error" id="err-name" role="alert"></div>
+<div class="form-nav"><button class="btn-next" onclick="nextStep()">Continue &rarr;</button></div>
+</div>
+
+<!-- Step 1: Email -->
+<div class="form-step" data-step="1">
+<label class="form-label" for="f-email">Email Address</label>
+<input class="form-input" type="email" id="f-email" placeholder="you@company.com" autocomplete="email" aria-describedby="err-email">
+<div class="form-error" id="err-email" role="alert"></div>
+<div class="form-nav"><button class="btn-back" onclick="prevStep()">&larr; Back</button><button class="btn-next" onclick="nextStep()">Continue &rarr;</button></div>
+</div>
+
+<!-- Step 2: Phone -->
+<div class="form-step" data-step="2">
+<label class="form-label" for="f-phone">Phone Number</label>
+<input class="form-input" type="tel" id="f-phone" placeholder="(555) 000-0000" autocomplete="tel" aria-describedby="err-phone">
+<div class="form-error" id="err-phone" role="alert"></div>
+<div class="form-nav"><button class="btn-back" onclick="prevStep()">&larr; Back</button><button class="btn-next" onclick="nextStep()">Continue &rarr;</button></div>
+</div>
+
+<!-- Step 3: Company + Position -->
+<div class="form-step" data-step="3">
+<label class="form-label" for="f-company">Company Name</label>
+<input class="form-input" type="text" id="f-company" placeholder="Your company" autocomplete="organization" aria-describedby="err-company" style="margin-bottom:4px">
+<div class="form-error" id="err-company" role="alert"></div>
+<label class="form-label" for="f-position" style="margin-top:12px">Your Position</label>
+<input class="form-input" type="text" id="f-position" placeholder="CEO, COO, Founder, etc." autocomplete="organization-title" aria-describedby="err-position">
+<div class="form-error" id="err-position" role="alert"></div>
+<div class="form-nav"><button class="btn-back" onclick="prevStep()">&larr; Back</button><button class="btn-next" onclick="nextStep()">Continue &rarr;</button></div>
+</div>
+
+<!-- Step 4: Services + Description -->
+<div class="form-step" data-step="4">
+<label class="form-label">Which services are you interested in?</label>
+<p style="font-size:12px;color:var(--d);margin-bottom:12px">Select all that apply</p>
+<div class="checkbox-group" id="servicesGroup">
+<label class="checkbox-item" onclick="toggleCheck(event)">
+<input type="checkbox" value="Workflow Automation">
+<div class="checkbox-box">&check;</div>
+<span>Workflow Automation</span>
+</label>
+<label class="checkbox-item" onclick="toggleCheck(event)">
+<input type="checkbox" value="AI Agent Installation">
+<div class="checkbox-box">&check;</div>
+<span>AI Agent Installation</span>
+</label>
+<label class="checkbox-item" onclick="toggleCheck(event)">
+<input type="checkbox" value="Custom Applications">
+<div class="checkbox-box">&check;</div>
+<span>Custom Applications</span>
+</label>
+<label class="checkbox-item" onclick="toggleCheck(event)">
+<input type="checkbox" value="Complete Business Audit and Transformation">
+<div class="checkbox-box">&check;</div>
+<span>Complete Business Audit &amp; Transformation</span>
+</label>
+</div>
+<div class="form-error" id="err-services" role="alert"></div>
+<label class="form-label" style="margin-top:20px" for="f-project">Tell us about your business</label>
+<textarea class="form-input" id="f-project" placeholder="Describe your current workflows, where you want automation, or your needs and goals..." aria-describedby="err-project"></textarea>
+<div class="form-error" id="err-project" role="alert"></div>
+<div class="form-nav"><button class="btn-back" onclick="prevStep()">&larr; Back</button><button class="btn-next" onclick="nextStep()">Continue &rarr;</button></div>
+</div>
+
+<!-- Step 5: Schedule via Calendly -->
+<div class="form-step" data-step="5">
+<label class="form-label">Schedule Your Call</label>
+<p style="font-size:12px;color:var(--d);margin-bottom:16px">Pick a time that works for you. A calendar invite will be sent automatically.</p>
+<div id="calendly-embed" style="min-height:900px;border-radius:10px;overflow:hidden"></div>
+<div class="form-nav" style="margin-top:16px">
+<button class="btn-next" id="btn-booked" onclick="finishBooking()" style="display:none">Continue &rarr;</button>
+<p id="calendly-hint" style="font-size:13px;color:var(--m);text-align:center;width:100%">Select a date and time above, then confirm your booking to continue.</p>
+</div>
+</div>
+
+<!-- Success -->
+<div class="form-step" data-step="6">
+<div class="form-success">
+<div class="check-icon">&check;</div>
+<h3>You're all set!</h3>
+<p>We've received your information and your call is booked. Check your email for a calendar invite with all the details.</p>
+<p style="margin-top:16px;color:var(--m)">The YourEdge team will be ready to discuss your AI audit.</p>
+<a href="index.html" style="display:inline-block;margin-top:24px;font-size:14px;font-weight:600;color:var(--blue);text-decoration:none">&larr; Back to YourEdge</a>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="fl">YourEdge<span class="dot">.</span></div>
+<div class="fr">
+&copy; 2026 YourEdge &middot; Fairway Co. Holdings
+<a href="#">Privacy</a>
+<a href="#">Terms</a>
+<a href="#">Security</a>
+<a href="#">Contact</a>
+</div>
+</footer>
+
+<script>
+/* Nav scroll */
+window.addEventListener('scroll',()=>{document.querySelector('nav').classList.toggle('scrolled',window.scrollY>50)});
+
+/* Mobile menu */
+function closeMobile(){document.querySelector('.ham').classList.remove('open');document.getElementById('mobileMenu').classList.remove('open')}
+
+/* Form state */
+let currentStep=0;
+const STEP_NAMES=['Your Name','Email Address','Phone Number','Company Details','Services & Description','Schedule Your Call'];
+const TOTAL_STEPS=6;
+let formSubmitted=false;
+
+/* Show step */
+function showStep(n){
+document.querySelectorAll('.form-step').forEach(s=>s.classList.remove('active'));
+const step=document.querySelector('.form-step[data-step="'+n+'"]');
+if(step)step.classList.add('active');
+
+/* Update progress bar */
+const pct=n>=TOTAL_STEPS?100:Math.round((n/TOTAL_STEPS)*100);
+document.getElementById('progressFill').style.width=pct+'%';
+document.querySelector('.progress-bar').setAttribute('aria-valuenow',pct);
+
+if(n<TOTAL_STEPS){
+document.getElementById('progressStep').textContent='Step '+(n+1)+' of '+TOTAL_STEPS;
+document.getElementById('progressName').textContent=STEP_NAMES[n];
+}else{
+document.getElementById('progressStep').textContent='Complete';
+document.getElementById('progressName').textContent='';
+document.getElementById('progressFill').style.background='var(--green)';
+}
+
+/* Widen card for Calendly step */
+const wrap=document.querySelector('.audit-wrap');
+if(n===5)wrap.classList.add('wide');
+else wrap.classList.remove('wide');
+
+/* Auto-focus first input */
+const firstInput=step?step.querySelector('.form-input'):null;
+if(firstInput)setTimeout(()=>firstInput.focus(),100);
+}
+
+/* Validation helpers */
+function showError(inputId,errorId,msg){
+const input=document.getElementById(inputId);
+const error=document.getElementById(errorId);
+if(input)input.classList.add('invalid');
+if(error)error.textContent=msg;
+if(input)input.focus();
+}
+function clearError(inputId,errorId){
+const input=document.getElementById(inputId);
+const error=document.getElementById(errorId);
+if(input)input.classList.remove('invalid');
+if(error)error.textContent='';
+}
+function showGroupError(groupId,errorId,msg){
+const group=document.getElementById(groupId);
+const error=document.getElementById(errorId);
+if(group)group.classList.add('invalid');
+if(error)error.textContent=msg;
+}
+function clearGroupError(groupId,errorId){
+const group=document.getElementById(groupId);
+const error=document.getElementById(errorId);
+if(group)group.classList.remove('invalid');
+if(error)error.textContent='';
+}
+
+/* Validate current step */
+function validateStep(step){
+let valid=true;
+
+if(step===0){
+const name=document.getElementById('f-name').value.trim();
+if(!name){showError('f-name','err-name','Please enter your name');return false}
+if(name.length<2){showError('f-name','err-name','Name must be at least 2 characters');return false}
+if(!/^[a-zA-Z\s\u00C0-\u024F'-]+$/.test(name)){showError('f-name','err-name','Please enter a valid name');return false}
+clearError('f-name','err-name');
+}
+
+if(step===1){
+const email=document.getElementById('f-email').value.trim();
+if(!email){showError('f-email','err-email','Please enter your email address');return false}
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){showError('f-email','err-email','Please enter a valid email address');return false}
+clearError('f-email','err-email');
+}
+
+if(step===2){
+const phone=document.getElementById('f-phone').value.trim();
+if(!phone){showError('f-phone','err-phone','Please enter your phone number');return false}
+const digits=phone.replace(/\D/g,'');
+if(digits.length<7){showError('f-phone','err-phone','Phone number must have at least 7 digits');return false}
+if(digits.length>15){showError('f-phone','err-phone','Phone number is too long');return false}
+if(!/^[\d\s\-\(\)\+\.]+$/.test(phone)){showError('f-phone','err-phone','Please enter a valid phone number');return false}
+clearError('f-phone','err-phone');
+}
+
+if(step===3){
+const company=document.getElementById('f-company').value.trim();
+const position=document.getElementById('f-position').value.trim();
+valid=true;
+if(!company){showError('f-company','err-company','Please enter your company name');valid=false}
+else if(company.length<2){showError('f-company','err-company','Company name must be at least 2 characters');valid=false}
+else{clearError('f-company','err-company')}
+if(!position){showError('f-position','err-position','Please enter your position');valid=false}
+else if(position.length<2){showError('f-position','err-position','Position must be at least 2 characters');valid=false}
+else{clearError('f-position','err-position')}
+if(!valid)return false;
+}
+
+if(step===4){
+const checked=document.querySelectorAll('#servicesGroup input:checked');
+const project=document.getElementById('f-project').value.trim();
+valid=true;
+if(checked.length===0){showGroupError('servicesGroup','err-services','Please select at least one service');valid=false}
+else{clearGroupError('servicesGroup','err-services')}
+if(!project){showError('f-project','err-project','Please describe your business and needs');valid=false}
+else if(project.length<10){showError('f-project','err-project','Please provide at least 10 characters');valid=false}
+else{clearError('f-project','err-project')}
+if(!valid)return false;
+}
+
+return true;
+}
+
+/* Navigate steps */
+function nextStep(){
+if(!validateStep(currentStep))return;
+/* Submit form data to Web3Forms when advancing past step 4 */
+if(currentStep===4&&!formSubmitted){
+submitToWeb3Forms();
+return;
+}
+currentStep++;
+showStep(currentStep);
+}
+function prevStep(){
+if(currentStep>0){currentStep--;showStep(currentStep)}
+}
+
+/* Checkbox toggle */
+function toggleCheck(event){
+event.preventDefault();
+event.stopPropagation();
+const el=event.currentTarget;
+el.classList.toggle('checked');
+el.querySelector('input').checked=el.classList.contains('checked');
+/* Clear services error when checking */
+clearGroupError('servicesGroup','err-services');
+}
+
+/* Submit form data to Web3Forms */
+async function submitToWeb3Forms(){
+const btn=document.querySelector('.form-step[data-step="4"] .btn-next');
+const originalText=btn.textContent;
+btn.textContent='Submitting...';
+btn.disabled=true;
+
+const services=[];
+document.querySelectorAll('#servicesGroup input:checked').forEach(i=>services.push(i.value));
+
+const formData={
+access_key:'5516c164-2bc9-44ce-a1d0-3ebae097c74f',
+subject:'New AI Audit Request — YourEdge',
+from_name:'YourEdge Audit Form',
+name:document.getElementById('f-name').value.trim(),
+email:document.getElementById('f-email').value.trim(),
+phone:document.getElementById('f-phone').value.trim(),
+company:document.getElementById('f-company').value.trim(),
+position:document.getElementById('f-position').value.trim(),
+services:services.join(', '),
+project_description:document.getElementById('f-project').value.trim()
+};
+
+try{
+const res=await fetch('https://api.web3forms.com/submit',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify(formData)
+});
+const result=await res.json();
+if(result.success){
+formSubmitted=true;
+currentStep=5;
+showStep(5);
+loadCalendly();
+}else{
+btn.textContent=originalText;
+btn.disabled=false;
+showGroupError('servicesGroup','err-services','Something went wrong. Please try again.');
+}
+}catch(err){
+btn.textContent=originalText;
+btn.disabled=false;
+showGroupError('servicesGroup','err-services','Network error. Please check your connection and try again.');
+}
+}
+
+/* Load Calendly embed with prefilled info */
+function loadCalendly(){
+const name=document.getElementById('f-name').value.trim();
+const email=document.getElementById('f-email').value.trim();
+const container=document.getElementById('calendly-embed');
+if(container.dataset.loaded)return;
+container.dataset.loaded='true';
+Calendly.initInlineWidget({
+url:'https://calendly.com/cal-vsp/ai-integration-assessment?hide_gdpr_banner=1',
+parentElement:container,
+prefill:{name:name,email:email}
+});
+}
+
+/* Finish booking (manual button or auto-triggered) */
+function finishBooking(){
+currentStep=6;showStep(6);
+}
+
+/* Clear errors on input */
+document.querySelectorAll('.form-input').forEach(input=>{
+input.addEventListener('input',()=>{
+input.classList.remove('invalid');
+const id=input.id.replace('f-','');
+const errEl=document.getElementById('err-'+id);
+if(errEl)errEl.textContent='';
+});
+});
+
+/* Enter key to advance on text inputs */
+document.querySelectorAll('.form-input:not(textarea)').forEach(input=>{
+input.addEventListener('keydown',e=>{
+if(e.key==='Enter'){e.preventDefault();nextStep()}
+});
+});
+
+/* Listen for Calendly booking completion */
+window.addEventListener('message',function(e){
+if(e.data.event&&e.data.event==='calendly.event_scheduled'){
+document.getElementById('btn-booked').style.display='';
+document.getElementById('calendly-hint').textContent='Booking confirmed! Click below to continue.';
+document.getElementById('calendly-hint').style.color='var(--green)';
+/* Auto-advance after a short delay so they see the confirmation */
+setTimeout(()=>finishBooking(),2000);
+}
+});
+</script>
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+</body>
+</html>
