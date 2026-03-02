@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YourEdge — Terms of Service</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#000;--surface:#080808;--card:#111;--card-h:#161616;--bdr:#1a1a1a;--bdr-l:#222;--bdr-h:#333;--w:#fafafa;--g:#a0a0a0;--m:#666;--d:#444;--blue:#2563eb;--blue-h:#3b82f6;--blue-g:rgba(37,99,235,.12);--blue-gs:rgba(37,99,235,.25)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--blue);color:var(--w)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.04);transition:.3s}
+nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
+.nl{font-size:20px;font-weight:900;letter-spacing:-.5px;color:var(--w);text-decoration:none}
+.dot{color:var(--blue)}
+.nv{display:flex;align-items:center;gap:32px;list-style:none}
+.nv a{font-size:13px;font-weight:500;color:var(--g);text-decoration:none;transition:.2s}
+.nv a:hover{color:var(--w)}
+.nv-cta{font-size:13px;font-weight:700;color:var(--w)!important;background:var(--blue);padding:10px 28px;border-radius:8px;transition:.2s}
+.nv-cta:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-gs)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;min-width:44px;min-height:44px;justify-content:center;align-items:center;background:none;border:none}
+.ham span{display:block;width:22px;height:2px;background:var(--w);border-radius:2px;transition:.3s}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);padding:24px;border-bottom:1px solid var(--bdr);flex-direction:column;gap:16px;z-index:99}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:16px;font-weight:500;color:var(--g);text-decoration:none;padding:12px 0;min-height:44px;display:flex;align-items:center}
+.mobile-menu a:hover{color:var(--w)}
+.mobile-menu .nv-cta{text-align:center;justify-content:center;padding:14px 28px;border-radius:10px}
+.legal-hero{padding:140px 48px 60px;text-align:center;position:relative}
+.legal-hero h1{font-size:clamp(32px,5vw,48px);font-weight:900;letter-spacing:-2.5px;line-height:1.1;margin-bottom:12px}
+.legal-hero p{font-size:14px;color:var(--m)}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--m);text-decoration:none;margin-bottom:24px;transition:.2s}
+.back-link:hover{color:var(--w)}
+.legal-wrap{max-width:720px;margin:0 auto 80px;padding:0 24px}
+.legal-wrap h2{font-size:20px;font-weight:800;letter-spacing:-.5px;margin:40px 0 16px;padding-top:32px;border-top:1px solid var(--bdr)}
+.legal-wrap h2:first-child{margin-top:0;padding-top:0;border-top:none}
+.legal-wrap p{font-size:15px;color:var(--g);line-height:1.8;margin-bottom:16px}
+.legal-wrap ul{list-style:none;margin-bottom:16px}
+.legal-wrap li{font-size:15px;color:var(--g);line-height:1.8;padding-left:20px;position:relative;margin-bottom:8px}
+.legal-wrap li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+footer{padding:40px 48px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer .fl{font-size:16px;font-weight:900;letter-spacing:-.5px}
+footer .fr{font-size:12px;color:var(--m)}
+footer a{color:var(--m);text-decoration:none;transition:.2s;margin-left:20px}
+footer a:hover{color:var(--g)}
+@media(max-width:768px){
+nav{padding:0 20px}.nv{display:none}.ham{display:flex}
+.legal-hero{padding:110px 20px 40px}
+.legal-wrap{padding:0 16px}
+footer{padding:32px 20px;flex-direction:column;text-align:center}
+footer .fr{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+footer a{margin-left:0}
+}
+</style>
+</head>
+<body>
+<nav>
+<a href="/" class="nl">YourEdge<span class="dot">.</span></a>
+<ul class="nv">
+<a href="/#capabilities">What We Build</a>
+<a href="/#how">Process</a>
+<a href="product.html">Docs</a>
+<a href="audit.html" class="nv-cta">Book Free AI Audit &rarr;</a>
+</ul>
+<button class="ham" onclick="this.classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+<a href="/#capabilities" onclick="closeMobile()">What We Build</a>
+<a href="/#how" onclick="closeMobile()">Process</a>
+<a href="product.html">Documentation</a>
+<a href="audit.html" class="nv-cta" onclick="closeMobile()">Book Free AI Audit &rarr;</a>
+</div>
+
+<section class="legal-hero">
+<a href="/" class="back-link">&larr; Back to site</a>
+<h1>Terms of Service</h1>
+<p>Last updated: March 2, 2026</p>
+</section>
+
+<div class="legal-wrap">
+
+<h2>Agreement to Terms</h2>
+<p>By accessing or using the YourEdge AI Integrations website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+
+<h2>Services</h2>
+<p>YourEdge AI Integrations provides done-for-you AI system design, development, and managed support services. Our services include but are not limited to:</p>
+<ul>
+<li>AI workflow audits and consulting.</li>
+<li>Custom AI system architecture and development.</li>
+<li>System integration, deployment, and configuration.</li>
+<li>Ongoing managed support and optimization.</li>
+</ul>
+<p>The specific scope, deliverables, and timeline for each engagement will be outlined in a separate service agreement between YourEdge and the client.</p>
+
+<h2>Client Responsibilities</h2>
+<p>To enable us to deliver our services effectively, clients agree to:</p>
+<ul>
+<li>Provide timely access to relevant systems, tools, and information needed for the engagement.</li>
+<li>Designate a point of contact for communication and approvals.</li>
+<li>Review and provide feedback on deliverables within agreed-upon timeframes.</li>
+<li>Ensure that any data or content provided to us does not violate third-party rights.</li>
+</ul>
+
+<h2>Intellectual Property</h2>
+<p>Upon full payment, clients receive ownership of the custom systems, automations, and configurations built specifically for their engagement. YourEdge retains the right to use general methodologies, frameworks, and non-client-specific knowledge developed during the course of our work.</p>
+
+<h2>Payment Terms</h2>
+<p>Payment terms, including setup fees and ongoing managed support fees, will be specified in the service agreement for each engagement. All fees are non-refundable once work has commenced unless otherwise stated in the service agreement.</p>
+
+<h2>Confidentiality</h2>
+<p>We treat all client business information, workflows, and data as confidential. We will not disclose client information to third parties except as necessary to deliver our services or as required by law. Clients agree to keep proprietary YourEdge methodologies and system architectures confidential.</p>
+
+<h2>Limitation of Liability</h2>
+<p>YourEdge AI Integrations provides services on an "as-is" basis. While we strive for the highest quality, we do not guarantee specific business outcomes, revenue increases, or cost savings. Our liability is limited to the fees paid for the specific service in question.</p>
+
+<h2>Termination</h2>
+<p>Either party may terminate an engagement with 30 days' written notice. Upon termination, the client retains ownership of all completed deliverables. Any outstanding fees for work completed prior to termination remain payable.</p>
+
+<h2>Changes to These Terms</h2>
+<p>We may update these terms from time to time. Continued use of our services after changes are posted constitutes acceptance of the updated terms.</p>
+
+<h2>Contact</h2>
+<p>If you have questions about these terms, please reach out through our <a href="contact.html" style="color:var(--blue)">Contact page</a>.</p>
+
+</div>
+
+<footer>
+<div class="fl">YourEdge<span class="dot">.</span></div>
+<div class="fr">
+&copy; 2026 YourEdge AI Integrations
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+<a href="security.html">Security</a>
+<a href="contact.html">Contact</a>
+</div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.querySelector('nav').classList.toggle('scrolled',window.scrollY>50)});
+function closeMobile(){document.querySelector('.ham').classList.remove('open');document.getElementById('mobileMenu').classList.remove('open')}
+</script>
+</body>
+</html>

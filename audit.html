@@ -142,11 +142,10 @@ footer a{margin-left:0}
 
 <!-- NAV -->
 <nav>
-<a href="index.html" class="nl">YourEdge<span class="dot">.</span></a>
+<a href="/" class="nl">YourEdge<span class="dot">.</span></a>
 <ul class="nv">
-<a href="index.html#capabilities">What We Build</a>
-<a href="index.html#how">Process</a>
-<a href="index.html#pricing">Pricing</a>
+<a href="/#capabilities">What We Build</a>
+<a href="/#how">Process</a>
 <a href="product.html">Docs</a>
 <a href="#form" class="nv-cta">Book Free AI Audit &rarr;</a>
 </ul>
@@ -155,16 +154,15 @@ footer a{margin-left:0}
 </button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-<a href="index.html#capabilities" onclick="closeMobile()">What We Build</a>
-<a href="index.html#how" onclick="closeMobile()">Process</a>
-<a href="index.html#pricing" onclick="closeMobile()">Pricing</a>
+<a href="/#capabilities" onclick="closeMobile()">What We Build</a>
+<a href="/#how" onclick="closeMobile()">Process</a>
 <a href="product.html">Documentation</a>
 <a href="#form" class="nv-cta" onclick="closeMobile()">Book Free AI Audit &rarr;</a>
 </div>
 
 <!-- PAGE HEADER -->
 <section class="audit-hero">
-<a href="index.html" class="back-link">&larr; Back to site</a>
+<a href="/" class="back-link">&larr; Back to site</a>
 <h1>Book Your Free <em>AI Audit</em></h1>
 <p>Tell us about your business. We'll map your workflows, show you the ROI, and build a system that cuts process time by 95%.</p>
 </section>
@@ -271,7 +269,7 @@ footer a{margin-left:0}
 <h3>You're all set!</h3>
 <p>We've received your information and your call is booked. Check your email for a calendar invite with all the details.</p>
 <p style="margin-top:16px;color:var(--m)">The YourEdge team will be ready to discuss your AI audit.</p>
-<a href="index.html" style="display:inline-block;margin-top:24px;font-size:14px;font-weight:600;color:var(--blue);text-decoration:none">&larr; Back to YourEdge</a>
+<a href="/" style="display:inline-block;margin-top:24px;font-size:14px;font-weight:600;color:var(--blue);text-decoration:none">&larr; Back to YourEdge</a>
 </div>
 </div>
 
@@ -283,11 +281,11 @@ footer a{margin-left:0}
 <footer>
 <div class="fl">YourEdge<span class="dot">.</span></div>
 <div class="fr">
-&copy; 2026 YourEdge &middot; Fairway Co. Holdings
-<a href="#">Privacy</a>
-<a href="#">Terms</a>
-<a href="#">Security</a>
-<a href="#">Contact</a>
+&copy; 2026 YourEdge AI Integrations
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+<a href="security.html">Security</a>
+<a href="contact.html">Contact</a>
 </div>
 </footer>
 
@@ -458,6 +456,7 @@ const formData={
 access_key:'5516c164-2bc9-44ce-a1d0-3ebae097c74f',
 subject:'New AI Audit Request — YourEdge',
 from_name:'YourEdge Audit Form',
+bcc:'drein@csrmediagroup.com',
 name:document.getElementById('f-name').value.trim(),
 email:document.getElementById('f-email').value.trim(),
 phone:document.getElementById('f-phone').value.trim(),

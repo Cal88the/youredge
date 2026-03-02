@@ -135,25 +135,6 @@ section{padding:100px 0}
 .test-name{font-size:13px;font-weight:700}
 .test-role{font-size:11px;color:var(--m)}
 
-/* ══ PRICING ══ */
-.pricing{background:var(--surface);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
-.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto}
-.price-card{background:var(--card);border:1px solid var(--bdr);border-radius:20px;padding:36px 28px;position:relative;transition:.3s}
-.price-card:hover{transform:translateY(-3px)}
-.price-card.featured{border-color:var(--blue);box-shadow:0 0 60px var(--blue-g)}
-.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--blue);color:var(--w);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 14px;border-radius:100px;white-space:nowrap}
-.price-name{font-size:13px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.price-amt{font-size:40px;font-weight:900;letter-spacing:-2px;margin-bottom:4px}
-.price-amt span{font-size:14px;font-weight:500;color:var(--m);letter-spacing:0}
-.price-desc{font-size:13px;color:var(--m);margin-bottom:24px;line-height:1.5;min-height:40px}
-.price-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
-.price-list li{font-size:13px;color:var(--g);display:flex;align-items:center;gap:10px}
-.price-list .ck{color:var(--blue);font-weight:700;flex-shrink:0}
-.price-btn{display:block;text-align:center;padding:14px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;border:none;width:100%;min-height:44px}
-.price-btn.primary{background:var(--blue);color:var(--w)}
-.price-btn.primary:hover{background:var(--blue-h);box-shadow:0 4px 20px var(--blue-gs)}
-.price-btn.secondary{background:transparent;color:var(--w);border:1px solid var(--bdr-l)}
-.price-btn.secondary:hover{background:var(--card-h);border-color:var(--d)}
 
 /* ══ CTA ══ */
 .final-cta{padding:120px 48px;text-align:center;position:relative}
@@ -186,7 +167,6 @@ section{padding:72px 0}
 .prob-grid,.cap-grid,.test-grid{grid-template-columns:1fr}
 .steps{grid-template-columns:1fr}
 .step-arrow{display:none}
-.price-grid{grid-template-columns:1fr;max-width:400px;margin-left:auto;margin-right:auto}
 .proof-row{gap:24px}
 .proof-stat{min-width:120px}
 .result-row{flex-direction:column;align-items:flex-start;gap:8px}
@@ -209,7 +189,6 @@ footer a{margin-left:0}
 <ul class="nv">
 <a href="#capabilities">What We Build</a>
 <a href="#how">Process</a>
-<a href="#pricing">Pricing</a>
 <a href="product.html">Docs</a>
 <a href="audit.html" class="nv-cta">Book Free AI Audit &rarr;</a>
 </ul>
@@ -220,7 +199,6 @@ footer a{margin-left:0}
 <div class="mobile-menu" id="mobileMenu">
 <a href="#capabilities" onclick="closeMobile()">What We Build</a>
 <a href="#how" onclick="closeMobile()">Process</a>
-<a href="#pricing" onclick="closeMobile()">Pricing</a>
 <a href="product.html">Documentation</a>
 <a href="audit.html" class="nv-cta" onclick="closeMobile()">Book Free AI Audit &rarr;</a>
 </div>
@@ -438,66 +416,6 @@ footer a{margin-left:0}
 </div>
 </section>
 
-<!-- ══════════════════ PRICING ══════════════════ -->
-<section class="pricing" id="pricing">
-<div class="ct">
-<div class="sl sr" style="text-align:center">PRICING</div>
-<h2 class="sh sr" style="text-align:center;margin-left:auto;margin-right:auto">From quick wins to<br>full transformation.</h2>
-<p class="ss sr" style="text-align:center;margin-left:auto;margin-right:auto">Every tier includes workflow mapping, custom build, training, and documentation. No credits. No surprises. We build it, you benefit.</p>
-<div class="price-grid sr">
-<!-- Starter -->
-<div class="price-card">
-<div class="price-name">Starter</div>
-<div class="price-amt">$500 <span>one-time</span></div>
-<p class="price-desc">Basic workflow automation. We map one process and build the system to automate it.</p>
-<ul class="price-list">
-<li><span class="ck">✓</span> One workflow mapped & automated</li>
-<li><span class="ck">✓</span> Inbox Intelligence OR Calendar setup</li>
-<li><span class="ck">✓</span> Basic integrations configured</li>
-<li><span class="ck">✓</span> Team training session</li>
-<li><span class="ck">✓</span> Documentation & SOPs</li>
-<li><span class="ck">✓</span> 14-day email support</li>
-</ul>
-<a href="audit.html" class="price-btn secondary">Get Started</a>
-</div>
-<!-- Growth -->
-<div class="price-card featured">
-<div class="price-badge">MOST POPULAR</div>
-<div class="price-name">Growth</div>
-<div class="price-amt">$2,500 <span>setup</span></div>
-<p class="price-desc">+ $500/mo managed. Full AI system built and managed for your business.</p>
-<ul class="price-list">
-<li><span class="ck">✓</span> Full workflow audit & mapping</li>
-<li><span class="ck">✓</span> All 6 AI systems configured</li>
-<li><span class="ck">✓</span> Custom AI agents built for you</li>
-<li><span class="ck">✓</span> 360° Knowledge Hub setup</li>
-<li><span class="ck">✓</span> CRM & sales pipeline build</li>
-<li><span class="ck">✓</span> Content engine deployment</li>
-<li><span class="ck">✓</span> 30-day optimization sprint</li>
-<li><span class="ck">✓</span> Ongoing managed support</li>
-</ul>
-<a href="audit.html" class="price-btn primary">Book Your Free AI Audit &rarr;</a>
-</div>
-<!-- Scale -->
-<div class="price-card">
-<div class="price-name">Scale</div>
-<div class="price-amt">$5,000 <span>setup</span></div>
-<p class="price-desc">+ $1,500/mo fully managed. Multi-department AI transformation.</p>
-<ul class="price-list">
-<li><span class="ck">✓</span> Everything in Growth</li>
-<li><span class="ck">✓</span> Multi-department automation</li>
-<li><span class="ck">✓</span> Dedicated AI agents per function</li>
-<li><span class="ck">✓</span> Custom database architecture</li>
-<li><span class="ck">✓</span> Executive reporting dashboards</li>
-<li><span class="ck">✓</span> Ongoing optimization retainer</li>
-<li><span class="ck">✓</span> Dedicated account manager</li>
-<li><span class="ck">✓</span> SLA & priority support</li>
-</ul>
-<a href="audit.html" class="price-btn secondary">Book Your Free AI Audit &rarr;</a>
-</div>
-</div>
-</div>
-</section>
 
 <!-- ══════════════════ FINAL CTA ══════════════════ -->
 <section class="final-cta" id="start">
@@ -511,11 +429,11 @@ footer a{margin-left:0}
 <footer>
 <div class="fl">YourEdge<span class="dot">.</span></div>
 <div class="fr">
-© 2026 YourEdge · Fairway Co. Holdings
-<a href="#">Privacy</a>
-<a href="#">Terms</a>
-<a href="#">Security</a>
-<a href="#">Contact</a>
+&copy; 2026 YourEdge AI Integrations
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+<a href="security.html">Security</a>
+<a href="contact.html">Contact</a>
 </div>
 </footer>
 
