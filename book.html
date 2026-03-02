@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Book Your Free AI Audit — YourEdge</title>
+<meta name="description" content="Book a free 30-minute AI integration assessment. Get a custom AI integration plan and real ROI numbers.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#f1f5f9;padding:40px 20px;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.container{max-width:600px;width:100%;text-align:center}
+h1{font-size:2.5rem;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,#60a5fa,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+p{font-size:1.125rem;color:#cbd5e1;margin-bottom:32px;line-height:1.6}
+.btn-primary{display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:1.125rem;border:none;cursor:pointer;transition:all .2s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(37,99,235,.4)}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:#1e293b;border-radius:16px;width:90%;max-width:540px;max-height:90vh;overflow-y:auto;position:relative;padding:32px;box-shadow:0 25px 50px rgba(0,0,0,.5);transform:scale(.95);transition:transform .3s}
+.modal-overlay.active .modal{transform:scale(1)}
+.modal-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:#94a3b8;font-size:24px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:all .2s}
+.modal-close:hover{background:rgba(148,163,184,.1);color:#f1f5f9}
+.modal-header h2{font-size:1.75rem;margin-bottom:8px;color:#f1f5f9}
+.modal-header p{font-size:1rem;color:#94a3b8;margin-bottom:24px}
+.modal-progress{display:flex;gap:8px;justify-content:center;margin-bottom:32px}
+.dot{width:8px;height:8px;border-radius:50%;background:#334155;transition:all .3s}
+.dot.active{background:#3b82f6;width:24px}
+.form-step{display:none}
+.form-step.active{display:block}
+.form-label{display:block;font-size:.875rem;font-weight:600;color:#cbd5e1;margin-bottom:8px;text-align:left}
+.form-input{width:100%;padding:12px 16px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#f1f5f9;font-size:1rem;margin-bottom:16px;transition:all .2s}
+.form-input:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+textarea.form-input{min-height:120px;resize:vertical}
+.checkbox-item{display:flex;align-items:center;gap:12px;padding:12px;background:#0f172a;border:1px solid #334155;border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+.checkbox-item:hover{border-color:#475569;background:rgba(15,23,42,.8)}
+.checkbox-item.checked{border-color:#3b82f6;background:rgba(59,130,246,.05)}
+.checkbox-item input[type=checkbox]{width:18px;height:18px;cursor:pointer}
+.time-slot{padding:14px;background:#0f172a;border:1px solid #334155;border-radius:8px;margin-bottom:8px;cursor:pointer;font-weight:500;transition:all .2s}
+.time-slot:hover{border-color:#475569;background:rgba(15,23,42,.8)}
+.time-slot.selected{border-color:#3b82f6;background:rgba(59,130,246,.1);color:#60a5fa}
+.form-nav{display:flex;gap:12px;margin-top:24px}
+.btn-back,.btn-next{flex:1;padding:12px 24px;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-back{background:#334155;color:#f1f5f9}
+.btn-back:hover{background:#475569}
+.btn-next{background:#3b82f6;color:#fff}
+.btn-next:hover{background:#2563eb}
+.success-message{text-align:center;padding:40px 20px}
+.success-message h3{font-size:1.5rem;color:#10b981;margin-bottom:16px}
+.success-message p{color:#94a3b8;margin-bottom:24px}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>Book Your Free AI Audit</h1>
+<p>Get a custom AI integration plan and real ROI numbers. No pitch, just a real look at your operations.</p>
+<button class="btn-primary" onclick="openModal()">Schedule Your Audit →</button>
+</div>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal">
+<button class="modal-close" onclick="closeModal()">✕</button>
+<div class="modal-header">
+<h2>Book Your Free AI Audit</h2>
+<p>Tell us about your business. We'll show you the ROI.</p>
+</div>
+<div class="modal-progress">
+<div class="dot active" data-step="0"></div>
+<div class="dot" data-step="1"></div>
+<div class="dot" data-step="2"></div>
+<div class="dot" data-step="3"></div>
+<div class="dot" data-step="4"></div>
+<div class="dot" data-step="5"></div>
+</div>
+<div class="modal-body">
+
+<!-- Step 0: Name -->
+<div class="form-step active" data-step="0">
+<label class="form-label">Your Name</label>
+<input class="form-input" type="text" id="f-name" placeholder="Full name" autocomplete="name">
+<div class="form-nav"><button class="btn-next" onclick="nextStep()">Continue →</button></div>
+</div>
+
+<!-- Step 1: Email -->
+<div class="form-step" data-step="1">
+<label class="form-label">Email Address</label>
+<input class="form-input" type="email" id="f-email" placeholder="you@company.com" autocomplete="email">
+<div class="form-nav"><button class="btn-back" onclick="prevStep()">← Back</button><button class="btn-next" onclick="nextStep()">Continue →</button></div>
+</div>
+
+<!-- Step 2: Phone -->
+<div class="form-step" data-step="2">
+<label class="form-label">Phone Number</label>
+<input class="form-input" type="tel" id="f-phone" placeholder="(555) 000-0000" autocomplete="tel">
+<div class="form-nav"><button class="btn-back" onclick="prevStep()">← Back</button><button class="btn-next" onclick="nextStep()">Continue →</button></div>
+</div>
+
+<!-- Step 3: Company + Position -->
+<div class="form-step" data-step="3">
+<label class="form-label">Company Name</label>
+<input class="form-input" type="text" id="f-company" placeholder="Your company" style="margin-bottom:16px" autocomplete="organization">
+<label class="form-label">Your Position</label>
+<input class="form-input" type="text" id="f-position" placeholder="CEO, COO, Founder, etc." autocomplete="organization-title">
+<div class="form-nav"><button class="btn-back" onclick="prevStep()">← Back</button><button class="btn-next" onclick="nextStep()">Continue →</button></div>
+</div>
+
+<!-- Step 4: Services + Project -->
+<div class="form-step" data-step="4">
+<label class="form-label">Which services are you interested in?</label>
+<label class="checkbox-item" onclick="toggleCheck(event)">
+<input type="checkbox" value="Workflow Automation">
+<span>Workflow Automation</span>
+</label>
+<label class="checkbox-item" onclick="toggleCheck(event)">
+<input type="checkbox" value="AI Agent Installation">
+<span>AI Agent Installation</span>
+</label>
+<label class="checkbox-item" onclick="toggleCheck(event)">
+<input type="checkbox" value="Custom Applications">
+<span>Custom Applications</span>
+</label>
+<label class="checkbox-item" onclick="toggleCheck(event)">
+<input type="checkbox" value="Complete Business Audit and Transformation">
+<span>Complete Business Audit & Transformation</span>
+</label>
+<label class="form-label" style="margin-top:20px">Tell us about your business</label>
+<textarea class="form-input" id="f-project" placeholder="Describe your current workflows, where you want automation, or your needs and goals..."></textarea>
+<div class="form-nav"><button class="btn-back" onclick="prevStep()">← Back</button><button class="btn-next" onclick="nextStep()">Continue →</button></div>
+</div>
+
+<!-- Step 5: Pick a Time -->
+<div class="form-step" data-step="5">
+<label class="form-label">Pick a time to connect</label>
+<div class="time-slot" onclick="selectTime(this)">Mon 10:00 AM MST</div>
+<div class="time-slot" onclick="selectTime(this)">Mon 2:00 PM MST</div>
+<div class="time-slot" onclick="selectTime(this)">Tue 10:00 AM MST</div>
+<div class="time-slot" onclick="selectTime(this)">Tue 2:00 PM MST</div>
+<div class="time-slot" onclick="selectTime(this)">Wed 10:00 AM MST</div>
+<div class="time-slot" onclick="selectTime(this)">Wed 2:00 PM MST</div>
+<div class="time-slot" onclick="selectTime(this)">Thu 10:00 AM MST</div>
+<div class="time-slot" onclick="selectTime(this)">Thu 2:00 PM MST</div>
+<div class="time-slot" onclick="selectTime(this)">Fri 10:00 AM MST</div>
+<div class="time-slot" onclick="selectTime(this)">Fri 2:00 PM MST</div>
+<div class="form-nav"><button class="btn-back" onclick="prevStep()">← Back</button><button class="btn-next" onclick="submitForm()">Book Your Audit →</button></div>
+</div>
+
+<!-- Success -->
+<div class="form-step" data-step="6">
+<div class="success-message">
+<h3>✓ You're All Set!</h3>
+<p>We'll send you a calendar invite and confirmation email shortly. Looking forward to showing you what's possible.</p>
+<button class="btn-next" onclick="closeModal()">Close</button>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+let currentStep=0;
+const totalSteps=6;
+let selectedTime='';
+
+function openModal(){
+document.getElementById('modalOverlay').classList.add('active');
+document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+document.getElementById('modalOverlay').classList.remove('active');
+document.body.style.overflow='';
+currentStep=0;
+updateStep();
+}
+
+function nextStep(){
+const step=document.querySelector(`.form-step[data-step="${currentStep}"]`);
+const inputs=step.querySelectorAll('.form-input');
+let valid=true;
+inputs.forEach(input=>{
+if(input.hasAttribute('required')&&!input.value.trim()){
+valid=false;
+input.style.borderColor='#ef4444';
+}else{
+input.style.borderColor='#334155';
+}
+});
+if(currentStep===4){
+const checkboxes=step.querySelectorAll('input[type="checkbox"]:checked');
+const project=document.getElementById('f-project').value.trim();
+if(checkboxes.length===0||!project){
+valid=false;
+}
+}
+if(valid&&currentStep<totalSteps){
+currentStep++;
+updateStep();
+}
+}
+
+function prevStep(){
+if(currentStep>0){
+currentStep--;
+updateStep();
+}
+}
+
+function updateStep(){
+document.querySelectorAll('.form-step').forEach((el,i)=>{
+el.classList.toggle('active',i===currentStep);
+});
+document.querySelectorAll('.dot').forEach((dot,i)=>{
+dot.classList.toggle('active',i===currentStep);
+});
+}
+
+function toggleCheck(e){
+const item=e.currentTarget;
+const checkbox=item.querySelector('input[type="checkbox"]');
+checkbox.checked=!checkbox.checked;
+item.classList.toggle('checked',checkbox.checked);
+}
+
+function selectTime(el){
+document.querySelectorAll('.time-slot').forEach(slot=>slot.classList.remove('selected'));
+el.classList.add('selected');
+selectedTime=el.textContent;
+}
+
+function submitForm(){
+if(!selectedTime){
+alert('Please select a time slot');
+return;
+}
+const data={
+name:document.getElementById('f-name').value,
+email:document.getElementById('f-email').value,
+phone:document.getElementById('f-phone').value,
+company:document.getElementById('f-company').value,
+position:document.getElementById('f-position').value,
+services:Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb=>cb.value),
+project:document.getElementById('f-project').value,
+time:selectedTime
+};
+console.log('Booking submitted:',data);
+// TODO: Send to backend/webhook
+currentStep++;
+updateStep();
+}
+
+// Auto-open modal on page load
+setTimeout(openModal,300);
+</script>
+
+</body>
+</html>
