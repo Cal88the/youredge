@@ -3,744 +3,509 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your AI Edge — Product Documentation</title>
-<meta name="description" content="Explore every feature of Your AI Edge — the AI operating system for founders. Inbox, calendar, CRM, content, and more.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><polygon points='16,2 22,14 16,10 10,14' fill='%232563EB'/><text x='3' y='28' font-family='Arial' font-weight='800' font-size='11' fill='%230F172A'>Y</text><text x='14' y='28' font-family='Arial' font-weight='800' font-size='11' fill='%232563EB'>E</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>YourEdge — Product Documentation</title>
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--navy:#0F172A;--blue:#2563EB;--blue-light:#DBEAFE;--blue-50:#EFF6FF;--gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-300:#CBD5E1;--gray-400:#94A3B8;--gray-500:#64748B;--gray-600:#475569;--gray-700:#334155;--white:#FFFFFF;--sidebar-w:260px}
-html{-webkit-font-smoothing:antialiased}
-body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--navy);background:var(--white);line-height:1.6;overflow-x:hidden}
-a{color:var(--blue);text-decoration:none}
-a:hover{text-decoration:underline}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#000;--surface:#080808;--card:#111;--card-h:#161616;
+--bdr:#1a1a1a;--bdr-l:#222;--bdr-h:#333;
+--w:#fafafa;--g:#a0a0a0;--m:#666;--d:#444;
+--blue:#2563eb;--blue-h:#3b82f6;--blue-g:rgba(37,99,235,.12);--blue-gs:rgba(37,99,235,.25);
+--green:#22c55e;--red:#ef4444;--orange:#f59e0b;--purple:#8b5cf6;--pink:#ec4899;--teal:#14b8a6;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--blue);color:var(--w)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:64px;display:flex;align-items:center;gap:32px;background:rgba(0,0,0,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr)}
+.nl{font-size:18px;font-weight:900;letter-spacing:-.5px;color:var(--w);text-decoration:none}
+.dot{color:var(--blue)}
+.nb{font-size:12px;color:var(--m);padding:4px 10px;border:1px solid var(--bdr);border-radius:6px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+nav .sep{color:var(--bdr-l);font-size:18px}
+nav .nav-title{font-size:13px;font-weight:600;color:var(--g)}
+.ham-doc{display:none;padding:8px;min-width:44px;min-height:44px;background:none;border:1px solid var(--bdr);border-radius:8px;color:var(--g);font-size:12px;font-weight:600;cursor:pointer;margin-left:auto}
 
 /* LAYOUT */
-.app{display:flex;min-height:100vh}
+.layout{display:flex;min-height:100vh;padding-top:64px}
 
 /* SIDEBAR */
-.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--navy);color:#94A3B8;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column;transition:transform .3s}
-.sidebar::-webkit-scrollbar{width:4px}
-.sidebar::-webkit-scrollbar-thumb{background:#334155;border-radius:4px}
-.sidebar-header{padding:20px 20px 16px;border-bottom:1px solid #1E293B}
-.sidebar-logo{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:800;color:#fff;letter-spacing:-.02em;text-decoration:none}
-.sidebar-logo:hover{text-decoration:none}
-.sidebar-logo svg{flex-shrink:0}
-.sidebar-tag{font-size:.65rem;font-weight:600;background:var(--blue);color:#fff;padding:2px 8px;border-radius:999px;margin-left:4px}
-.sidebar-nav{padding:12px 0;flex:1}
-.nav-section{padding:0 12px;margin-bottom:4px}
-.nav-section-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#475569;padding:16px 12px 6px;user-select:none}
-.nav-item{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;font-size:.85rem;font-weight:500;color:#94A3B8;cursor:pointer;transition:all .15s;user-select:none;margin:1px 0}
-.nav-item:hover{background:#1E293B;color:#CBD5E1}
-.nav-item.active{background:rgba(37,99,235,.15);color:#60A5FA;font-weight:600}
-.nav-item .icon{font-size:.95rem;width:20px;text-align:center;flex-shrink:0}
-.sidebar-footer{padding:16px 20px;border-top:1px solid #1E293B;font-size:.75rem;color:#475569}
-.sidebar-footer a{color:#60A5FA}
+.sidebar{position:fixed;top:64px;left:0;width:260px;height:calc(100vh - 64px);overflow-y:auto;padding:24px 0;border-right:1px solid var(--bdr);background:var(--bg);z-index:50;flex-shrink:0}
+.sidebar-group{padding:0 20px;margin-bottom:28px}
+.sidebar-group h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--d);margin-bottom:12px;padding-left:12px}
+.sidebar-group a{display:block;padding:7px 12px;font-size:13px;color:var(--m);text-decoration:none;border-radius:6px;transition:.15s;font-weight:500;min-height:44px;display:flex;align-items:center}
+.sidebar-group a:hover{color:var(--g);background:var(--card)}
+.sidebar-group a.active{color:var(--blue);background:var(--blue-g);font-weight:600}
+.sidebar-close{display:none;padding:12px 20px;border-bottom:1px solid var(--bdr);text-align:right}
+.sidebar-close button{background:none;border:1px solid var(--bdr);border-radius:6px;color:var(--g);padding:6px 12px;font-size:12px;cursor:pointer;min-height:44px}
 
-/* MAIN */
-.main{margin-left:var(--sidebar-w);flex:1;min-width:0}
-.breadcrumb{padding:16px 40px;border-bottom:1px solid var(--gray-200);font-size:.8rem;color:var(--gray-400);display:flex;align-items:center;gap:6px}
-.breadcrumb span{color:var(--gray-600);font-weight:500}
-.content{padding:40px 40px 80px;max-width:900px}
-.content h1{font-size:2.2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:12px;line-height:1.15}
-.content h2{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;margin:40px 0 16px;padding-top:20px;border-top:1px solid var(--gray-100)}
-.content h3{font-size:1.15rem;font-weight:700;margin:28px 0 10px}
-.content p{color:var(--gray-600);margin-bottom:16px;line-height:1.7}
-.content .lead{font-size:1.15rem;color:var(--gray-500);margin-bottom:32px}
-.section{display:none;animation:fadeIn .3s ease}
-.section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* MAIN CONTENT */
+.main{margin-left:260px;padding:48px 64px 120px;max-width:900px;width:calc(100% - 260px)}
+.main h1{font-size:36px;font-weight:900;letter-spacing:-2px;margin-bottom:8px}
+.main .subtitle{font-size:16px;color:var(--g);margin-bottom:48px;line-height:1.7}
+.main h2{font-size:24px;font-weight:800;letter-spacing:-1px;margin-top:64px;margin-bottom:16px;padding-top:32px;border-top:1px solid var(--bdr)}
+.main h2:first-of-type{margin-top:0;padding-top:0;border-top:none}
+.main h3{font-size:18px;font-weight:700;letter-spacing:-.3px;margin-top:36px;margin-bottom:12px;color:var(--w)}
+.main p{font-size:14px;color:var(--g);line-height:1.7;margin-bottom:16px}
+.main ul{list-style:none;margin-bottom:20px}
+.main ul li{font-size:14px;color:var(--g);padding:6px 0;padding-left:20px;position:relative;line-height:1.6}
+.main ul li::before{content:'→';position:absolute;left:0;color:var(--blue);font-weight:700}
+.main strong{color:var(--w);font-weight:700}
 
-/* CARDS */
-.card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:24px 0}
-.card{border:1px solid var(--gray-200);border-radius:12px;padding:24px;transition:all .2s;cursor:pointer}
-.card:hover{border-color:var(--blue);box-shadow:0 4px 12px rgba(37,99,235,.08);transform:translateY(-2px)}
-.card .card-icon{font-size:1.5rem;margin-bottom:10px}
-.card h4{font-size:1rem;font-weight:700;margin-bottom:6px}
-.card p{font-size:.88rem;color:var(--gray-500);margin:0}
+/* FEATURE HEADER */
+.feat-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;margin-top:56px;padding-top:40px;border-top:1px solid var(--bdr)}
+.feat-header:first-of-type{margin-top:0;padding-top:0;border-top:none}
+.feat-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.feat-icon.fi1{background:rgba(37,99,235,.1)}
+.feat-icon.fi2{background:rgba(139,92,246,.1)}
+.feat-icon.fi3{background:rgba(245,158,11,.1)}
+.feat-icon.fi4{background:rgba(34,197,94,.1)}
+.feat-icon.fi5{background:rgba(236,72,153,.1)}
+.feat-icon.fi6{background:rgba(20,184,166,.1)}
+.feat-title{font-size:24px;font-weight:800;letter-spacing:-1px}
+.feat-tag{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:100px;border:1px solid var(--bdr-l);color:var(--m);margin-left:auto}
 
-/* DIFF CARDS */
-.diff-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:24px 0}
-.diff-card{background:var(--gray-50);border-radius:12px;padding:24px}
-.diff-card h4{font-size:1rem;font-weight:700;margin-bottom:6px;color:var(--navy)}
-.diff-card p{font-size:.88rem;color:var(--gray-500);margin:0}
+/* DEMO BOX */
+.demo-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:24px;margin:24px 0;overflow:hidden}
+.demo-card-bar{padding:8px 12px;border-bottom:1px solid var(--bdr);margin:-24px -24px 20px;background:rgba(17,17,17,.5);display:flex;align-items:center;gap:5px}
+.demo-card-bar .d{width:8px;height:8px;border-radius:50%}
+.demo-card-bar .d.r{background:#ff5f57}.demo-card-bar .d.y{background:#febc2e}.demo-card-bar .d.g{background:#28c840}
+.demo-card-bar span{margin-left:8px;font-size:10px;color:var(--m)}
 
-/* STEPS */
-.steps{margin:24px 0}
-.step{display:flex;gap:16px;margin-bottom:24px}
-.step-num{width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0}
-.step-body h4{font-size:1rem;font-weight:700;margin-bottom:4px}
-.step-body p{font-size:.88rem;color:var(--gray-500);margin:0}
-
-/* TABLE */
-.doc-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.88rem}
-.doc-table th{text-align:left;padding:12px 16px;background:var(--gray-50);font-weight:600;border-bottom:2px solid var(--gray-200)}
-.doc-table td{padding:12px 16px;border-bottom:1px solid var(--gray-100);color:var(--gray-600)}
-
-/* COMMAND EXAMPLES */
-.cmd-list{margin:24px 0;display:flex;flex-direction:column;gap:8px}
-.cmd{background:var(--navy);color:#E2E8F0;padding:12px 16px;border-radius:8px;font-size:.88rem;font-family:'SF Mono',Menlo,monospace}
-.cmd::before{content:'💬 ';font-size:.8rem}
-
-/* FEATURE BLOCKS */
-.feature-block{display:flex;gap:24px;align-items:flex-start;margin:20px 0;padding:20px;background:var(--gray-50);border-radius:12px}
-.feature-block .fb-icon{font-size:1.8rem;flex-shrink:0}
-.feature-block h4{font-weight:700;margin-bottom:4px}
-.feature-block p{font-size:.88rem;color:var(--gray-500);margin:0}
-
-/* FLOW */
-.flow{display:flex;align-items:center;gap:0;margin:28px 0;flex-wrap:wrap;justify-content:center}
-.flow-step{background:var(--blue-50);border:1px solid var(--blue-light);border-radius:10px;padding:14px 20px;text-align:center;font-weight:600;font-size:.88rem;color:var(--navy)}
-.flow-arrow{font-size:1.2rem;color:var(--gray-400);padding:0 8px}
-
-/* MOCKUP: INBOX */
-.mockup{border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin:28px 0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.mockup-bar{background:var(--gray-50);padding:10px 16px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:8px}
-.mockup-dot{width:10px;height:10px;border-radius:50%;background:var(--gray-300)}
-.mockup-dot.r{background:#EF4444}.mockup-dot.y{background:#EAB308}.mockup-dot.g{background:#22C55E}
-.mockup-title{font-size:.75rem;font-weight:600;color:var(--gray-500);margin-left:8px}
-.mockup-body{padding:0}
-.inbox-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--gray-100);font-size:.85rem}
+/* INBOX MOCK */
+.inbox-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bdr);font-size:13px}
 .inbox-row:last-child{border-bottom:none}
-.inbox-badge{font-size:.7rem;padding:2px 8px;border-radius:999px;font-weight:600;flex-shrink:0}
-.inbox-badge.urgent{background:#FEE2E2;color:#DC2626}
-.inbox-badge.action{background:#FEF9C3;color:#A16207}
-.inbox-badge.fyi{background:#DBEAFE;color:#2563EB}
-.inbox-badge.ignore{background:var(--gray-100);color:var(--gray-400)}
-.inbox-from{font-weight:600;width:140px;flex-shrink:0;color:var(--navy)}
-.inbox-subject{flex:1;color:var(--gray-600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.inbox-action{color:var(--blue);font-weight:600;font-size:.78rem;flex-shrink:0}
+.inbox-badge{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;flex-shrink:0}
+.inbox-badge.urgent{background:rgba(239,68,68,.15);color:var(--red)}
+.inbox-badge.action{background:rgba(245,158,11,.15);color:var(--orange)}
+.inbox-badge.fyi{background:rgba(37,99,235,.15);color:var(--blue)}
+.inbox-badge.ignore{background:rgba(102,102,102,.15);color:var(--m)}
+.inbox-from{font-weight:600;color:var(--w);width:120px;flex-shrink:0}
+.inbox-subj{color:var(--g);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inbox-action{font-size:11px;color:var(--green);font-weight:600;flex-shrink:0}
 
-/* MOCKUP: MEETING PREP */
-.prep-card{background:var(--gray-50);border-radius:12px;padding:24px;margin:24px 0;border:1px solid var(--gray-200)}
-.prep-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.prep-header .ph-icon{font-size:1.3rem}
-.prep-header h4{font-weight:700;margin:0}
-.prep-header span{font-size:.8rem;color:var(--gray-400)}
-.prep-section{margin-bottom:14px}
-.prep-section h5{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-400);margin-bottom:6px}
-.prep-section p,.prep-section li{font-size:.85rem;color:var(--gray-600)}
-.prep-section ul{padding-left:18px}
-.prep-section li{margin-bottom:3px}
-.prep-attendee{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.prep-attendee .avatar{width:28px;height:28px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--blue)}
-.prep-attendee .name{font-weight:600;font-size:.85rem}
-.prep-attendee .role{font-size:.78rem;color:var(--gray-400)}
+/* TOGGLE */
+.toggle-demo{display:flex;align-items:center;gap:12px;padding:16px 20px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;margin:16px 0}
+.toggle-switch{width:44px;height:24px;background:var(--green);border-radius:12px;position:relative;cursor:pointer;transition:.2s;flex-shrink:0}
+.toggle-switch.off{background:var(--d)}
+.toggle-dot{width:20px;height:20px;background:var(--w);border-radius:50%;position:absolute;top:2px;right:2px;transition:.2s}
+.toggle-switch.off .toggle-dot{right:auto;left:2px}
+.toggle-label{font-size:13px;font-weight:600;color:var(--w)}
+.toggle-desc{font-size:12px;color:var(--m)}
 
-/* MOCKUP: CHAT */
-.chat-mockup{max-width:360px;margin:28px auto;border:1px solid var(--gray-200);border-radius:20px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.08)}
-.chat-header{background:var(--navy);color:#fff;padding:14px 18px;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px}
-.chat-header .online{width:8px;height:8px;border-radius:50%;background:#22C55E}
-.chat-body{padding:16px;background:#fff;display:flex;flex-direction:column;gap:10px;min-height:260px}
-.chat-msg{max-width:80%;padding:10px 14px;border-radius:16px;font-size:.82rem;line-height:1.4}
-.chat-msg.user{background:var(--blue);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
-.chat-msg.bot{background:var(--gray-100);color:var(--navy);align-self:flex-start;border-bottom-left-radius:4px}
-.chat-input{border-top:1px solid var(--gray-200);padding:12px 16px;font-size:.8rem;color:var(--gray-400);display:flex;align-items:center;gap:8px}
-.chat-input .pill{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:20px;flex:1;padding:8px 14px}
+/* CRM MOCK */
+.crm-card{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bdr);font-size:13px}
+.crm-card:last-child{border-bottom:none}
+.crm-score{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0}
+.crm-score.hot{background:rgba(34,197,94,.15);color:var(--green)}
+.crm-score.warm{background:rgba(245,158,11,.15);color:var(--orange)}
+.crm-score.cold{background:rgba(239,68,68,.15);color:var(--red)}
+.crm-name{font-weight:700;color:var(--w);width:100px;flex-shrink:0}
+.crm-deal{color:var(--g);flex:1}
+.crm-status{font-size:11px;font-weight:600;flex-shrink:0}
 
-/* MOCKUP: DASHBOARD */
-.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
-.dash-stat{background:var(--gray-50);border-radius:10px;padding:16px;text-align:center;border:1px solid var(--gray-100)}
-.dash-stat .num{font-size:1.6rem;font-weight:800;color:var(--navy)}
-.dash-stat .label{font-size:.75rem;color:var(--gray-400);margin-top:2px}
-.approval-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-100)}
-.approval-item:last-child{border-bottom:none}
-.approval-item .ai-icon{font-size:1.2rem}
-.approval-item .ai-text{flex:1;font-size:.85rem;color:var(--gray-600)}
-.approval-item .ai-btns{display:flex;gap:6px}
-.approval-item .ai-btn{padding:4px 12px;border-radius:6px;font-size:.75rem;font-weight:600;border:none;cursor:pointer}
-.ai-btn.approve{background:#DCFCE7;color:#16A34A}
-.ai-btn.reject{background:#FEE2E2;color:#DC2626}
+/* PRICING TABLE */
+.pricing-table{width:100%;border-collapse:collapse;margin:24px 0}
+.pricing-table th{text-align:left;font-size:12px;font-weight:700;color:var(--m);text-transform:uppercase;letter-spacing:1px;padding:12px 16px;border-bottom:2px solid var(--bdr-l)}
+.pricing-table td{padding:12px 16px;font-size:14px;color:var(--g);border-bottom:1px solid var(--bdr)}
+.pricing-table tr:hover td{background:var(--card)}
+.pricing-table .tier-name{font-weight:700;color:var(--w)}
+.pricing-table .tier-price{font-weight:800;color:var(--blue)}
 
-/* INTEGRATIONS GRID */
-.int-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}
-.int-card{border:1px solid var(--gray-200);border-radius:10px;padding:16px;text-align:center;transition:all .2s}
-.int-card:hover{border-color:var(--blue);transform:translateY(-2px)}
-.int-card .int-icon{font-size:2rem;margin-bottom:6px}
-.int-card .int-name{font-size:.82rem;font-weight:600}
-.int-card .int-desc{font-size:.72rem;color:var(--gray-400);margin-top:2px}
+/* CALLOUT */
+.callout{background:var(--blue-g);border:1px solid rgba(37,99,235,.2);border-radius:12px;padding:20px 24px;margin:24px 0}
+.callout p{color:var(--g);margin:0}
+.callout strong{color:var(--blue)}
 
-/* SECURITY */
-.sec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:24px 0}
-.sec-card{display:flex;align-items:flex-start;gap:12px;padding:20px;background:var(--gray-50);border-radius:12px}
-.sec-card .sec-icon{font-size:1.5rem;flex-shrink:0}
-.sec-card h4{font-weight:700;margin-bottom:4px;font-size:.95rem}
-.sec-card p{font-size:.85rem;color:var(--gray-500);margin:0}
-
-/* FAQ */
-.faq-item{border-bottom:1px solid var(--gray-200);padding:16px 0}
-.faq-q{font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.faq-q::after{content:'+';font-size:1.2rem;color:var(--gray-400);transition:transform .2s}
-.faq-item.open .faq-q::after{transform:rotate(45deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;color:var(--gray-600);font-size:.9rem;line-height:1.7}
-.faq-item.open .faq-a{max-height:400px;padding-top:10px}
-
-/* WHITE GLOVE */
-.wg-feature{display:flex;gap:20px;align-items:flex-start;margin:20px 0;padding:24px;border:1px solid var(--gray-200);border-radius:12px;transition:all .2s}
-.wg-feature:hover{border-color:var(--blue-light);background:var(--blue-50)}
-.wg-feature .wg-icon{font-size:2rem;flex-shrink:0}
-.wg-feature h4{font-weight:700;margin-bottom:4px}
-.wg-feature p{font-size:.88rem;color:var(--gray-500);margin:0}
-
-/* MOBILE */
-.hamburger{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--navy);border:none;color:#fff;width:40px;height:40px;border-radius:10px;cursor:pointer;font-size:1.2rem;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.2)}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90}
-@media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0)}
-  .hamburger{display:flex}
-  .overlay.open{display:block}
-  .main{margin-left:0}
-  .breadcrumb{padding:16px 20px 16px 60px}
-  .content{padding:24px 20px 60px}
-  .card-grid,.diff-grid,.sec-grid{grid-template-columns:1fr}
-  .int-grid{grid-template-columns:repeat(2,1fr)}
-  .dash-grid{grid-template-columns:repeat(2,1fr)}
-  .flow{flex-direction:column}
-  .flow-arrow{transform:rotate(90deg)}
+/* RESPONSIVE */
+@media(max-width:900px){
+.layout{display:block}
+.sidebar{display:none;position:fixed;top:64px;left:0;right:0;width:100%;height:calc(100vh - 64px);z-index:90}
+.sidebar.mobile-open{display:block}
+.sidebar-close{display:block}
+.ham-doc{display:block}
+.main{margin-left:0;padding:32px 20px 80px;width:100%}
+nav{padding:0 20px;gap:12px}
+.feat-header{flex-wrap:wrap}
+.feat-tag{margin-left:0}
+.inbox-row{flex-wrap:wrap;gap:6px}
+.inbox-from{width:auto}
+.crm-card{flex-wrap:wrap;gap:6px}
+.crm-name{width:auto}
+.pricing-table{font-size:12px}
+.pricing-table th,.pricing-table td{padding:8px 10px}
 }
 </style>
 </head>
 <body>
 
-<button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">☰</button>
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<nav>
+<a href="index.html" class="nl">YourEdge<span class="dot">.</span></a>
+<span class="sep">›</span>
+<span class="nav-title">Documentation</span>
+<a href="index.html" class="nb" style="margin-left:auto">← Back to Site</a>
+<button class="ham-doc" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">☰ Nav</button>
+</nav>
 
-<div class="app">
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <a href="/" class="sidebar-logo">
-      <svg width="24" height="24" viewBox="0 0 32 32"><polygon points="16,2 22,14 16,10 10,14" fill="#2563EB"/><text x="3" y="28" font-family="Arial" font-weight="800" font-size="11" fill="#fff">Y</text><text x="14" y="28" font-family="Arial" font-weight="800" font-size="11" fill="#60A5FA">E</text></svg>
-      Your AI Edge <span class="sidebar-tag">Docs</span>
-    </a>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section">
-      <div class="nav-item active" data-section="overview"><span class="icon">🏠</span> Overview</div>
-      <div class="nav-item" data-section="quickstart"><span class="icon">⚡</span> Quickstart</div>
-    </div>
-    <div class="nav-section">
-      <div class="nav-section-title">Features</div>
-      <div class="nav-item" data-section="inbox"><span class="icon">📧</span> Inbox Intelligence</div>
-      <div class="nav-item" data-section="calendar"><span class="icon">📅</span> Calendar Intelligence</div>
-      <div class="nav-item" data-section="text-chat"><span class="icon">💬</span> Text & Chat</div>
-      <div class="nav-item" data-section="dashboard"><span class="icon">📊</span> Executive Dashboard</div>
-      <div class="nav-item" data-section="crm"><span class="icon">🤝</span> CRM Lite</div>
-      <div class="nav-item" data-section="memory"><span class="icon">🧠</span> Relationship Memory</div>
-      <div class="nav-item" data-section="content-engine"><span class="icon">📝</span> Content Engine</div>
-      <div class="nav-item" data-section="alerts"><span class="icon">🔔</span> Alerts & Notifications</div>
-    </div>
-    <div class="nav-section">
-      <div class="nav-section-title">White-Glove</div>
-      <div class="nav-item" data-section="wg-included"><span class="icon">🏗️</span> What's Included</div>
-      <div class="nav-item" data-section="wg-revenue"><span class="icon">📈</span> Revenue Monitoring</div>
-      <div class="nav-item" data-section="wg-followup"><span class="icon">🔄</span> Follow-Up Engine</div>
-      <div class="nav-item" data-section="wg-brief"><span class="icon">📋</span> Weekly Brief</div>
-      <div class="nav-item" data-section="wg-strategic"><span class="icon">🎯</span> Strategic Insights</div>
-    </div>
-    <div class="nav-section">
-      <div class="nav-section-title">Integrations</div>
-      <div class="nav-item" data-section="integrations"><span class="icon">🔗</span> All Integrations</div>
-    </div>
-    <div class="nav-section">
-      <div class="nav-section-title">Resources</div>
-      <div class="nav-item" data-section="security"><span class="icon">🔒</span> Security</div>
-      <div class="nav-item" data-section="faq"><span class="icon">❓</span> FAQ</div>
-    </div>
-  </nav>
-  <div class="sidebar-footer">
-    <a href="/">← Back to youredge.ai</a>
-  </div>
+<div class="layout">
+<aside class="sidebar">
+<div class="sidebar-close"><button onclick="document.querySelector('.sidebar').classList.remove('mobile-open')">✕ Close</button></div>
+<div class="sidebar-group">
+<h4>Overview</h4>
+<a href="#overview" class="active">What is YourEdge</a>
+<a href="#philosophy">Our Philosophy</a>
+<a href="#how-different">How We're Different</a>
+</div>
+<div class="sidebar-group">
+<h4>What We Build</h4>
+<a href="#inbox">Inbox Intelligence</a>
+<a href="#docs">Document Engine</a>
+<a href="#calendar">Calendar System</a>
+<a href="#knowledge">Knowledge Hub</a>
+<a href="#content">Content Engine</a>
+<a href="#crm">Sales System</a>
+</div>
+<div class="sidebar-group">
+<h4>Service</h4>
+<a href="#process">Our Process</a>
+<a href="#pricing">Pricing Tiers</a>
+<a href="#integrations">Integrations</a>
+<a href="#security">Security</a>
+<a href="#faq">FAQ</a>
+</div>
 </aside>
 
-<!-- MAIN CONTENT -->
 <main class="main">
-<div class="breadcrumb" id="breadcrumb">Your AI Edge <span style="color:var(--gray-300)">›</span> <span id="bc-page">Overview</span></div>
 
-<!-- OVERVIEW -->
-<div class="section active" id="sec-overview">
-<div class="content">
-  <h1>Your AI Edge — The AI Operating System for Founders</h1>
-  <p class="lead">One AI assistant for your inbox, meetings, calendar, CRM, content, and operations.</p>
+<!-- ════════ OVERVIEW ════════ -->
+<h1 id="overview">YourEdge — Documentation</h1>
+<p class="subtitle">YourEdge is a done-for-you AI systems consultancy. We're the experts — you're the client. We map your workflows, build custom AI systems, and manage them ongoing. Not a platform. Not a chatbot. A managed service that cuts process time by 95%.</p>
 
-  <div class="card-grid">
-    <div class="card" onclick="navTo('inbox')"><div class="card-icon">📧</div><h4>Inbox Intelligence</h4><p>Triages, drafts, and sends in your voice</p></div>
-    <div class="card" onclick="navTo('calendar')"><div class="card-icon">📅</div><h4>Calendar Intelligence</h4><p>Scheduling, prep, and follow-ups</p></div>
-    <div class="card" onclick="navTo('text-chat')"><div class="card-icon">💬</div><h4>Text & Chat</h4><p>Text your AI from anywhere</p></div>
-    <div class="card" onclick="navTo('dashboard')"><div class="card-icon">📊</div><h4>Executive Dashboard</h4><p>Your daily command center</p></div>
-  </div>
+<h2 id="philosophy">Our Philosophy</h2>
+<p><strong>We don't sell software. We sell operational transformation.</strong></p>
+<p>Most AI companies give you a login and wish you luck. They sell features. We sell results. The difference between a tool and a service is simple: tools require you to do the work. We do the work for you.</p>
+<p>YourEdge starts with your workflows — not our product. We map every process, identify every bottleneck, calculate the ROI of fixing each one, and then build a custom AI system around your exact operations. The result isn't a dashboard you check. It's a system we build, deploy, and manage.</p>
 
-  <h2>How Your AI Edge Is Different</h2>
-  <div class="diff-grid">
-    <div class="diff-card"><h4>🚀 It does the work</h4><p>Doesn't assist — acts autonomously. Drafts are sent, meetings are booked, follow-ups go out. You approve, Edge executes.</p></div>
-    <div class="diff-card"><h4>🔧 One tool, not five</h4><p>Replaces your email client, calendar app, CRM, content tool, and reporting dashboard. One AI, one interface.</p></div>
-    <div class="diff-card"><h4>🧠 It understands you</h4><p>Learns your voice, style, and priorities over time. Every interaction makes Edge smarter about how you work.</p></div>
-    <div class="diff-card"><h4>🌐 It's everywhere</h4><p>iMessage, SMS, WhatsApp, Telegram, Slack, web. Run your business from whatever app you already use.</p></div>
-  </div>
+<h3>What we believe:</h3>
+<ul>
+<li><strong>Process first, tools second.</strong> We map before we build. Always.</li>
+<li><strong>Clarity over complexity.</strong> The best systems are simple. Simple scales.</li>
+<li><strong>ROI is the only metric.</strong> If the system doesn't pay for itself, we've failed.</li>
+<li><strong>Custom beats generic.</strong> Your business isn't a template. Your AI system shouldn't be either.</li>
+<li><strong>Managed, not abandoned.</strong> We don't hand you software and disappear. We optimize continuously.</li>
+</ul>
+
+<h2 id="how-different">How YourEdge Is Different</h2>
+<p>This is not another AI tool you sign up for and figure out yourself. Here's how we compare:</p>
+<ul>
+<li><strong>vs. Hiring an Agency:</strong> Agencies charge $10-50K/month and deliver decks and recommendations. We deliver working systems — built, deployed, and managed. You get output, not PowerPoints.</li>
+<li><strong>vs. Buying SaaS (Lindy, Zapier, etc.):</strong> SaaS gives you a builder and credits. You still have to figure out what to build, how to connect it, and how to maintain it. We do all of that for you. No DIY. No credit math.</li>
+<li><strong>vs. DIY (ChatGPT, Claude, etc.):</strong> General AI tools answer questions. We build systems that take action — autonomously, connected to your real data, running 24/7. You get an operating system, not a chat window.</li>
+<li><strong>vs. Hiring a VA:</strong> A VA does tasks one at a time. We automate the entire workflow end-to-end. Our systems run 24/7, learn over time, and cost a fraction of headcount.</li>
+<li><strong>vs. Enterprise Software (Oracle, SAP):</strong> 10 months to scope, 18 months to deploy, millions in cost. We build custom AI-native systems in weeks, not years. At 90% less cost.</li>
+</ul>
+
+<!-- ════════ CAPABILITY 1: INBOX ════════ -->
+<div class="feat-header" id="inbox">
+<div class="feat-icon fi1">📧</div>
+<div class="feat-title">We Build Your Inbox Intelligence</div>
+<span class="feat-tag">Managed Service</span>
+</div>
+
+<p>We set up an AI system that handles your inbox before you open it. It reads, categorizes, and drafts replies to every email — in your voice, at your tone, with full conversation context. We build it, deploy it, and manage it.</p>
+
+<h3>What we build</h3>
+<ul>
+<li><strong>Smart Triage:</strong> Every email categorized by urgency — urgent, action needed, FYI, or ignore. You see what matters instantly.</li>
+<li><strong>Voice Matching:</strong> Drafts that sound exactly like you. We train the system on your tone, vocabulary, and style from your sent emails.</li>
+<li><strong>Thread Awareness:</strong> Full conversation context. Replies reference previous messages, agreements, and commitments.</li>
+<li><strong>Auto-Archive:</strong> Newsletters, marketing emails, and spam handled automatically. Your inbox shows only what matters.</li>
+</ul>
+
+<h3>Guardrail Control</h3>
+<p><strong>Your email will never send without your permission.</strong> This is non-negotiable. We configure Approval Mode by default — every draft waits for your explicit approval before sending. We can customize this per category (auto-send FYI acknowledgments, but always approve client-facing emails).</p>
+
+<div class="toggle-demo">
+<div class="toggle-switch" id="guardToggle" onclick="this.classList.toggle('off')">
+<div class="toggle-dot"></div>
+</div>
+<div>
+<div class="toggle-label">Approval Mode: ON</div>
+<div class="toggle-desc">All drafts require your explicit approval before sending. We configure auto-send rules per category based on your preferences.</div>
 </div>
 </div>
 
-<!-- QUICKSTART -->
-<div class="section" id="sec-quickstart">
-<div class="content">
-  <h1>Get started in 60 seconds</h1>
-  <p class="lead">Five steps. One minute. Then watch your AI Edge go to work.</p>
-
-  <div class="steps">
-    <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Create your account</h4><p>Sign up at youredge.ai — takes 15 seconds.</p></div></div>
-    <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Connect your email & calendar</h4><p>One-click Google or Microsoft connection. Edge needs access to work for you.</p></div></div>
-    <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Add your phone number</h4><p>Unlock text-based control via iMessage, SMS, or WhatsApp.</p></div></div>
-    <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Tell Edge about your business</h4><p>Name, industry, priorities, communication style. The more Edge knows, the better it works.</p></div></div>
-    <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Watch it work</h4><p>Edge starts immediately. Check your inbox, calendar, and dashboard.</p></div></div>
-  </div>
-
-  <h2>What Your AI Edge Does Automatically</h2>
-  <table class="doc-table">
-    <thead><tr><th>Feature</th><th>What It Does</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Inbox Intelligence</strong></td><td>Triages, prioritizes, drafts replies in your voice. Autonomously.</td></tr>
-      <tr><td><strong>Calendar Intelligence</strong></td><td>Researches attendees, delivers briefings before every meeting.</td></tr>
-      <tr><td><strong>Meeting Notes</strong></td><td>Records calls, generates searchable summaries with action items.</td></tr>
-      <tr><td><strong>Follow-ups</strong></td><td>Tracks commitments and sends follow-up emails automatically.</td></tr>
-      <tr><td><strong>Daily Briefing</strong></td><td>Morning brief with calendar, key emails, priorities, and insights.</td></tr>
-    </tbody>
-  </table>
-
-  <h2>What to Try First</h2>
-  <p>Text or type any of these commands to get started:</p>
-  <div class="cmd-list">
-    <div class="cmd">What's on my calendar today?</div>
-    <div class="cmd">Draft a reply to Sarah's email</div>
-    <div class="cmd">Schedule a meeting with Mike next week</div>
-    <div class="cmd">Prep me for my 2pm call</div>
-    <div class="cmd">What happened in yesterday's meeting with the team?</div>
-  </div>
-</div>
+<h3>What it looks like</h3>
+<div class="demo-card">
+<div class="demo-card-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span>YourEdge — Inbox Triage</span></div>
+<div class="inbox-row"><span class="inbox-badge urgent">Urgent</span><span class="inbox-from">Sarah Chen</span><span class="inbox-subj">Partnership agreement — needs signature by EOD</span><span class="inbox-action">Draft ready →</span></div>
+<div class="inbox-row"><span class="inbox-badge action">Action</span><span class="inbox-from">Mike Torres</span><span class="inbox-subj">Q1 budget review — can we move to Thursday?</span><span class="inbox-action">Draft ready →</span></div>
+<div class="inbox-row"><span class="inbox-badge action">Action</span><span class="inbox-from">Lisa Park</span><span class="inbox-subj">Intro: Alex from Sequoia wants to connect</span><span class="inbox-action">Draft ready →</span></div>
+<div class="inbox-row"><span class="inbox-badge fyi">FYI</span><span class="inbox-from">Stripe</span><span class="inbox-subj">January revenue summary — $148K MRR (+12%)</span><span class="inbox-action">Archived</span></div>
+<div class="inbox-row"><span class="inbox-badge ignore">Noise</span><span class="inbox-from">Newsletter</span><span class="inbox-subj">Top 10 AI tools for 2026...</span><span class="inbox-action">Auto-archived</span></div>
 </div>
 
-<!-- INBOX INTELLIGENCE -->
-<div class="section" id="sec-inbox">
-<div class="content">
-  <h1>Inbox Intelligence</h1>
-  <p class="lead">Your inbox, handled before you open it.</p>
-
-  <h2>How It Works</h2>
-  <div class="flow">
-    <div class="flow-step">📥 Triage</div><div class="flow-arrow">→</div>
-    <div class="flow-step">📊 Prioritize</div><div class="flow-arrow">→</div>
-    <div class="flow-step">✍️ Draft</div><div class="flow-arrow">→</div>
-    <div class="flow-step">✅ Send (with approval)</div>
-  </div>
-
-  <h2>Features</h2>
-  <div class="feature-block"><div class="fb-icon">🔴</div><div><h4>Smart Triage</h4><p>Every email categorized by urgency — 🔴 urgent, 🟡 action needed, ℹ️ FYI, 🗑️ ignore. Know what matters instantly.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">🎙️</div><div><h4>Voice Matching</h4><p>Drafts that sound exactly like you. Edge learns your tone, vocabulary, and style from your sent emails.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📂</div><div><h4>Auto-Archive</h4><p>Newsletters, marketing emails, and spam — handled automatically. Your inbox shows only what matters.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">🧵</div><div><h4>Thread Awareness</h4><p>Understands full conversation context. Replies reference previous messages, agreements, and commitments.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">👍</div><div><h4>Approval Mode</h4><p>Every draft waits for your thumbs up before sending. Full control, zero effort.</p></div></div>
-
-  <h2>See It In Action</h2>
-  <div class="mockup">
-    <div class="mockup-bar"><div class="mockup-dot r"></div><div class="mockup-dot y"></div><div class="mockup-dot g"></div><div class="mockup-title">Edge — Inbox Triage</div></div>
-    <div class="mockup-body">
-      <div class="inbox-row"><span class="inbox-badge urgent">🔴 Urgent</span><span class="inbox-from">Sarah Chen</span><span class="inbox-subject">Re: Partnership agreement — needs signature by EOD</span><span class="inbox-action">Draft ready →</span></div>
-      <div class="inbox-row"><span class="inbox-badge action">🟡 Action</span><span class="inbox-from">Mike Torres</span><span class="inbox-subject">Q1 budget review — can we move to Thursday?</span><span class="inbox-action">Draft ready →</span></div>
-      <div class="inbox-row"><span class="inbox-badge action">🟡 Action</span><span class="inbox-from">Lisa Park</span><span class="inbox-subject">Intro: Alex from Sequoia wants to connect</span><span class="inbox-action">Draft ready →</span></div>
-      <div class="inbox-row"><span class="inbox-badge fyi">ℹ️ FYI</span><span class="inbox-from">Stripe</span><span class="inbox-subject">January revenue summary — $148K MRR (+12%)</span><span class="inbox-action">Archived</span></div>
-      <div class="inbox-row"><span class="inbox-badge ignore">🗑️ Ignore</span><span class="inbox-from">Newsletter</span><span class="inbox-subject">Top 10 AI tools for 2026...</span><span class="inbox-action">Auto-archived</span></div>
-    </div>
-  </div>
-</div>
+<!-- ════════ CAPABILITY 2: DOCS ════════ -->
+<div class="feat-header" id="docs">
+<div class="feat-icon fi2">📄</div>
+<div class="feat-title">We Build Your Document Engine</div>
+<span class="feat-tag">Managed Service</span>
 </div>
 
-<!-- CALENDAR INTELLIGENCE -->
-<div class="section" id="sec-calendar">
-<div class="content">
-  <h1>Calendar Intelligence</h1>
-  <p class="lead">Show up to every meeting over-prepared.</p>
+<p>We build a system where you describe what you need and get it back — formatted, branded, and organized. Proposals, pitch decks, reports, SOPs, one-pagers. We set up the templates, train the AI on your brand, and manage the system.</p>
 
-  <h2>Features</h2>
-  <div class="feature-block"><div class="fb-icon">📅</div><div><h4>Smart Scheduling</h4><p>Finds times, sends invites, handles back-and-forth. No more "does 3pm work?" ping-pong.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📋</div><div><h4>Meeting Prep</h4><p>Attendee research, past context, agenda, and talking points — delivered 30 minutes before every meeting.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📝</div><div><h4>Meeting Notes</h4><p>Records, transcribes, and summarizes every call with action items. Searchable forever.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📤</div><div><h4>Automatic Follow-Ups</h4><p>After every meeting, Edge drafts and sends follow-up emails with notes and next steps.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">⚠️</div><div><h4>Conflict Resolution</h4><p>Detects and resolves scheduling conflicts before they become problems.</p></div></div>
+<h3>What we build</h3>
+<ul>
+<li><strong>Natural language input:</strong> Tell the system what document you need in plain English. It generates the right format with real data.</li>
+<li><strong>Any format:</strong> Word docs, slide decks, PDFs, spreadsheets, branded templates. We configure the right output for every use case.</li>
+<li><strong>Context-aware:</strong> Pulls from your Knowledge Hub — meetings, emails, CRM data, files — to populate documents with real information.</li>
+<li><strong>Brand-consistent:</strong> We set up your templates, fonts, colors, and logo. Every document looks like your team made it.</li>
+<li><strong>Organized automatically:</strong> Documents saved, tagged, and searchable in your Drive.</li>
+</ul>
 
-  <h2>Meeting Prep Brief — Example</h2>
-  <div class="prep-card">
-    <div class="prep-header"><span class="ph-icon">📋</span><h4>Prep Brief: Q1 Strategy Review</h4><span>Today, 2:00 PM — 30 min</span></div>
-    <div class="prep-section">
-      <h5>Attendees</h5>
-      <div class="prep-attendee"><div class="avatar">SC</div><div><div class="name">Sarah Chen</div><div class="role">VP Operations · Last met Jan 15</div></div></div>
-      <div class="prep-attendee"><div class="avatar">MT</div><div><div class="name">Mike Torres</div><div class="role">Head of Finance · Last met Jan 22</div></div></div>
-    </div>
-    <div class="prep-section">
-      <h5>Context from Past Meetings</h5>
-      <p>In your last meeting, Sarah flagged supply chain delays. Mike proposed reallocating Q1 marketing budget to operations. You asked for updated projections by Feb 1.</p>
-    </div>
-    <div class="prep-section">
-      <h5>Suggested Talking Points</h5>
-      <ul><li>Status of supply chain mitigation plan</li><li>Updated Q1 revenue projections</li><li>Budget reallocation decision</li><li>Hiring timeline for ops team</li></ul>
-    </div>
-    <div class="prep-section">
-      <h5>Open Action Items</h5>
-      <ul><li>Mike owes updated projections (due Feb 1 — overdue)</li><li>Sarah to finalize vendor shortlist</li></ul>
-    </div>
-  </div>
-</div>
+<div class="callout">
+<p><strong>Key insight:</strong> Most teams spend 5-10 hours/week creating documents manually. We build a system that reduces this to minutes — and the output is more accurate because it pulls from your actual data, not someone's memory.</p>
 </div>
 
-<!-- TEXT & CHAT -->
-<div class="section" id="sec-text-chat">
-<div class="content">
-  <h1>Text & Chat</h1>
-  <p class="lead">Run your business from your phone.</p>
-  <p>Text Your AI Edge like you'd text a friend. No app to open, no dashboard to check. Just text what you need.</p>
-
-  <h2>Supported Platforms</h2>
-  <div class="card-grid">
-    <div class="card"><div class="card-icon">💬</div><h4>iMessage</h4><p>Native iOS integration</p></div>
-    <div class="card"><div class="card-icon">📱</div><h4>SMS</h4><p>Works on any phone</p></div>
-    <div class="card"><div class="card-icon">🟢</div><h4>WhatsApp</h4><p>Global messaging</p></div>
-    <div class="card"><div class="card-icon">✈️</div><h4>Telegram</h4><p>Fast & secure</p></div>
-  </div>
-
-  <h2>See It In Action</h2>
-  <div class="chat-mockup">
-    <div class="chat-header"><span class="online"></span> Your AI Edge</div>
-    <div class="chat-body">
-      <div class="chat-msg user">What's on my calendar today?</div>
-      <div class="chat-msg bot">You have 3 meetings today:<br><br>☕ 10:00 AM — Team standup<br>📋 2:00 PM — Q1 Strategy Review with Sarah & Mike<br>🍷 6:00 PM — Dinner with Alex (Sequoia)<br><br>Want me to prep you for the 2pm?</div>
-      <div class="chat-msg user">Yes, and draft a reply to Sarah's email about the partnership</div>
-      <div class="chat-msg bot">On it. I'll send your prep brief at 1:30 and have the draft ready in 2 min. 👍</div>
-    </div>
-    <div class="chat-input"><div class="pill">Message Your AI Edge...</div></div>
-  </div>
-  <p style="text-align:center;color:var(--gray-400);font-size:.85rem;margin-top:8px">If you can text, you can run your business.</p>
-</div>
+<!-- ════════ CAPABILITY 3: CALENDAR ════════ -->
+<div class="feat-header" id="calendar">
+<div class="feat-icon fi3">📅</div>
+<div class="feat-title">We Build Your Calendar System</div>
+<span class="feat-tag">Managed Service</span>
 </div>
 
-<!-- EXECUTIVE DASHBOARD -->
-<div class="section" id="sec-dashboard">
-<div class="content">
-  <h1>Executive Dashboard</h1>
-  <p class="lead">Your daily command center.</p>
+<p>We deploy a calendar system that manages itself. Smart scheduling, meeting prep briefs, and automatic follow-ups after every call — all configured and managed by us.</p>
 
-  <h2>At a Glance</h2>
-  <div class="dash-grid">
-    <div class="dash-stat"><div class="num">47</div><div class="label">Emails triaged</div></div>
-    <div class="dash-stat"><div class="num">12</div><div class="label">Drafts sent</div></div>
-    <div class="dash-stat"><div class="num">5</div><div class="label">Meetings prepped</div></div>
-    <div class="dash-stat"><div class="num">3</div><div class="label">Follow-ups sent</div></div>
-    <div class="dash-stat"><div class="num">$148K</div><div class="label">MRR tracked</div></div>
-    <div class="dash-stat"><div class="num">2</div><div class="label">Pending approvals</div></div>
-  </div>
+<h3>What we build</h3>
+<ul>
+<li><strong>Smart Scheduling:</strong> Finds times, sends invites, handles the back-and-forth. No more scheduling ping-pong.</li>
+<li><strong>Meeting Prep Briefs:</strong> 30 minutes before every meeting: attendee research, past context, agenda, talking points, and open action items.</li>
+<li><strong>Meeting Notes:</strong> Records, transcribes, and summarizes every call with action items. Searchable forever.</li>
+<li><strong>Auto Follow-Ups:</strong> After every meeting, the system drafts and sends follow-up emails with notes and next steps.</li>
+<li><strong>Conflict Resolution:</strong> Detects and resolves scheduling conflicts before they become problems.</li>
+</ul>
 
-  <h2>Features</h2>
-  <div class="feature-block"><div class="fb-icon">🌅</div><div><h4>Morning Brief</h4><p>Wake up to your priorities, calendar overview, inbox summary, and overnight activity — every morning at 7 AM.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📜</div><div><h4>Activity Feed</h4><p>Everything Edge did, timestamped. Full transparency into every action taken on your behalf.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">✅</div><div><h4>Approval Queue</h4><p>Pending actions waiting for your OK. Approve or reject with one tap.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📊</div><div><h4>Weekly Summary</h4><p>Performance metrics, deals closed, tasks completed, and time saved — delivered every Sunday.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">🚨</div><div><h4>Priority Alerts</h4><p>Urgent items surfaced immediately via your preferred channel. Never miss what matters.</p></div></div>
-
-  <h2>Approval Queue — Example</h2>
-  <div style="border:1px solid var(--gray-200);border-radius:12px;padding:20px;margin:20px 0">
-    <div class="approval-item"><span class="ai-icon">📧</span><span class="ai-text"><strong>Reply to Sarah Chen</strong> — "Thanks Sarah, I've reviewed the partnership terms…"</span><div class="ai-btns"><button class="ai-btn approve">✓ Send</button><button class="ai-btn reject">✕ Edit</button></div></div>
-    <div class="approval-item"><span class="ai-icon">📅</span><span class="ai-text"><strong>Schedule with Mike Torres</strong> — Thursday 3pm, Q1 Budget Review</span><div class="ai-btns"><button class="ai-btn approve">✓ Book</button><button class="ai-btn reject">✕ Change</button></div></div>
-    <div class="approval-item"><span class="ai-icon">📤</span><span class="ai-text"><strong>Follow-up to Alex (Sequoia)</strong> — Post-dinner thank you + next steps</span><div class="ai-btns"><button class="ai-btn approve">✓ Send</button><button class="ai-btn reject">✕ Edit</button></div></div>
-  </div>
-</div>
+<div class="demo-card">
+<div class="demo-card-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span>Meeting Prep Brief — Q1 Strategy Review</span></div>
+<p style="font-size:13px;margin-bottom:12px"><strong>Today, 2:00 PM — 30 min</strong></p>
+<p style="font-size:13px;margin-bottom:8px"><strong>Attendees:</strong> Sarah Chen (VP Ops, last met Jan 15), Mike Torres (Head of Finance, last met Jan 22)</p>
+<p style="font-size:13px;margin-bottom:8px"><strong>Context:</strong> Sarah flagged supply chain delays. Mike proposed reallocating Q1 marketing budget to operations. You asked for updated projections by Feb 1.</p>
+<p style="font-size:13px;margin-bottom:8px"><strong>Talking Points:</strong> Supply chain mitigation plan status, updated Q1 revenue projections, budget reallocation decision, hiring timeline for ops team</p>
+<p style="font-size:13px;margin-bottom:0"><strong>Open Items:</strong> Mike owes updated projections (due Feb 1 — overdue). Sarah to finalize vendor shortlist.</p>
 </div>
 
-<!-- CRM LITE -->
-<div class="section" id="sec-crm">
-<div class="content">
-  <h1>CRM Lite</h1>
-  <p class="lead">Every relationship, remembered.</p>
-  <p>No more switching to a CRM you never update. Edge builds your contact intelligence automatically from every email and meeting.</p>
-
-  <h2>Features</h2>
-  <div class="feature-block"><div class="fb-icon">👤</div><div><h4>Contact Intelligence</h4><p>Auto-enriches contacts from email and calendar. Company, role, LinkedIn, recent interactions — all in one place.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">💰</div><div><h4>Deal Tracking</h4><p>Monitors your pipeline and flags at-risk deals. Know which opportunities need attention before they go cold.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">🔔</div><div><h4>Follow-Up Reminders</h4><p>Never let a lead go cold. Edge tracks every conversation and nudges you (or follows up for you) at the right time.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📚</div><div><h4>Interaction History</h4><p>Every email, meeting, note, and call — in one place. Search across your entire relationship history.</p></div></div>
-
-  <h2>Contact Card — Example</h2>
-  <div class="prep-card">
-    <div class="prep-header"><span class="ph-icon">👤</span><h4>Sarah Chen</h4><span>VP Operations · Acme Corp</span></div>
-    <div class="prep-section"><h5>Relationship Score</h5><p>🟢 Strong — 14 interactions in past 30 days</p></div>
-    <div class="prep-section"><h5>Recent Activity</h5><ul><li>Email: Partnership agreement (Feb 24)</li><li>Meeting: Q1 Strategy Review (Feb 25)</li><li>Email: Vendor shortlist update (Feb 20)</li></ul></div>
-    <div class="prep-section"><h5>Open Items</h5><ul><li>Partnership agreement needs signature by EOD</li><li>Vendor shortlist finalization pending</li></ul></div>
-  </div>
-</div>
+<!-- ════════ CAPABILITY 4: KNOWLEDGE HUB ════════ -->
+<div class="feat-header" id="knowledge">
+<div class="feat-icon fi4">🧠</div>
+<div class="feat-title">We Build Your Knowledge Hub</div>
+<span class="feat-tag">Managed Service</span>
 </div>
 
-<!-- RELATIONSHIP MEMORY -->
-<div class="section" id="sec-memory">
-<div class="content">
-  <h1>Relationship Memory</h1>
-  <p class="lead">Your AI Edge remembers everything.</p>
-  <p>Every preference, every context, every relationship — stored and improving over time. The longer you use Edge, the smarter it gets.</p>
+<p>We connect every data source in your business into one searchable AI brain. Ask any question, get an answer grounded in your real data. We set up the connections, index everything, and manage it ongoing.</p>
 
-  <h2>What Edge Remembers</h2>
-  <div class="feature-block"><div class="fb-icon">✍️</div><div><h4>Your Writing Style</h4><p>How you sign off emails, your preferred tone (formal vs casual), words you use and avoid.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">👥</div><div><h4>Your Key Contacts</h4><p>Who matters most, how you interact with them, preferences for each relationship.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">🎯</div><div><h4>Your Priorities</h4><p>Tracks what you're focused on across weeks and months. Adapts triage, briefs, and alerts accordingly.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📆</div><div><h4>Your Patterns</h4><p>When you like meetings, how you prep, your decision-making style. Edge adapts to how you work.</p></div></div>
+<h3>What we connect</h3>
+<ul>
+<li><strong>Emails:</strong> Every conversation, every thread, every commitment made</li>
+<li><strong>Meetings:</strong> Every call transcribed, summarized, and searchable</li>
+<li><strong>Documents:</strong> Your Drive, Notion, Dropbox — all indexed</li>
+<li><strong>CRM:</strong> Pipeline, contacts, deal history, relationship context</li>
+<li><strong>Calendar:</strong> Patterns, availability, meeting frequency</li>
+<li><strong>Financials:</strong> Revenue, invoices, payment data from Stripe/QuickBooks</li>
+</ul>
 
-  <h3>How It Improves Over Time</h3>
-  <div class="diff-grid">
-    <div class="diff-card"><h4>Week 1</h4><p>Edge learns your voice from sent emails and starts triaging inbox. Drafts need editing.</p></div>
-    <div class="diff-card"><h4>Month 1</h4><p>Drafts sound like you. Meeting preps include context from past conversations. Follow-ups are proactive.</p></div>
-    <div class="diff-card"><h4>Month 3</h4><p>Edge anticipates needs. Suggests meetings before you ask. Flags deals at risk before you notice.</p></div>
-    <div class="diff-card"><h4>Month 6+</h4><p>It's like having a chief of staff who's been with you for years. Fully autonomous, fully trusted.</p></div>
-  </div>
-</div>
-</div>
+<h3>Example queries</h3>
+<ul>
+<li>"What did we agree to in the last call with Acme Corp?"</li>
+<li>"How many deals closed this quarter vs. last?"</li>
+<li>"Who haven't I followed up with in the last 30 days?"</li>
+<li>"Summarize everything happening with the Series B process."</li>
+<li>"What's our runway based on current burn rate?"</li>
+<li>"Pull all commitments I made this week and create a task list."</li>
+</ul>
 
-<!-- CONTENT ENGINE -->
-<div class="section" id="sec-content-engine">
-<div class="content">
-  <h1>Content Engine</h1>
-  <p class="lead">Content that sounds like you, created while you sleep.</p>
-  <p>Edge turns your meetings, emails, and ideas into polished content — LinkedIn posts, newsletters, threads, and more. In your voice.</p>
-
-  <h2>Features</h2>
-  <div class="feature-block"><div class="fb-icon">💼</div><div><h4>Social Drafts</h4><p>LinkedIn posts, X threads, Instagram captions — all generated from your real conversations and ideas.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📧</div><div><h4>Email Campaigns</h4><p>Newsletters, outreach sequences, and drip campaigns. Edge writes and schedules them.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📄</div><div><h4>Blog & Article Drafts</h4><p>Long-form content from brief prompts. Edge researches, outlines, and writes. You review and publish.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📅</div><div><h4>Content Calendar</h4><p>Planned and queued. Edge suggests topics based on your expertise and audience, then creates the content.</p></div></div>
-</div>
+<div class="callout">
+<p><strong>The difference:</strong> ChatGPT knows the internet. The system we build knows <strong>your business</strong>. Every answer is grounded in your actual data — emails, meetings, docs, CRM, financials. No hallucination. No generic answers. Your context, your truth.</p>
 </div>
 
-<!-- ALERTS & NOTIFICATIONS -->
-<div class="section" id="sec-alerts">
-<div class="content">
-  <h1>Alerts & Notifications</h1>
-  <p class="lead">Know what matters, when it matters.</p>
-
-  <h2>Delivery Channels</h2>
-  <div class="card-grid">
-    <div class="card"><div class="card-icon">💬</div><h4>iMessage & SMS</h4><p>Direct to your phone</p></div>
-    <div class="card"><div class="card-icon">💼</div><h4>Slack</h4><p>In your workspace</p></div>
-    <div class="card"><div class="card-icon">✈️</div><h4>Telegram & WhatsApp</h4><p>Cross-platform</p></div>
-    <div class="card"><div class="card-icon">📧</div><h4>Email</h4><p>When nothing else works</p></div>
-  </div>
-
-  <h2>Alert Types</h2>
-  <div class="feature-block"><div class="fb-icon">🔴</div><div><h4>Urgent Emails</h4><p>Emails from key contacts or with time-sensitive content — flagged immediately.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📅</div><div><h4>Meeting Reminders</h4><p>Smart reminders with prep brief attached. 30 min before, not the useless 10-min default.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">💰</div><div><h4>Deal Updates</h4><p>Pipeline changes, at-risk deals, closed-won celebrations. Know your revenue in real time.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">⏰</div><div><h4>Deadline Warnings</h4><p>Upcoming deadlines, overdue action items, commitments you've made. Never drop the ball.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">🌅</div><div><h4>Daily Summaries</h4><p>Morning brief with everything you need. Evening wrap-up with what got done.</p></div></div>
-</div>
+<!-- ════════ CAPABILITY 5: CONTENT ════════ -->
+<div class="feat-header" id="content">
+<div class="feat-icon fi5">📊</div>
+<div class="feat-title">We Build Your Content Engine</div>
+<span class="feat-tag">Managed Service</span>
 </div>
 
-<!-- WHITE-GLOVE: WHAT'S INCLUDED -->
-<div class="section" id="sec-wg-included">
-<div class="content">
-  <h1>White-Glove Service</h1>
-  <p class="lead">Everything in Your AI Edge, plus a dedicated AI operations team managing Edge for you.</p>
-  <p>White-Glove isn't a tier — it's a concierge experience. We configure, monitor, and optimize Edge for your business. You get a named account manager, custom workflows, and priority support.</p>
+<p>We set up performance tracking that pulls directly from your X account and other social channels. We configure insights dashboards, AI-drafted content in your voice, and manage the system so it keeps producing.</p>
 
-  <h2>What's Included</h2>
-  <div class="wg-feature"><div class="wg-icon">🏗️</div><div><h4>Custom Setup & Configuration</h4><p>We configure Edge for your business — tone of voice, email rules, CRM mapping, notification preferences. Done-for-you onboarding.</p></div></div>
-  <div class="wg-feature"><div class="wg-icon">👤</div><div><h4>Named Account Manager</h4><p>A real human who knows your business. Weekly check-ins, proactive suggestions, direct Slack/text line.</p></div></div>
-  <div class="wg-feature"><div class="wg-icon">📈</div><div><h4>Revenue Monitoring</h4><p>Edge tracks your pipeline, flags at-risk deals, and sends weekly revenue reports. Your account manager reviews them with you.</p></div></div>
-  <div class="wg-feature"><div class="wg-icon">🔄</div><div><h4>Follow-Up Engine</h4><p>Custom follow-up sequences for sales, partnerships, and investor relations. We design the flows. Edge executes them.</p></div></div>
-  <div class="wg-feature"><div class="wg-icon">📋</div><div><h4>Weekly Brief</h4><p>Every Monday morning: what happened last week, what's coming this week, what needs your attention. Curated by your account manager.</p></div></div>
-  <div class="wg-feature"><div class="wg-icon">🎯</div><div><h4>Strategic Insights</h4><p>Monthly strategy review: what's working, what's not, opportunities spotted from your data. Your AI + a human brain.</p></div></div>
-</div>
-</div>
+<h3>What we build</h3>
+<ul>
+<li><strong>X Account Insights:</strong> Real-time performance data — impressions, engagement rate, top-performing posts, audience growth.</li>
+<li><strong>Content Performance Audit:</strong> Which topics resonate, which formats work, what time of day gets the most engagement.</li>
+<li><strong>AI Content Drafts:</strong> Based on your best-performing content and real conversations, the system drafts posts, threads, and newsletters — in your voice.</li>
+<li><strong>Content Calendar:</strong> Suggested topics, optimal posting schedule, and queued drafts.</li>
+<li><strong>Competitor Monitoring:</strong> We set up tracking of competitors' social presence and content strategy.</li>
+</ul>
 
-<!-- WHITE-GLOVE: REVENUE MONITORING -->
-<div class="section" id="sec-wg-revenue">
-<div class="content">
-  <h1>Revenue Monitoring</h1>
-  <p class="lead">Your revenue pipeline, watched 24/7.</p>
-  <p>Edge connects to your payment processor, CRM, and email to build a real-time picture of your revenue. Your White-Glove account manager reviews it weekly and flags anything that needs attention.</p>
-
-  <h2>What's Monitored</h2>
-  <div class="feature-block"><div class="fb-icon">💰</div><div><h4>MRR & ARR Tracking</h4><p>Real-time revenue metrics pulled from Stripe, HubSpot, or your CRM. Know your numbers without opening a dashboard.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📉</div><div><h4>Churn Alerts</h4><p>Customers showing disengagement signals — reduced usage, support tickets, missed payments. Flagged before they cancel.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">🔥</div><div><h4>Deal Velocity</h4><p>How fast deals are moving through your pipeline. Stalled deals flagged automatically with suggested next actions.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📊</div><div><h4>Weekly Revenue Report</h4><p>Every Monday: new revenue, churned revenue, pipeline changes, and forecasts. Reviewed by your account manager.</p></div></div>
-</div>
+<!-- ════════ CAPABILITY 6: CRM ════════ -->
+<div class="feat-header" id="crm">
+<div class="feat-icon fi6">💰</div>
+<div class="feat-title">We Build Your Sales System</div>
+<span class="feat-tag">Managed Service</span>
 </div>
 
-<!-- WHITE-GLOVE: FOLLOW-UP ENGINE -->
-<div class="section" id="sec-wg-followup">
-<div class="content">
-  <h1>Follow-Up Engine</h1>
-  <p class="lead">No lead goes cold. No commitment is forgotten.</p>
-  <p>We design custom follow-up sequences for your business — sales, partnerships, investor relations, customer success. Edge executes them automatically. Your account manager optimizes them over time.</p>
+<p>We build a CRM around how you actually sell — not how Salesforce thinks you should. Pipeline tracking, lead scoring, deal velocity, and automated follow-up sequences. All custom-built and managed by us.</p>
 
-  <h2>How It Works</h2>
-  <div class="steps">
-    <div class="step"><div class="step-num">1</div><div class="step-body"><h4>We map your follow-up needs</h4><p>Sales leads, investor intros, partnership discussions, post-meeting action items. Every category gets its own sequence.</p></div></div>
-    <div class="step"><div class="step-num">2</div><div class="step-body"><h4>We design the sequences</h4><p>Timing, tone, escalation rules. Your account manager builds these with you.</p></div></div>
-    <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Edge executes</h4><p>Follow-ups go out automatically. You approve the first one in each sequence, then Edge handles the rest.</p></div></div>
-    <div class="step"><div class="step-num">4</div><div class="step-body"><h4>We optimize</h4><p>Your account manager reviews response rates and adjusts timing, messaging, and targeting.</p></div></div>
-  </div>
-</div>
-</div>
+<h3>What we build</h3>
+<ul>
+<li><strong>Auto-Enriched Contacts:</strong> Every person you email or meet gets a contact card — company, role, LinkedIn, interaction history, relationship score. Built automatically.</li>
+<li><strong>Lead Scoring:</strong> AI scores inbound leads based on your ICP, engagement signals, and historical close patterns.</li>
+<li><strong>Deal Pipeline:</strong> Visual pipeline with stages mapped to your actual sales process. Custom to how you sell.</li>
+<li><strong>Deal Velocity Monitoring:</strong> Track how fast deals move. Stalled deals flagged automatically with suggested re-engagement actions.</li>
+<li><strong>Automated Follow-Ups:</strong> Custom sequences for sales, partnerships, investors, and customer success.</li>
+<li><strong>Revenue Monitoring:</strong> Connects to Stripe/payment processor for real-time MRR, ARR, churn, and revenue tracking.</li>
+</ul>
 
-<!-- WHITE-GLOVE: WEEKLY BRIEF -->
-<div class="section" id="sec-wg-brief">
-<div class="content">
-  <h1>Weekly Brief</h1>
-  <p class="lead">Every Monday. Everything that matters.</p>
-  <p>Your White-Glove weekly brief combines AI analysis with human curation. Your account manager reviews everything Edge tracked and distills it into a 5-minute read.</p>
-
-  <h2>What's In Your Brief</h2>
-  <div class="feature-block"><div class="fb-icon">📊</div><div><h4>Last Week Summary</h4><p>Emails sent, meetings held, deals progressed, tasks completed. What Edge did for you, quantified.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📅</div><div><h4>This Week Preview</h4><p>Key meetings, deadlines, commitments. What's coming and what to prepare for.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">⚠️</div><div><h4>Attention Required</h4><p>Items your account manager flagged — stalled deals, overdue follow-ups, unanswered emails from key contacts.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">💡</div><div><h4>Recommendations</h4><p>Suggestions from your account manager: people to reconnect with, content opportunities, process improvements.</p></div></div>
-</div>
+<div class="demo-card">
+<div class="demo-card-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span>YourEdge — Sales Pipeline</span></div>
+<div class="crm-card"><span class="crm-score hot">92</span><span class="crm-name">Acme Corp</span><span class="crm-deal">$120K · Proposal sent · Decision by Friday</span><span class="crm-status" style="color:var(--green)">● Hot</span></div>
+<div class="crm-card"><span class="crm-score warm">74</span><span class="crm-name">Vertex Labs</span><span class="crm-deal">$45K · Demo completed · Awaiting budget approval</span><span class="crm-status" style="color:var(--orange)">● Warm</span></div>
+<div class="crm-card"><span class="crm-score warm">68</span><span class="crm-name">NovaTech</span><span class="crm-deal">$80K · Intro call done · Follow-up sent</span><span class="crm-status" style="color:var(--orange)">● Warm</span></div>
+<div class="crm-card"><span class="crm-score cold">31</span><span class="crm-name">Zenith Inc</span><span class="crm-deal">$35K · No response in 14 days · Auto-sequence queued</span><span class="crm-status" style="color:var(--red)">● Cold</span></div>
 </div>
 
-<!-- WHITE-GLOVE: STRATEGIC INSIGHTS -->
-<div class="section" id="sec-wg-strategic">
-<div class="content">
-  <h1>Strategic Insights</h1>
-  <p class="lead">AI intelligence, human wisdom.</p>
-  <p>Monthly strategic review combining Edge's data analysis with your account manager's expertise. See patterns you'd miss, surface opportunities hiding in your data, and make better decisions.</p>
+<!-- ════════ PROCESS ════════ -->
+<h2 id="process">Our Process</h2>
+<p>We don't sell tools. We sell operational transformation. Every engagement follows a structured process designed to deliver maximum ROI in minimum time.</p>
 
-  <h2>What You Get</h2>
-  <div class="feature-block"><div class="fb-icon">🔍</div><div><h4>Relationship Analysis</h4><p>Which relationships are strengthening, which are cooling. Who you should reconnect with and why.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">📈</div><div><h4>Pipeline Intelligence</h4><p>Win/loss patterns, average deal velocity, bottleneck identification. Data-driven sales strategy.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">⏱️</div><div><h4>Time Analysis</h4><p>Where your time goes. Meeting load, email patterns, productivity trends. Suggestions for optimization.</p></div></div>
-  <div class="feature-block"><div class="fb-icon">🎯</div><div><h4>Opportunity Spotting</h4><p>Warm intros waiting to happen, follow-ups that could close deals, content gaps you could fill. Your account manager finds them.</p></div></div>
-</div>
-</div>
+<h3>Step 1: Free AI Audit (30 min)</h3>
+<p>We diagnose your bottlenecks. Walk through your workflows step by step. Identify where manual work is costing you the most. Calculate the ROI of fixing it. No commitment — you walk away with a clear picture of what's possible.</p>
 
-<!-- INTEGRATIONS -->
-<div class="section" id="sec-integrations">
-<div class="content">
-  <h1>Integrations</h1>
-  <p class="lead">Edge connects to the tools you already use. One-click setup, real-time sync.</p>
+<h3>Step 2: Workflow Mapping</h3>
+<p>We map every process, every handoff, every bottleneck. You see your business clearly — maybe for the first time. Then we design the system: database schema, automation logic, AI agent roles, integration map, and build plan.</p>
 
-  <div class="int-grid">
-    <div class="int-card"><div class="int-icon">📧</div><div class="int-name">Gmail</div><div class="int-desc">Full inbox access</div></div>
-    <div class="int-card"><div class="int-icon">📅</div><div class="int-name">Google Calendar</div><div class="int-desc">Scheduling & events</div></div>
-    <div class="int-card"><div class="int-icon">📁</div><div class="int-name">Google Drive</div><div class="int-desc">Docs & files</div></div>
-    <div class="int-card"><div class="int-icon">💬</div><div class="int-name">Slack</div><div class="int-desc">Team messaging</div></div>
-    <div class="int-card"><div class="int-icon">📝</div><div class="int-name">Notion</div><div class="int-desc">Docs & wikis</div></div>
-    <div class="int-card"><div class="int-icon">🟠</div><div class="int-name">HubSpot</div><div class="int-desc">CRM & marketing</div></div>
-    <div class="int-card"><div class="int-icon">🛒</div><div class="int-name">Shopify</div><div class="int-desc">E-commerce</div></div>
-    <div class="int-card"><div class="int-icon">📸</div><div class="int-name">Instagram</div><div class="int-desc">Social publishing</div></div>
-    <div class="int-card"><div class="int-icon">🐦</div><div class="int-name">X (Twitter)</div><div class="int-desc">Social publishing</div></div>
-    <div class="int-card"><div class="int-icon">💼</div><div class="int-name">LinkedIn</div><div class="int-desc">Professional network</div></div>
-    <div class="int-card"><div class="int-icon">💳</div><div class="int-name">Stripe</div><div class="int-desc">Payments & revenue</div></div>
-    <div class="int-card"><div class="int-icon">📘</div><div class="int-name">Meta</div><div class="int-desc">Ads & social</div></div>
-    <div class="int-card"><div class="int-icon">☁️</div><div class="int-name">Salesforce</div><div class="int-desc">Enterprise CRM</div></div>
-    <div class="int-card"><div class="int-icon">📹</div><div class="int-name">Zoom</div><div class="int-desc">Video meetings</div></div>
-    <div class="int-card"><div class="int-icon">👥</div><div class="int-name">Teams</div><div class="int-desc">Microsoft collab</div></div>
-    <div class="int-card"><div class="int-icon">📆</div><div class="int-name">Calendly</div><div class="int-desc">Scheduling links</div></div>
-    <div class="int-card"><div class="int-icon">⚡</div><div class="int-name">Zapier</div><div class="int-desc">5000+ app automations</div></div>
-    <div class="int-card"><div class="int-icon">✈️</div><div class="int-name">Telegram</div><div class="int-desc">Messaging</div></div>
-    <div class="int-card"><div class="int-icon">🟢</div><div class="int-name">WhatsApp</div><div class="int-desc">Global messaging</div></div>
-    <div class="int-card"><div class="int-icon">🎨</div><div class="int-name">Canva</div><div class="int-desc">Design & graphics</div></div>
-  </div>
+<h3>Step 3: System Build</h3>
+<p>We build your custom AI system. Database foundations first, then workflow automations, then the intelligence layer (AI agents, knowledge retrieval, decision logic). Everything QA tested for edge cases, bad inputs, and scale.</p>
 
-  <p style="text-align:center;color:var(--gray-400);font-size:.85rem;margin-top:24px">Don't see your tool? <a href="mailto:team@youredge.ai">Request an integration →</a></p>
-</div>
+<h3>Step 4: Launch & Managed Support</h3>
+<p>Go live with full training, documentation, SOPs, and admin guides. Your team knows exactly how to use the system. Then we enter managed support — monitoring, adjusting, expanding. The system gets better every week because we're managing it.</p>
+
+<div class="callout">
+<p><strong>Timeline:</strong> Starter builds go live in 48 hours. Growth builds in 2-3 weeks. Scale builds in 4-8 weeks. We move fast because we've mapped the process — we're not figuring it out as we go.</p>
 </div>
 
-<!-- SECURITY -->
-<div class="section" id="sec-security">
-<div class="content">
-  <h1>Security</h1>
-  <p class="lead">Enterprise-grade security for founder-grade trust.</p>
-  <p>Your data is your competitive advantage. We protect it like it's ours.</p>
+<!-- ════════ PRICING ════════ -->
+<h2 id="pricing">Pricing Tiers</h2>
+<p>Every tier includes workflow mapping, custom build, training, and documentation. Pricing is tied to the value we create — not our hours. No credits. No per-seat fees. No surprises.</p>
 
-  <div class="sec-grid">
-    <div class="sec-card"><div class="sec-icon">🔐</div><div><h4>AES-256 Encryption</h4><p>All data encrypted at rest and in transit. Bank-grade protection for every email, meeting, and document.</p></div></div>
-    <div class="sec-card"><div class="sec-icon">🛡️</div><div><h4>SOC 2 Type II</h4><p>Independently audited security controls. Verified by third-party assessors annually.</p></div></div>
-    <div class="sec-card"><div class="sec-icon">🇪🇺</div><div><h4>GDPR Compliant</h4><p>Full compliance with European data protection. Data portability and deletion on request.</p></div></div>
-    <div class="sec-card"><div class="sec-icon">🚫</div><div><h4>Never Sold or Trained On</h4><p>Your data is never sold, shared, or used to train AI models. Period.</p></div></div>
-    <div class="sec-card"><div class="sec-icon">✅</div><div><h4>Approval Workflows</h4><p>Every action can require your explicit approval. Full control over what Edge sends, schedules, and shares.</p></div></div>
-    <div class="sec-card"><div class="sec-icon">📋</div><div><h4>Audit Logging</h4><p>Complete audit trail of every action Edge takes. Exportable, searchable, and timestamped.</p></div></div>
-  </div>
-</div>
-</div>
+<table class="pricing-table">
+<thead>
+<tr><th>Tier</th><th>Investment</th><th>What's Included</th><th>Timeline</th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="tier-name">Starter</td>
+<td class="tier-price">$500 one-time</td>
+<td>One workflow mapped & automated. Inbox Intelligence or Calendar setup. Basic integrations. Team training. Documentation & SOPs. 14-day email support.</td>
+<td>48 hours</td>
+</tr>
+<tr>
+<td class="tier-name">Growth</td>
+<td class="tier-price">$2,500 setup + $500/mo</td>
+<td>Full workflow audit. All 6 AI systems configured. Custom AI agents. Knowledge Hub. CRM & sales pipeline. Content engine. 30-day optimization sprint. Ongoing managed support.</td>
+<td>2-3 weeks</td>
+</tr>
+<tr>
+<td class="tier-name">Scale</td>
+<td class="tier-price">$5,000 setup + $1,500/mo</td>
+<td>Everything in Growth. Multi-department automation. Dedicated AI agents per function. Custom database architecture. Executive dashboards. Ongoing optimization retainer. Dedicated account manager. SLA & priority support.</td>
+<td>4-8 weeks</td>
+</tr>
+</tbody>
+</table>
 
-<!-- FAQ -->
-<div class="section" id="sec-faq">
-<div class="content">
-  <h1>Frequently Asked Questions</h1>
-  <p class="lead">Everything you need to know about Your AI Edge.</p>
+<h3>Why this pricing model</h3>
+<p>We price on value, not hours. If your system eliminates $150K/year in manual work and costs $2,500 to build, that's a 60x return. We calculate the ROI on every AI audit so you see the math before you commit.</p>
 
-  <div class="faq-list">
-    <div class="faq-item"><div class="faq-q">What exactly is Your AI Edge?</div><div class="faq-a">Your AI Edge is an AI operating system for founders. It manages your inbox, calendar, CRM, content, and operations — autonomously, in your voice. Think of it as a chief of staff that works 24/7.</div></div>
-    <div class="faq-item"><div class="faq-q">How is this different from ChatGPT or other AI tools?</div><div class="faq-a">ChatGPT answers questions. Edge does work. It's connected to your email, calendar, and tools — and takes action autonomously. It drafts emails, books meetings, follows up with leads, and creates content. You approve, Edge executes.</div></div>
-    <div class="faq-item"><div class="faq-q">Is my data safe?</div><div class="faq-a">Yes. AES-256 encryption, SOC 2 Type II compliant, GDPR compliant. Your data is never sold or used for training. Every action can require your approval.</div></div>
-    <div class="faq-item"><div class="faq-q">Can Edge actually send emails on my behalf?</div><div class="faq-a">Yes — but only with your approval. Edge drafts emails in your voice, then waits for your thumbs up. You can also enable auto-send for low-risk responses.</div></div>
-    <div class="faq-item"><div class="faq-q">What tools does Edge integrate with?</div><div class="faq-a">Gmail, Google Calendar, Slack, Notion, HubSpot, Salesforce, Stripe, Zoom, Teams, Calendly, Zapier, and 20+ more. If your tool has an API, we can connect it.</div></div>
-    <div class="faq-item"><div class="faq-q">How long before Edge sounds like me?</div><div class="faq-a">Edge starts learning from day one by analyzing your sent emails. Within a week, drafts are close. Within a month, they're indistinguishable.</div></div>
-    <div class="faq-item"><div class="faq-q">Can I text Edge from my phone?</div><div class="faq-a">Yes. iMessage, SMS, WhatsApp, Telegram, and Slack are all supported. Text Edge like you'd text a friend.</div></div>
-    <div class="faq-item"><div class="faq-q">What's the White-Glove service?</div><div class="faq-a">White-Glove includes everything in Edge plus a dedicated account manager, custom workflow design, weekly briefs, revenue monitoring, and monthly strategic reviews.</div></div>
-    <div class="faq-item"><div class="faq-q">How much does it cost?</div><div class="faq-a">Edge starts at $99/month for founders. White-Glove is $499/month. Both include a 14-day free trial. No credit card required to start.</div></div>
-    <div class="faq-item"><div class="faq-q">What if Edge makes a mistake?</div><div class="faq-a">Approval mode means nothing goes out without your OK. Edge also learns from corrections — every edit makes it smarter.</div></div>
-    <div class="faq-item"><div class="faq-q">Can I use Edge for my team?</div><div class="faq-a">Yes. Team plans are available. Each member gets their own Edge with shared context for the company.</div></div>
-    <div class="faq-item"><div class="faq-q">How do I get started?</div><div class="faq-a">Sign up at youredge.ai, connect your email and calendar, and Edge starts working in under 60 seconds. It's that simple.</div></div>
-  </div>
-</div>
-</div>
+<!-- ════════ INTEGRATIONS ════════ -->
+<h2 id="integrations">Integrations</h2>
+<p>We connect your systems to the tools you already use. We handle all configuration, testing, and maintenance.</p>
+<ul>
+<li><strong>Email:</strong> Gmail, Outlook, Microsoft 365</li>
+<li><strong>Calendar:</strong> Google Calendar, Outlook Calendar, Calendly</li>
+<li><strong>Messaging:</strong> iMessage, SMS, WhatsApp, Telegram, Slack</li>
+<li><strong>CRM:</strong> HubSpot, Salesforce, Pipedrive, custom databases</li>
+<li><strong>Docs:</strong> Google Drive, Notion, Dropbox, OneDrive</li>
+<li><strong>Payments:</strong> Stripe, QuickBooks, Xero</li>
+<li><strong>Social:</strong> X/Twitter, LinkedIn, Instagram, Meta</li>
+<li><strong>Video:</strong> Zoom, Google Meet, Microsoft Teams</li>
+<li><strong>Automation:</strong> Zapier, Make, n8n (5000+ app connections)</li>
+<li><strong>Design:</strong> Canva, Figma</li>
+</ul>
+
+<!-- ════════ SECURITY ════════ -->
+<h2 id="security">Security</h2>
+<ul>
+<li><strong>AES-256 Encryption:</strong> All data encrypted at rest and in transit.</li>
+<li><strong>SOC 2 Type II:</strong> Independently audited security controls.</li>
+<li><strong>GDPR Compliant:</strong> Full European data protection compliance.</li>
+<li><strong>Never Sold or Trained On:</strong> Your data is never sold, shared, or used to train AI models. Period.</li>
+<li><strong>Approval Workflows:</strong> Every action can require your explicit approval. We configure this based on your preferences.</li>
+<li><strong>Audit Logging:</strong> Complete audit trail of every action. Exportable and timestamped.</li>
+</ul>
+
+<!-- ════════ FAQ ════════ -->
+<h2 id="faq">Frequently Asked Questions</h2>
+
+<h3>What exactly is YourEdge?</h3>
+<p>YourEdge is a done-for-you AI systems consultancy. We map your workflows, identify bottlenecks, and build custom AI-powered automation systems that cut process time by 95%. It's not a platform you sign up for — it's a managed service. We build, deploy, and manage the system for you.</p>
+
+<h3>How is this different from buying an AI tool?</h3>
+<p>Tools give you features and wish you luck. We give you transformation. A tool requires you to figure out how to use it. We map your workflows, build the automations, train your team, and manage the system continuously. You get results, not software.</p>
+
+<h3>Can the system send emails without my permission?</h3>
+<p>No. We configure Approval Mode by default. Every draft waits for your explicit approval before sending. We can selectively enable auto-send for low-risk categories (like FYI acknowledgments), but client-facing emails always require your OK.</p>
+
+<h3>How fast can we go live?</h3>
+<p>Starter builds go live in 48 hours. Growth builds in 2-3 weeks. Scale builds in 4-8 weeks. We move fast because our process is structured — we're not guessing.</p>
+
+<h3>What's the ROI?</h3>
+<p>We calculate ROI on every free AI audit. Typical result: the system pays for itself in the first month. Our average client sees a 6x return in Year 1. One logistics client reduced 6 hours/day of manual intake processing to 11 minutes.</p>
+
+<h3>Do I need to be technical?</h3>
+<p>No. That's the entire point of a done-for-you service. We handle everything — mapping, architecture, build, training, optimization. You tell us what's broken. We fix it.</p>
+
+<h3>What tools do you use to build the systems?</h3>
+<p>We're tool-agnostic. Depending on your needs: n8n, Airtable, Supabase, custom APIs, Claude/GPT integrations, and whatever your existing stack requires. We pick the right tools for the job, not the tools we're most comfortable with.</p>
+
+<h3>Can this replace headcount?</h3>
+<p>Yes, in many cases. If your system eliminates $150K/year in manual labor, that's real headcount savings. But more importantly, it frees your existing team to focus on strategy, growth, and high-leverage work instead of repetitive tasks.</p>
+
+<h3>What does "managed" mean?</h3>
+<p>It means we don't disappear after launch. On Growth and Scale tiers, we actively monitor your systems, fix issues, add new automations as your needs evolve, and optimize performance. You have a team behind your system — not just software.</p>
 
 </main>
 </div>
 
 <script>
-// Navigation
-const navItems = document.querySelectorAll('.nav-item');
-const sections = document.querySelectorAll('.section');
-const bcPage = document.getElementById('bc-page');
-
-function navTo(id) {
-  const item = document.querySelector(`[data-section="${id}"]`);
-  if (item) item.click();
-}
-
-navItems.forEach(item => {
-  item.addEventListener('click', () => {
-    const sec = item.dataset.section;
-    navItems.forEach(n => n.classList.remove('active'));
-    item.classList.add('active');
-    sections.forEach(s => s.classList.remove('active'));
-    const target = document.getElementById('sec-' + sec);
-    if (target) { target.classList.add('active'); target.scrollTop = 0; }
-    bcPage.textContent = item.textContent.trim();
-    // Close mobile sidebar
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('overlay').classList.remove('open');
-    window.scrollTo(0, 0);
-  });
+// Sidebar active state
+const sections = document.querySelectorAll('[id]');
+const links = document.querySelectorAll('.sidebar-group a');
+window.addEventListener('scroll', () => {
+let current = '';
+sections.forEach(s => {
+if (window.scrollY >= s.offsetTop - 120) current = s.id;
 });
-
-// Mobile sidebar
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('open');
-}
-
-// FAQ accordion
-document.querySelectorAll('.faq-q').forEach(q => {
-  q.addEventListener('click', () => {
-    q.parentElement.classList.toggle('open');
-  });
+links.forEach(a => {
+a.classList.remove('active');
+if (a.getAttribute('href') === '#' + current) a.classList.add('active');
 });
-
-// Hash navigation
-if (window.location.hash) {
-  const id = window.location.hash.slice(1);
-  const item = document.querySelector(`[data-section="${id}"]`);
-  if (item) item.click();
-}
+});
+// Close sidebar on mobile when clicking a link
+document.querySelectorAll('.sidebar-group a').forEach(a => {
+a.addEventListener('click', () => {
+if (window.innerWidth <= 900) document.querySelector('.sidebar').classList.remove('mobile-open');
+});
+});
 </script>
 </body>
 </html>
