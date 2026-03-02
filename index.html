@@ -744,10 +744,11 @@ currentStep=6;showStep(6);
 }
 // Close modal on Escape
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})
-// Auto-open modal if #book in URL
-if(window.location.hash==='#book'){openModal()}
-// Listen for hash changes
-window.addEventListener('hashchange',()=>{if(window.location.hash==='#book')openModal()})
+// Auto-open modal if #book in URL (check immediately and on load)
+function checkBookHash(){if(window.location.hash==='#book'){openModal()}}
+checkBookHash();
+window.addEventListener('load',checkBookHash);
+window.addEventListener('hashchange',checkBookHash);
 </script>
 </body>
 </html>
