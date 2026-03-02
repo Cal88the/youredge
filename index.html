@@ -744,6 +744,10 @@ currentStep=6;showStep(6);
 }
 // Close modal on Escape
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})
+// Auto-open modal if #book in URL
+if(window.location.hash==='#book'){openModal()}
+// Listen for hash changes
+window.addEventListener('hashchange',()=>{if(window.location.hash==='#book')openModal()})
 </script>
 </body>
 </html>
