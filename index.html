@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YourEdge — Done-for-You AI Systems for Your Business</title>
 <meta name="description" content="YourEdge builds and manages custom AI systems that automate your workflows, cut process time by 95%, and eliminate manual work. Book a free AI audit today.">
-<meta property="og:title" content="YourEdge — Done-for-You AI Systems for Your Business">
+<meta property="og:title" content="YourEdge — AI Intelligence for Your Business">
 <meta property="og:description" content="We build and manage custom AI systems that automate your workflows, cut process time by 95%, and eliminate manual work.">
 <meta property="og:image" content="https://weareyouredge.com/og-image.webp">
 <meta property="og:url" content="https://weareyouredge.com">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="YourEdge — Done-for-You AI Systems for Your Business">
+<meta name="twitter:title" content="YourEdge — AI Intelligence for Your Business">
 <meta name="twitter:description" content="We build and manage custom AI systems that automate your workflows, cut process time by 95%, and eliminate manual work.">
 <meta name="twitter:image" content="https://weareyouredge.com/og-image.webp">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%232563eb'/></svg>">
@@ -58,12 +58,6 @@ nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
 .h-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:100px;border:1px solid var(--bdr-l);background:var(--card);font-size:12px;font-weight:600;color:var(--g);letter-spacing:.5px;margin-bottom:40px;position:relative;z-index:1;animation:fu .8s ease both}
 .h-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero-rotate{position:relative;max-width:900px;width:100%;z-index:1;animation:fu .8s ease .1s both;text-align:center}
-.hero-rotate h1{font-size:clamp(40px,6.5vw,76px);font-weight:900;letter-spacing:-4px;line-height:1.1;margin:0}
-.hero-rotate h1 em{font-style:normal;color:var(--blue)}
-.hero-rotate h1{display:none}
-.hero-rotate h1.active{display:block;animation:heroFadeIn .6s ease both}
-@keyframes heroFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
 .h-sub{font-size:clamp(16px,1.8vw,19px);color:var(--g);max-width:620px;margin-top:28px;line-height:1.7;position:relative;z-index:1;animation:fu .8s ease .2s both}
 .h-ctas{display:flex;gap:16px;margin-top:44px;position:relative;z-index:1;animation:fu .8s ease .3s both;flex-wrap:wrap;justify-content:center}
@@ -202,8 +196,8 @@ footer a{margin-left:0}
 <ul class="nv">
 <li><a href="#capabilities">What We Build</a></li>
 <li><a href="#how">Process</a></li>
-<li><a href="product.html">Docs</a></li>
-<li><a href="audit.html" class="nv-cta">Book Free AI Audit &rarr;</a></li>
+<li><a href="product.html">Learn More</a></li>
+<li><a href="audit.html" class="nv-cta">Book a Call &rarr;</a></li>
 </ul>
 <button class="ham" onclick="this.classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
 <span></span><span></span><span></span>
@@ -213,18 +207,20 @@ footer a{margin-left:0}
 <a href="#capabilities" onclick="closeMobile()">What We Build</a>
 <a href="#how" onclick="closeMobile()">Process</a>
 <a href="product.html">Documentation</a>
-<a href="audit.html" class="nv-cta" onclick="closeMobile()">Book Free AI Audit &rarr;</a>
+<a href="audit.html" class="nv-cta" onclick="closeMobile()">Book a Call &rarr;</a>
 </div>
 
 <!-- ══════════════════ HERO ══════════════════ -->
-<section class="hero">
-<div class="h-badge"><span class="h-badge-dot"></span> Now booking new builds</div>
-<div class="hero-rotate" id="heroRotate"><h1 class="rotate-text active">We build done-for-you AI systems that <em>run your business</em></h1><h1 class="rotate-text">We automate <em>200+ tasks</em> monthly</h1><h1 class="rotate-text">We save you <em>25+ hours</em> a week</h1><h1 class="rotate-text">We cut process time by <em>95%</em></h1></div>
-<p class="h-sub">Not a platform. Not a dashboard. Not a chatbot. We're AI architects who map your workflows, build custom systems, and manage them — cutting process time by 95%.</p>
+<section class="hero" style="position:relative">
+<canvas id="networkBg" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:1"></canvas>
+<div class="h-badge"><span class="h-badge-dot"></span> Q2 2026 — Limited spots</div>
+<h1 class="hero-h" style="font-size:clamp(40px,5.8vw,72px);font-weight:900;letter-spacing:-4px;line-height:1.1;max-width:900px;position:relative;z-index:1;animation:fu .8s ease .1s both">AI systems that cut operational work <em style="font-style:normal;color:var(--blue)">30 – 50%</em></h1>
+<p class="h-sub">We design and deploy AI infrastructure for growing companies — eliminating repetitive workflows, reducing bottlenecks, and freeing your team to focus on growth.</p>
 <div class="h-ctas">
-<a href="audit.html" class="btn-p">Book Your Free AI Audit &rarr;</a>
+<a href="audit.html" class="btn-p">Schedule a Free AI Strategy Call &rarr;</a>
 <a href="#how" class="btn-s">See How It Works</a>
 </div>
+<p style="margin-top:16px;font-size:13px;color:var(--m);position:relative;z-index:1;animation:fu .8s ease .4s both">No obligation. 30 minutes. Actionable roadmap included.</p>
 </section>
 
 <!-- ══════════════════ PROOF BAR ══════════════════ -->
@@ -456,17 +452,194 @@ const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.t
 document.querySelectorAll('.sr').forEach(el=>obs.observe(el));
 function closeMobile(){document.querySelector('.ham').classList.remove('open');document.getElementById('mobileMenu').classList.remove('open')}
 
-/* ══ ROTATING HERO ══ */
-(function(){
-const texts=document.querySelectorAll('.hero-rotate h1');
-let current=0;
-setInterval(()=>{
-texts[current].classList.remove('active');
-current=(current+1)%texts.length;
-texts[current].classList.add('active');
-},3500);
-})();
 
+
+</script>
+<script>
+(function(){
+const c=document.getElementById('networkBg'),ctx=c.getContext('2d');
+let w,h,nodes=[],pulses=[],mouse={x:-9999,y:-9999},t=0;
+let bootRipple={active:true,radius:0,maxRadius:0,speed:4};
+const COUNT=65,BASE_DIST=110,MOUSE_RANGE=300;
+
+function resize(){
+const rect=c.getBoundingClientRect();
+w=c.width=Math.round(rect.width);
+h=c.height=Math.round(rect.height);
+bootRipple.maxRadius=Math.sqrt(w*w+h*h)/2+100;
+if(!nodes.length)init();
+}
+function init(){
+nodes=[];
+for(let i=0;i<COUNT;i++){
+/* Depth layer: 0=far, 1=mid, 2=near */
+const depth=Math.random();
+const speed=.08+depth*.15;
+nodes.push({
+x:Math.random()*w,y:Math.random()*h,
+vx:(Math.random()-.5)*speed,vy:(Math.random()-.5)*speed,
+base:(.8+depth*1.5),r:1.5,glow:0,depth:depth,
+ping:0,nextPing:Math.random()*400+200
+});
+}
+}
+
+const hero=c.parentElement;
+hero.addEventListener('mousemove',function(e){
+const r=c.getBoundingClientRect();
+mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;
+});
+hero.addEventListener('mouseleave',function(){mouse.x=-9999;mouse.y=-9999});
+
+function draw(){
+t++;
+ctx.clearRect(0,0,w,h);
+
+/* Boot-up ripple */
+if(bootRipple.active){
+bootRipple.radius+=bootRipple.speed;
+if(bootRipple.radius>bootRipple.maxRadius)bootRipple.active=false;
+const br=bootRipple.radius;
+const ba=Math.max(0,1-br/bootRipple.maxRadius)*.4;
+ctx.beginPath();ctx.arc(w/2,h/2,br,0,Math.PI*2);
+ctx.strokeStyle='rgba(37,99,235,'+ba+')';
+ctx.lineWidth=2;ctx.stroke();
+const rg=ctx.createRadialGradient(w/2,h/2,Math.max(0,br-40),w/2,h/2,br);
+rg.addColorStop(0,'transparent');
+rg.addColorStop(.5,'rgba(37,99,235,'+ba*.3+')');
+rg.addColorStop(1,'transparent');
+ctx.fillStyle=rg;ctx.fillRect(0,0,w,h);
+}
+
+/* Mouse glow spotlight */
+if(mouse.x>0){
+const mg=ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,MOUSE_RANGE);
+mg.addColorStop(0,'rgba(37,99,235,.08)');
+mg.addColorStop(.5,'rgba(37,99,235,.03)');
+mg.addColorStop(1,'transparent');
+ctx.fillStyle=mg;ctx.fillRect(0,0,w,h);
+}
+
+/* Ambient pings */
+for(let i=0;i<nodes.length;i++){
+const p=nodes[i];
+p.nextPing--;
+if(p.nextPing<=0&&p.glow<.1){
+p.ping=1;
+p.nextPing=Math.random()*600+300;
+}
+if(p.ping>0)p.ping-=.015;
+}
+
+/* Update and draw connections */
+for(let i=0;i<nodes.length;i++){
+const p=nodes[i];
+p.x+=p.vx;p.y+=p.vy;
+if(p.x<-20)p.x=w+20;if(p.x>w+20)p.x=-20;
+if(p.y<-20)p.y=h+20;if(p.y>h+20)p.y=-20;
+
+/* Boot ripple activates nodes it passes over */
+let bootGlow=0;
+if(bootRipple.active){
+const bd=Math.sqrt((p.x-w/2)*(p.x-w/2)+(p.y-h/2)*(p.y-h/2));
+const diff=Math.abs(bd-bootRipple.radius);
+if(diff<60)bootGlow=Math.max(0,1-diff/60)*.7;
+}
+
+const pmd=Math.sqrt((mouse.x-p.x)*(mouse.x-p.x)+(mouse.y-p.y)*(mouse.y-p.y));
+const pNear=Math.max(0,1-pmd/MOUSE_RANGE);
+const targetGlow=Math.max(pNear,bootGlow,p.ping*.5)-.01;
+p.glow+=(targetGlow-p.glow)*.08;
+if(p.glow<0)p.glow=0;
+p.r+=(p.base*(1+p.glow*2.5)-p.r)*.1;
+
+for(let j=i+1;j<nodes.length;j++){
+const q=nodes[j];
+const dx=p.x-q.x,dy=p.y-q.y,dist=Math.sqrt(dx*dx+dy*dy);
+const mx=(p.x+q.x)/2,my=(p.y+q.y)/2;
+const md=Math.sqrt((mouse.x-mx)*(mouse.x-mx)+(mouse.y-my)*(mouse.y-my));
+const near=Math.max(0,1-md/MOUSE_RANGE);
+
+/* Boot ripple also lights up connections */
+let lineBoost=0;
+if(bootRipple.active){
+const bd=Math.sqrt((mx-w/2)*(mx-w/2)+(my-h/2)*(my-h/2));
+const diff=Math.abs(bd-bootRipple.radius);
+if(diff<80)lineBoost=Math.max(0,1-diff/80)*.5;
+}
+
+const active=Math.max(near,lineBoost);
+const maxD=BASE_DIST+active*100;
+
+if(dist<maxD){
+const fade=1-dist/maxD;
+const a=active>.1?fade*(.12+active*.45):fade*.08;
+const lw=active>.1?.4+active*1.2:.3;
+
+ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+ctx.strokeStyle='rgba(37,99,235,'+a+')';
+ctx.lineWidth=lw;ctx.stroke();
+
+if(near>.3&&Math.random()<.003){
+pulses.push({x:p.x,y:p.y,tx:q.x,ty:q.y,p:0,spd:.008+Math.random()*.012,a:near});
+}
+}
+}
+}
+
+/* Draw data pulses */
+for(let i=pulses.length-1;i>=0;i--){
+const d=pulses[i];
+d.p+=d.spd;
+if(d.p>1){pulses.splice(i,1);continue}
+const px=d.x+(d.tx-d.x)*d.p;
+const py=d.y+(d.ty-d.y)*d.p;
+const pa=d.a*Math.sin(d.p*Math.PI)*.9;
+ctx.beginPath();ctx.arc(px,py,2,0,Math.PI*2);
+ctx.fillStyle='rgba(59,130,246,'+pa+')';ctx.fill();
+const pg=ctx.createRadialGradient(px,py,0,px,py,8);
+pg.addColorStop(0,'rgba(59,130,246,'+pa*.5+')');
+pg.addColorStop(1,'transparent');
+ctx.fillStyle=pg;ctx.fillRect(px-8,py-8,16,16);
+}
+
+/* Draw nodes on top */
+for(let i=0;i<nodes.length;i++){
+const p=nodes[i];
+const totalGlow=Math.min(1,p.glow+p.ping*.4);
+
+/* Ambient ping ring */
+if(p.ping>.05){
+ctx.beginPath();ctx.arc(p.x,p.y,p.base*3+(1-p.ping)*15,0,Math.PI*2);
+ctx.strokeStyle='rgba(37,99,235,'+p.ping*.3+')';
+ctx.lineWidth=1;ctx.stroke();
+}
+
+/* Outer glow */
+if(totalGlow>.05){
+const ng=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*6);
+ng.addColorStop(0,'rgba(37,99,235,'+totalGlow*.25+')');
+ng.addColorStop(1,'transparent');
+ctx.fillStyle=ng;ctx.fillRect(p.x-p.r*6,p.y-p.r*6,p.r*12,p.r*12);
+}
+
+/* Core — depth affects base opacity */
+ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+const baseAlpha=.12+p.depth*.12;
+const brightness=baseAlpha+totalGlow*.7;
+ctx.fillStyle='rgba(37,99,235,'+brightness+')';ctx.fill();
+
+/* Bright center */
+if(totalGlow>.1){
+ctx.beginPath();ctx.arc(p.x,p.y,p.r*.5,0,Math.PI*2);
+ctx.fillStyle='rgba(147,197,253,'+totalGlow*.6+')';ctx.fill();
+}
+}
+
+requestAnimationFrame(draw);
+}
+window.addEventListener('resize',resize);resize();draw();
+})();
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
