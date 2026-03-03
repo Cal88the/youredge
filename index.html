@@ -156,6 +156,60 @@ footer .fr{font-size:12px;color:var(--m)}
 footer a{color:var(--m);text-decoration:none;transition:.2s;margin-left:20px}
 footer a:hover{color:var(--g)}
 
+/* ══ CASE STUDIES ══ */
+.case-studies{background:var(--surface);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
+.cs-grid{display:flex;flex-direction:column;gap:24px}
+.cs-card{display:grid;grid-template-columns:1fr 1fr;background:var(--card);border:1px solid var(--bdr);border-radius:20px;overflow:hidden;cursor:pointer;transition:.3s}
+.cs-card:hover{border-color:var(--bdr-h);transform:translateY(-3px)}
+.cs-img{position:relative;min-height:280px;overflow:hidden}
+.cs-img.g1{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)}
+.cs-img.g2{background:linear-gradient(135deg,#1a2e1a,#1e3a2f,#0f4f3a)}
+.cs-img.g3{background:linear-gradient(135deg,#2e1a1a,#3e2116,#4f2f0f)}
+.cs-badge{position:absolute;bottom:20px;left:20px;background:var(--w);color:#000;padding:16px 20px;border-radius:12px}
+.cs-badge .cs-badge-val{font-size:28px;font-weight:900;letter-spacing:-1px;line-height:1}
+.cs-badge .cs-badge-lbl{font-size:11px;font-weight:600;color:var(--m);margin-top:2px}
+.cs-info{padding:32px 28px;display:flex;flex-direction:column;justify-content:center}
+.cs-info h3{font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.cs-logo{width:36px;height:36px;border-radius:50%;object-fit:contain;background:#fff;padding:4px;flex-shrink:0}
+.cs-industry{font-size:12px;font-weight:600;color:var(--m);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.cs-quote{font-size:14px;color:var(--g);line-height:1.65;font-style:italic;padding:16px;border-left:3px solid var(--blue);background:rgba(37,99,235,.05);border-radius:0 8px 8px 0;margin-bottom:20px}
+.cs-bullets{list-style:none;display:flex;flex-direction:column;gap:8px}
+.cs-bullets li{font-size:13px;color:var(--g);display:flex;align-items:center;gap:8px}
+.cs-bullets li::before{content:'✓';color:var(--green);font-weight:700;font-size:14px}
+.cs-view{font-size:12px;font-weight:700;color:var(--blue);margin-top:16px;display:inline-flex;align-items:center;gap:4px}
+
+/* Case Study Modal */
+.cs-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:200;display:none;justify-content:center;align-items:flex-start;padding:40px 24px;overflow-y:auto}
+.cs-overlay.open{display:flex}
+.cs-modal{background:var(--card);border:1px solid var(--bdr-l);border-radius:24px;max-width:900px;width:100%;position:relative;overflow:hidden;animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.cs-modal-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid var(--bdr);color:var(--w);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;transition:.2s}
+.cs-modal-close:hover{background:rgba(0,0,0,.9);border-color:var(--bdr-h)}
+.cs-modal-hero{position:relative;min-height:220px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;padding:20px 40px}
+.cs-modal-hero .cs-modal-metric{font-size:clamp(40px,6vw,64px);font-weight:900;letter-spacing:-3px;color:var(--w);line-height:1;text-shadow:0 2px 12px rgba(0,0,0,.7)}
+.cs-modal-hero .cs-modal-metric-lbl{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:8px;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+.cs-modal-body{padding:36px 40px 40px}
+.cs-modal-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.cs-modal-header h2{font-size:24px;font-weight:800;letter-spacing:-.5px}
+.cs-modal-header span{font-size:12px;font-weight:600;color:var(--m);text-transform:uppercase;letter-spacing:1px}
+.cs-modal-quote{font-size:15px;color:var(--g);line-height:1.7;font-style:italic;padding:20px 24px;border-left:3px solid var(--blue);background:rgba(37,99,235,.05);border-radius:0 12px 12px 0;margin-bottom:32px}
+.cs-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:32px}
+.cs-detail-grid h4{font-size:15px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.cs-detail-grid p{font-size:14px;color:var(--g);line-height:1.7}
+.cs-results-title{font-size:16px;font-weight:800;margin-bottom:16px}
+.cs-results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+.cs-result-card{background:var(--bg);border:1px solid var(--bdr);border-radius:12px;padding:20px;text-align:center}
+.cs-result-card .val{font-size:24px;font-weight:900;letter-spacing:-1px;color:var(--w)}
+.cs-result-card .lbl{font-size:11px;color:var(--m);margin-top:4px;font-weight:600}
+.cs-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:32px}
+.cs-meta-grid h4{font-size:15px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.cs-meta-grid .meta-val{font-size:22px;font-weight:900;letter-spacing:-.5px}
+.cs-meta-grid .meta-lbl{font-size:12px;color:var(--m);margin-top:2px}
+.cs-improvements-title{font-size:16px;font-weight:800;margin-bottom:16px}
+.cs-improvements{display:grid;grid-template-columns:1fr 1fr;gap:10px;list-style:none}
+.cs-improvements li{font-size:13px;color:var(--g);display:flex;align-items:center;gap:8px;line-height:1.5}
+.cs-improvements li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+
 /* ══ SCROLL REVEAL ══ */
 .sr{opacity:0;transform:translateY(30px);transition:.7s ease}
 .sr.vis{opacity:1;transform:translateY(0)}
@@ -171,6 +225,12 @@ nav{padding:0 20px}
 .h-ctas .btn-p,.h-ctas .btn-s{width:100%;justify-content:center}
 .ct{padding:0 20px}
 section{padding:72px 0}
+.cs-card{grid-template-columns:1fr}.cs-img{min-height:200px}
+.cs-info{padding:24px 20px}
+.cs-overlay{padding:20px 12px}
+.cs-modal-body{padding:24px 20px}
+.cs-detail-grid,.cs-meta-grid,.cs-improvements{grid-template-columns:1fr}
+.cs-results-grid{grid-template-columns:1fr 1fr}
 .prob-grid,.cap-grid,.test-grid{grid-template-columns:1fr}
 .steps{grid-template-columns:1fr}
 .step-arrow{display:none}
@@ -223,13 +283,261 @@ footer a{margin-left:0}
 <p style="margin-top:16px;font-size:13px;color:var(--m);position:relative;z-index:1;animation:fu .8s ease .4s both">No obligation. 30 minutes. Actionable roadmap included.</p>
 </section>
 
-<!-- ══════════════════ PROOF BAR ══════════════════ -->
-<div class="proof">
-<div class="proof-row">
-<div class="proof-stat"><div class="val">95<span>%</span></div><div class="lbl">Process Time Cut</div></div>
-<div class="proof-stat"><div class="val">50<span>+</span></div><div class="lbl">Systems Built</div></div>
-<div class="proof-stat"><div class="val">6<span>x</span></div><div class="lbl">Avg. Year 1 ROI</div></div>
-<div class="proof-stat"><div class="val">48<span>hr</span></div><div class="lbl">First System Live</div></div>
+
+<!-- ══════════════════ CASE STUDIES ══════════════════ -->
+<section class="case-studies">
+<div class="ct">
+<div class="sl sr" style="text-align:center">CLIENT SUCCESS STORIES</div>
+<h2 class="sh sr" style="text-align:center;margin-left:auto;margin-right:auto">What happens when we<br>build your system.</h2>
+<p class="ss sr" style="text-align:center;margin-left:auto;margin-right:auto">Real outcomes from systems we've built and manage for clients.</p>
+
+<div class="cs-grid">
+
+<!-- Card 1: CSR Media Group -->
+<div class="cs-card sr" onclick="openCS(0)">
+<div class="cs-img g1" style="background:url('csr-influencers.jpg') center/cover">
+<div class="cs-badge">
+<div class="cs-badge-val">40%</div>
+<div class="cs-badge-lbl">Operational time saved</div>
+</div>
+</div>
+<div class="cs-info">
+<div class="cs-industry">Influencer Marketing Agency</div>
+<h3><img src="csr-icon.png" alt="CSR" class="cs-logo">CSR Media Group</h3>
+<div class="cs-quote">"YourEdge mapped every bottleneck in our workflow and built a system that eliminated 40 hours of manual work per week. We didn't lift a finger."</div>
+<ul class="cs-bullets">
+<li>40 hrs/week of manual work eliminated</li>
+<li>Campaign reporting fully automated</li>
+<li>98% team satisfaction score</li>
+</ul>
+<span class="cs-view">View full case study &rarr;</span>
+</div>
+</div>
+
+<!-- Card 2: Fairway Co -->
+<div class="cs-card sr" onclick="openCS(1)">
+<div class="cs-img" style="background:#fff url('fairway.png') center/70% no-repeat">
+<div class="cs-badge">
+<div class="cs-badge-val">35%</div>
+<div class="cs-badge-lbl">Increase in efficiency</div>
+</div>
+</div>
+<div class="cs-info">
+<div class="cs-industry">Golf & E-commerce</div>
+<h3><img src="fairway.png" alt="Fairway Co" class="cs-logo" style="width:48px;height:48px;padding:2px">Fairway Co</h3>
+<div class="cs-quote">"We were drowning in manual inventory updates and order tracking. YourEdge built a unified system that runs itself — our team just focuses on growth now."</div>
+<ul class="cs-bullets">
+<li>35 hrs/week of manual work eliminated</li>
+<li>Order processing fully automated</li>
+<li>97% customer satisfaction rate</li>
+</ul>
+<span class="cs-view">View full case study &rarr;</span>
+</div>
+</div>
+
+<!-- Card 3: Birdie Juice -->
+<div class="cs-card sr" onclick="openCS(2)">
+<div class="cs-img g3" style="background:url('birdie-juice.jpg') center/cover">
+<div class="cs-badge">
+<div class="cs-badge-val">45%</div>
+<div class="cs-badge-lbl">Reduction in overhead</div>
+</div>
+</div>
+<div class="cs-info">
+<div class="cs-industry">Beverage Brand</div>
+<h3><img src="birdie-logo.jpg" alt="Birdie Juice" class="cs-logo">Birdie Juice</h3>
+<div class="cs-quote">"Distribution, compliance, inventory — it was all manual. YourEdge automated everything and cut our operational overhead nearly in half."</div>
+<ul class="cs-bullets">
+<li>45 hrs/week of manual work eliminated</li>
+<li>99% compliance accuracy rate</li>
+<li>Distribution fully automated</li>
+</ul>
+<span class="cs-view">View full case study &rarr;</span>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- Case Study Modals -->
+<div class="cs-overlay" id="csOverlay0" onclick="if(event.target===this)closeCS()">
+<div class="cs-modal">
+<button class="cs-modal-close" onclick="closeCS()">&times;</button>
+<div class="cs-modal-hero g1" style="background:url('csr-hero.jpg') center 70%/cover">
+<div class="cs-modal-metric">40%</div>
+<div class="cs-modal-metric-lbl">Operational Time Saved</div>
+</div>
+<div class="cs-modal-body">
+<div class="cs-modal-header">
+<img src="csr-icon.png" alt="CSR" class="cs-logo">
+<h2>CSR Media Group</h2>
+<span>Influencer Marketing Agency</span>
+</div>
+<div class="cs-modal-quote">"YourEdge mapped every bottleneck in our workflow and built a system that eliminated 40 hours of manual work per week. We didn't lift a finger — they handled everything from design to deployment to ongoing management."</div>
+
+<div class="cs-detail-grid">
+<div>
+<h4>🔴 The Challenge</h4>
+<p>CSR Media Group was running campaigns across multiple channels with manual coordination between teams. Reporting took days to compile, content scheduling was error-prone, and team members spent more time on admin than creative work.</p>
+</div>
+<div>
+<h4>🔵 Our Solution</h4>
+<p>We built a centralized AI-powered dashboard that automates campaign coordination, generates real-time performance reports, and handles intelligent content scheduling — all integrated with their existing tools.</p>
+</div>
+</div>
+
+<div class="cs-results-title">Key Results</div>
+<div class="cs-results-grid">
+<div class="cs-result-card"><div class="val">40 hrs</div><div class="lbl">Weekly time saved</div></div>
+<div class="cs-result-card"><div class="val">40%</div><div class="lbl">Efficiency increase</div></div>
+<div class="cs-result-card"><div class="val">98%</div><div class="lbl">Team satisfaction</div></div>
+<div class="cs-result-card"><div class="val">280%</div><div class="lbl">First-year ROI</div></div>
+</div>
+
+<div class="cs-meta-grid">
+<div>
+<h4>⏱ Timeline</h4>
+<div class="meta-val">3 weeks</div>
+<div class="meta-lbl">From kickoff to live system</div>
+</div>
+<div>
+<h4>👥 Team</h4>
+<div class="meta-val">2 specialists</div>
+<div class="meta-lbl">Dedicated to the build</div>
+</div>
+</div>
+
+<div class="cs-improvements-title">Specific Improvements</div>
+<ul class="cs-improvements">
+<li>Automated campaign reporting across all channels</li>
+<li>AI-powered content scheduling and publishing</li>
+<li>Real-time performance dashboards</li>
+<li>Automated client update emails</li>
+<li>Cross-team workflow coordination</li>
+<li>Intelligent resource allocation</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="cs-overlay" id="csOverlay1" onclick="if(event.target===this)closeCS()">
+<div class="cs-modal">
+<button class="cs-modal-close" onclick="closeCS()">&times;</button>
+<div class="cs-modal-hero" style="background:url('fairway-hero.png') center 80%/cover no-repeat">
+<div class="cs-modal-metric">35%</div>
+<div class="cs-modal-metric-lbl">Increase in Efficiency</div>
+</div>
+<div class="cs-modal-body">
+<div class="cs-modal-header">
+<img src="fairway.png" alt="Fairway Co" class="cs-logo" style="width:48px;height:48px;padding:2px">
+<h2>Fairway Co</h2>
+<span>Golf & E-commerce</span>
+</div>
+<div class="cs-modal-quote">"We were drowning in manual inventory updates and order tracking. YourEdge built a unified system that runs itself — our team just focuses on growth now. The ROI was clear within the first month."</div>
+
+<div class="cs-detail-grid">
+<div>
+<h4>🔴 The Challenge</h4>
+<p>Fairway Co was manually tracking inventory across multiple warehouses, processing orders through fragmented systems, and losing hours every day to customer service routing. Growth was stalling because operations couldn't keep up.</p>
+</div>
+<div>
+<h4>🔵 Our Solution</h4>
+<p>We deployed an AI-powered inventory management system with automated order processing, smart customer service routing, and real-time stock synchronization across all sales channels and warehouses.</p>
+</div>
+</div>
+
+<div class="cs-results-title">Key Results</div>
+<div class="cs-results-grid">
+<div class="cs-result-card"><div class="val">35 hrs</div><div class="lbl">Weekly time saved</div></div>
+<div class="cs-result-card"><div class="val">35%</div><div class="lbl">Efficiency increase</div></div>
+<div class="cs-result-card"><div class="val">97%</div><div class="lbl">Customer satisfaction</div></div>
+<div class="cs-result-card"><div class="val">310%</div><div class="lbl">First-year ROI</div></div>
+</div>
+
+<div class="cs-meta-grid">
+<div>
+<h4>⏱ Timeline</h4>
+<div class="meta-val">4 weeks</div>
+<div class="meta-lbl">From kickoff to live system</div>
+</div>
+<div>
+<h4>👥 Team</h4>
+<div class="meta-val">2 specialists</div>
+<div class="meta-lbl">Dedicated to the build</div>
+</div>
+</div>
+
+<div class="cs-improvements-title">Specific Improvements</div>
+<ul class="cs-improvements">
+<li>Real-time inventory sync across warehouses</li>
+<li>Automated order processing pipeline</li>
+<li>Smart customer service ticket routing</li>
+<li>Demand forecasting and auto-reordering</li>
+<li>Unified sales channel dashboard</li>
+<li>Automated shipping and tracking notifications</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="cs-overlay" id="csOverlay2" onclick="if(event.target===this)closeCS()">
+<div class="cs-modal">
+<button class="cs-modal-close" onclick="closeCS()">&times;</button>
+<div class="cs-modal-hero g3" style="background:url('birdie-juice.jpg') center 70%/cover">
+<div class="cs-modal-metric">45%</div>
+<div class="cs-modal-metric-lbl">Reduction in Overhead</div>
+</div>
+<div class="cs-modal-body">
+<div class="cs-modal-header">
+<img src="birdie-logo.jpg" alt="Birdie Juice" class="cs-logo">
+<h2>Birdie Juice</h2>
+<span>Beverage Brand</span>
+</div>
+<div class="cs-modal-quote">"Distribution, compliance, inventory — it was all manual and eating up our team's time. YourEdge automated everything and cut our operational overhead nearly in half. We finally have time to focus on the brand."</div>
+
+<div class="cs-detail-grid">
+<div>
+<h4>🔴 The Challenge</h4>
+<p>Birdie Juice was manually managing distribution logistics, struggling to keep up with compliance requirements across states, and running disconnected sales and inventory systems that created costly errors.</p>
+</div>
+<div>
+<h4>🔵 Our Solution</h4>
+<p>We built an automated distribution management platform with AI-powered compliance monitoring, unified sales and inventory tracking, and predictive analytics for production planning.</p>
+</div>
+</div>
+
+<div class="cs-results-title">Key Results</div>
+<div class="cs-results-grid">
+<div class="cs-result-card"><div class="val">45 hrs</div><div class="lbl">Weekly time saved</div></div>
+<div class="cs-result-card"><div class="val">45%</div><div class="lbl">Overhead reduction</div></div>
+<div class="cs-result-card"><div class="val">99%</div><div class="lbl">Compliance accuracy</div></div>
+<div class="cs-result-card"><div class="val">250%</div><div class="lbl">First-year ROI</div></div>
+</div>
+
+<div class="cs-meta-grid">
+<div>
+<h4>⏱ Timeline</h4>
+<div class="meta-val">5 weeks</div>
+<div class="meta-lbl">From kickoff to live system</div>
+</div>
+<div>
+<h4>👥 Team</h4>
+<div class="meta-val">3 specialists</div>
+<div class="meta-lbl">Dedicated to the build</div>
+</div>
+</div>
+
+<div class="cs-improvements-title">Specific Improvements</div>
+<ul class="cs-improvements">
+<li>Automated distribution route optimization</li>
+<li>AI-powered compliance monitoring and alerts</li>
+<li>Unified sales and inventory platform</li>
+<li>Predictive production planning</li>
+<li>Automated retailer order processing</li>
+<li>Real-time margin and cost analytics</li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -345,50 +653,6 @@ footer a{margin-left:0}
 </div>
 </section>
 
-<!-- ══════════════════ RESULTS SHOWCASE ══════════════════ -->
-<section id="results">
-<div class="ct">
-<div class="sl sr" style="text-align:center">REAL RESULTS</div>
-<h2 class="sh sr" style="text-align:center;margin-left:auto;margin-right:auto">What happens when we<br>build your system.</h2>
-<p class="ss sr" style="text-align:center;margin-left:auto;margin-right:auto">These are real outcomes from systems we've built and manage for clients.</p>
-<div class="results-box sr">
-<div class="results-header">
-<h3>Client Results Snapshot</h3>
-<p>Across industries — logistics, SaaS, consulting, real estate</p>
-</div>
-<div class="results-body">
-<div class="result-row">
-<div class="result-metric">97%</div>
-<div class="result-detail">
-<h4>Intake processing time eliminated</h4>
-<p>Logistics company went from 6 hours/day of manual intake to 11 minutes. We built and manage the entire system.</p>
-</div>
-</div>
-<div class="result-row">
-<div class="result-metric">40 hrs</div>
-<div class="result-detail">
-<h4>Weekly manual work eliminated</h4>
-<p>SaaS founder replaced 3 tools and 40 hours/week of manual work with one custom system we built in 2 weeks.</p>
-</div>
-</div>
-<div class="result-row">
-<div class="result-metric">$150K</div>
-<div class="result-detail">
-<h4>Annual labor cost saved</h4>
-<p>Consulting firm automated reporting, follow-ups, and scheduling. System paid for itself in the first month.</p>
-</div>
-</div>
-<div class="result-row">
-<div class="result-metric">18%</div>
-<div class="result-detail">
-<h4>Win rate increase</h4>
-<p>Sales team saw an 18% jump in close rate after we automated lead scoring and follow-up sequences.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
 
 <!-- ══════════════════ TESTIMONIALS ══════════════════ -->
 <section>
@@ -452,8 +716,16 @@ const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.t
 document.querySelectorAll('.sr').forEach(el=>obs.observe(el));
 function closeMobile(){document.querySelector('.ham').classList.remove('open');document.getElementById('mobileMenu').classList.remove('open')}
 
-
-
+/* Case Study Lightbox */
+function openCS(i){
+document.getElementById('csOverlay'+i).classList.add('open');
+document.body.style.overflow='hidden';
+}
+function closeCS(){
+document.querySelectorAll('.cs-overlay').forEach(o=>o.classList.remove('open'));
+document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeCS()});
 </script>
 <script>
 (function(){
