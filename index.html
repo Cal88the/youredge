@@ -30,6 +30,7 @@
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--blue);color:var(--w)}
+.mob-br{display:none}
 
 /* ══ NAV ══ */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.04);transition:.3s}
@@ -225,8 +226,12 @@ footer a:hover{color:var(--g)}
 nav{padding:0 20px}
 .nv{display:none}
 .ham{display:flex}
-.hero{padding:100px 20px 60px}
-.hero h1{letter-spacing:-2px}
+.hero{padding:110px 20px 60px;min-height:auto}
+.hero h1{letter-spacing:-2px!important;font-size:36px!important;line-height:1.2!important}
+.mob-br{display:block}
+.h-badge{margin-bottom:28px}
+.h-sub{margin-top:24px;font-size:15px;line-height:1.6}
+.h-ctas{margin-top:36px}
 .h-ctas{flex-direction:column;align-items:center;width:100%}
 .h-ctas .btn-p,.h-ctas .btn-s{width:100%;justify-content:center}
 .ct{padding:0 20px}
@@ -238,7 +243,13 @@ section{padding:72px 0}
 .cs-detail-grid,.cs-meta-grid,.cs-improvements{grid-template-columns:1fr}
 .cs-results-grid{grid-template-columns:1fr 1fr}
 .prob-grid,.cap-grid,.test-grid{grid-template-columns:1fr}
-.steps{grid-template-columns:1fr 1fr;gap:16px}
+.steps{grid-template-columns:1fr;gap:16px}
+.cs-badge{padding:10px 14px;border-radius:8px}
+.cs-badge .cs-badge-val{font-size:18px}
+.cs-badge .cs-badge-lbl{font-size:9px}
+.cs-card:nth-child(2) .cs-badge{background:transparent;padding:0}
+.cs-card:nth-child(2) .cs-badge .cs-badge-val{color:#111}
+.cs-card:nth-child(2) .cs-badge .cs-badge-lbl{color:#444}
 .steps::before{display:none}
 .step-arrow{display:none}
 .proof-row{gap:24px}
@@ -281,7 +292,7 @@ footer a{margin-left:0}
 <section class="hero" style="position:relative">
 <canvas id="networkBg" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:1"></canvas>
 <div class="h-badge"><span class="h-badge-dot"></span> Q2 2026 — Limited spots</div>
-<h1 class="hero-h" style="font-size:clamp(40px,5.8vw,72px);font-weight:900;letter-spacing:-4px;line-height:1.1;max-width:900px;position:relative;z-index:1;animation:fu .8s ease .1s both">AI systems that cut operational work <em style="font-style:normal;color:var(--blue)">30 – 50%</em></h1>
+<h1 class="hero-h" style="font-size:clamp(40px,5.8vw,72px);font-weight:900;letter-spacing:-4px;line-height:1.1;max-width:900px;position:relative;z-index:1;animation:fu .8s ease .1s both">AI systems that cut operational work <br class="mob-br"><em style="font-style:normal;color:var(--blue)">30 – 50%</em></h1>
 <p class="h-sub">We design and deploy AI infrastructure for growing companies — eliminating repetitive workflows, reducing bottlenecks, and freeing your team to focus on growth.</p>
 <div class="h-ctas">
 <a href="audit.html" class="btn-p">Schedule a Free AI Strategy Call &rarr;</a>
