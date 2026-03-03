@@ -14,7 +14,7 @@
 <meta name="twitter:title" content="YourEdge — AI Intelligence for Your Business">
 <meta name="twitter:description" content="We build and manage custom AI systems that automate your workflows, cut process time by 95%, and eliminate manual work.">
 <meta name="twitter:image" content="https://weareyouredge.com/og-image.png">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%232563eb'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='g'><stop offset='0%25' stop-color='%23fff'/><stop offset='40%25' stop-color='%23bfdbfe'/><stop offset='100%25' stop-color='%232563eb'/></radialGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23g)'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -151,7 +151,7 @@ section{padding:100px 0}
 
 
 /* ══ CTA ══ */
-.final-cta{padding:120px 48px;text-align:center;position:relative}
+.final-cta{padding:120px 48px 48px;text-align:center;position:relative}
 .final-cta::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(circle,var(--blue-g) 0%,transparent 70%);pointer-events:none;opacity:.4}
 .final-cta h2{font-size:clamp(34px,5vw,52px);font-weight:900;letter-spacing:-3px;line-height:1.05;margin-bottom:20px;position:relative;z-index:1}
 .final-cta p{font-size:17px;color:var(--g);max-width:460px;margin:0 auto 40px;line-height:1.7;position:relative;z-index:1}
@@ -264,6 +264,16 @@ footer a{margin-left:0}
 @media(max-width:480px){
 .proof-row{flex-direction:column;gap:20px}
 }
+
+/* Assembly line */
+/* Footer orb */
+footer{position:relative}
+.agent-orb{position:absolute;top:-5px;left:0;width:10px;height:10px;border-radius:50%;background:var(--blue);opacity:0;box-shadow:0 0 8px var(--blue),0 0 20px rgba(37,99,235,.4);transition:opacity .3s,transform .6s ease;pointer-events:none;transform:scale(.3)}
+.agent-orb.awake{transform:scale(1)}
+.agent-orb::before{content:'';position:absolute;inset:2px;border-radius:50%;background:rgba(255,255,255,.6);animation:orbPulse 2s ease-in-out infinite}
+.agent-orb::after{content:'';position:absolute;inset:-4px;border-radius:50%;background:transparent;box-shadow:0 0 12px var(--blue),0 0 24px rgba(37,99,235,.2);animation:orbGlow 2s ease-in-out infinite}
+@keyframes orbPulse{0%,100%{opacity:.4;transform:scale(.6)}50%{opacity:.9;transform:scale(.85)}}
+@keyframes orbGlow{0%,100%{opacity:.5}50%{opacity:1}}
 </style>
 </head>
 <body>
@@ -613,6 +623,7 @@ footer a{margin-left:0}
 
 <!-- ══════════════════ FOOTER ══════════════════ -->
 <footer>
+<div class="agent-orb"></div>
 <div class="fl">YourEdge<span class="dot">.</span></div>
 <div class="fr">
 &copy; 2026 YourEdge AI Integrations
@@ -824,6 +835,31 @@ ctx.fillStyle='rgba(147,197,253,'+totalGlow*.6+')';ctx.fill();
 requestAnimationFrame(draw);
 }
 window.addEventListener('resize',resize);resize();draw();
+})();
+</script>
+<script>
+(function(){
+const orb=document.querySelector('.agent-orb');
+const footer=orb.parentElement;
+let orbX=-20,targetX=-20,visible=false,sleepTimer=null;
+function wake(){
+orb.classList.add('awake');
+clearTimeout(sleepTimer);
+sleepTimer=setTimeout(function(){orb.classList.remove('awake')},800);
+}
+document.addEventListener('mousemove',function(e){
+const r=footer.getBoundingClientRect();
+targetX=e.clientX-r.left-5;
+if(!visible){visible=true;orb.style.opacity='.7'}
+wake();
+});
+document.addEventListener('mouseleave',function(){visible=false;orb.style.opacity='0'});
+function tick(){
+orbX+=(targetX-orbX)*.08;
+orb.style.left=orbX+'px';
+requestAnimationFrame(tick);
+}
+tick();
 })();
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
