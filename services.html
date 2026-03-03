@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YourEdge — What We Build</title>
+<meta name="description" content="AI systems custom-built for your business. Workflow automation, AI agents, custom apps, dashboards, and more — all fully managed.">
+<meta property="og:title" content="What We Build — YourEdge">
+<meta property="og:description" content="AI systems custom-built for your business. Workflow automation, AI agents, custom apps, dashboards, and more.">
+<meta property="og:image" content="https://weareyouredge.com/og-image.webp">
+<meta property="og:url" content="https://weareyouredge.com/services">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://weareyouredge.com/og-image.webp">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%232563eb'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#000;--surface:#080808;--card:#111;--card-h:#161616;
+--bdr:#1a1a1a;--bdr-l:#222;--bdr-h:#333;
+--w:#fafafa;--g:#a0a0a0;--m:#666;--d:#444;
+--blue:#2563eb;--blue-h:#3b82f6;--blue-g:rgba(37,99,235,.12);--blue-gs:rgba(37,99,235,.25);
+--green:#22c55e;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--blue);color:var(--w)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.04);transition:.3s}
+nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
+.nl{font-size:20px;font-weight:900;letter-spacing:-.5px;color:var(--w);text-decoration:none}
+.dot{color:var(--blue)}
+.nv{display:flex;align-items:center;gap:32px;list-style:none}
+.nv a{font-size:13px;font-weight:500;color:var(--g);text-decoration:none;transition:.2s}
+.nv a:hover{color:var(--w)}
+.nv-cta{font-size:13px;font-weight:700;color:var(--w)!important;background:var(--blue);padding:10px 28px;border-radius:8px;transition:.2s}
+.nv-cta:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-gs)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;min-width:44px;min-height:44px;justify-content:center;align-items:center;background:none;border:none}
+.ham span{display:block;width:22px;height:2px;background:var(--w);border-radius:2px;transition:.3s}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);padding:24px;border-bottom:1px solid var(--bdr);flex-direction:column;gap:16px;z-index:99}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:16px;font-weight:500;color:var(--g);text-decoration:none;padding:12px 0;min-height:44px;display:flex;align-items:center}
+.mobile-menu a:hover{color:var(--w)}
+.mobile-menu .nv-cta{text-align:center;justify-content:center;padding:14px 28px;border-radius:10px}
+
+/* HERO */
+.svc-hero{padding:140px 48px 60px;text-align:center;position:relative;overflow:hidden}
+.svc-hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,var(--blue-g) 0%,transparent 70%);pointer-events:none;opacity:.5}
+.svc-hero h1{font-size:clamp(32px,5vw,52px);font-weight:900;letter-spacing:-2.5px;line-height:1.1;margin-bottom:16px;position:relative;z-index:1}
+.svc-hero h1 em{font-style:normal;color:var(--blue)}
+.svc-hero p{font-size:clamp(15px,1.6vw,17px);color:var(--g);max-width:580px;margin:0 auto;line-height:1.7;position:relative;z-index:1}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--m);text-decoration:none;margin-bottom:24px;position:relative;z-index:1;transition:.2s}
+.back-link:hover{color:var(--w)}
+
+/* CONTAINER */
+.ct{max-width:1100px;margin:0 auto;padding:0 48px}
+section{padding:80px 0}
+.sl{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.sh{font-size:clamp(28px,4vw,40px);font-weight:900;letter-spacing:-2px;line-height:1.1;margin-bottom:16px}
+.ss{font-size:16px;color:var(--g);max-width:580px;line-height:1.7;margin-bottom:48px}
+
+/* CARDS */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.svc-card{background:var(--card);border:1px solid var(--bdr);border-radius:20px;padding:36px 28px;transition:.3s}
+.svc-card:hover{border-color:var(--bdr-h);transform:translateY(-3px)}
+.svc-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px}
+.svc-icon.c1{background:rgba(37,99,235,.1)}
+.svc-icon.c2{background:rgba(139,92,246,.1)}
+.svc-icon.c3{background:rgba(245,158,11,.1)}
+.svc-icon.c4{background:rgba(34,197,94,.1)}
+.svc-icon.c5{background:rgba(236,72,153,.1)}
+.svc-icon.c6{background:rgba(20,184,166,.1)}
+.svc-card h3{font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:10px}
+.svc-card p{font-size:13px;color:var(--g);line-height:1.65}
+
+/* SECTION DIVIDER */
+.svc-section{border-top:1px solid var(--bdr)}
+
+/* CTA */
+.final-cta{padding:100px 48px;text-align:center;position:relative}
+.final-cta::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(circle,var(--blue-g) 0%,transparent 70%);pointer-events:none;opacity:.4}
+.final-cta h2{font-size:clamp(28px,4vw,40px);font-weight:900;letter-spacing:-2px;line-height:1.1;margin-bottom:20px;position:relative;z-index:1}
+.final-cta p{font-size:16px;color:var(--g);max-width:460px;margin:0 auto 40px;line-height:1.7;position:relative;z-index:1}
+.btn-p{display:inline-flex;align-items:center;gap:8px;padding:16px 40px;background:var(--blue);color:var(--w);border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;min-height:44px}
+.btn-p:hover{background:var(--blue-h);transform:translateY(-2px);box-shadow:0 8px 32px var(--blue-gs)}
+
+/* FOOTER */
+footer{padding:40px 48px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer .fl{font-size:16px;font-weight:900;letter-spacing:-.5px}
+footer .fr{font-size:12px;color:var(--m)}
+footer a{color:var(--m);text-decoration:none;transition:.2s;margin-left:20px}
+footer a:hover{color:var(--g)}
+
+/* SCROLL REVEAL */
+.sr{opacity:0;transform:translateY(30px);transition:.7s ease}
+.sr.vis{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+nav{padding:0 20px}
+.nv{display:none}
+.ham{display:flex}
+.svc-hero{padding:110px 20px 40px}
+.ct{padding:0 20px}
+section{padding:60px 0}
+.svc-grid{grid-template-columns:1fr}
+.final-cta{padding:80px 20px}
+footer{padding:32px 20px;flex-direction:column;text-align:center}
+footer .fr{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+footer a{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="/" class="nl">YourEdge<span class="dot">.</span></a>
+<ul class="nv">
+<li><a href="/#capabilities">What We Build</a></li>
+<li><a href="/#how">Process</a></li>
+<li><a href="services.html">Learn More</a></li>
+<li><a href="audit.html" class="nv-cta">Book a Call &rarr;</a></li>
+</ul>
+<button class="ham" onclick="this.classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+<a href="/#capabilities" onclick="closeMobile()">What We Build</a>
+<a href="/#how" onclick="closeMobile()">Process</a>
+<a href="services.html">Learn More</a>
+<a href="audit.html" class="nv-cta" onclick="closeMobile()">Book a Call &rarr;</a>
+</div>
+
+<section class="svc-hero">
+<a href="/" class="back-link">&larr; Back to site</a>
+<h1>AI systems built for <em>your business</em></h1>
+<p>We design, build, and manage custom AI infrastructure across every layer of your operations — so your team can focus on what actually moves the needle.</p>
+</section>
+
+<!-- ══════════════════ CORE CAPABILITIES ══════════════════ -->
+<section class="svc-section" id="capabilities">
+<div class="ct">
+<div class="sl sr">CORE CAPABILITIES</div>
+<h2 class="sh sr">Six AI systems.<br>Custom-built. Fully managed.</h2>
+<p class="ss sr">We map your workflows, architect the solution, build the system, and manage it ongoing. You don't configure anything — we deliver results.</p>
+<div class="svc-grid">
+<div class="svc-card sr">
+<div class="svc-icon c1">📧</div>
+<h3>Inbox Intelligence</h3>
+<p>AI that triages, prioritizes, and drafts replies in your voice. Guardrail controls ensure nothing sends without your approval. We manage and optimize it ongoing.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c2">📄</div>
+<h3>Document Engine</h3>
+<p>A system that generates proposals, decks, reports, and SOPs on demand — formatted in your brand, populated with your real data. One click.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c3">📅</div>
+<h3>Calendar System</h3>
+<p>Smart scheduling, meeting prep briefs, attendee context, and automatic follow-ups. Your calendar runs itself — we built it that way.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c4">🧠</div>
+<h3>Knowledge Hub</h3>
+<p>Every data source — emails, docs, CRM, meetings, financials — connected into one searchable AI brain. Ask any question about your business, get the real answer.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c5">📊</div>
+<h3>Content Engine</h3>
+<p>Performance tracking, audience insights, and AI-drafted content in your voice. We monitor what's working and keep the system optimized.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c6">💰</div>
+<h3>Sales System</h3>
+<p>Pipeline tracking, lead scoring, deal velocity monitoring, and automated follow-up sequences — built around how you actually sell.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ══════════════════ WORKFLOW AUTOMATION ══════════════════ -->
+<section class="svc-section" id="automation">
+<div class="ct">
+<div class="sl sr">WORKFLOW AUTOMATION</div>
+<h2 class="sh sr">Automate the work<br>your team shouldn't be doing.</h2>
+<p class="ss sr">We identify repetitive processes across your organization and replace them with intelligent, trigger-based automations that run 24/7.</p>
+<div class="svc-grid">
+<div class="svc-card sr">
+<div class="svc-icon c1">⚡</div>
+<h3>Process Orchestration</h3>
+<p>Multi-step workflows that coordinate across tools, teams, and departments — triggered automatically by events in your business.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c4">🔄</div>
+<h3>Data Sync & Routing</h3>
+<p>Keep every system in sync. Customer data, inventory, orders, and records flow automatically between your tools with zero manual entry.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c3">🔔</div>
+<h3>Smart Notifications</h3>
+<p>Alerts that matter, not noise. AI filters, prioritizes, and routes notifications to the right person at the right time with full context.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ══════════════════ AI AGENTS ══════════════════ -->
+<section class="svc-section" id="agents">
+<div class="ct">
+<div class="sl sr">AI AGENTS</div>
+<h2 class="sh sr">Autonomous agents that<br>handle tasks end-to-end.</h2>
+<p class="ss sr">We build AI agents that take ownership of entire workflows — making decisions, executing tasks, and escalating only when they need a human.</p>
+<div class="svc-grid">
+<div class="svc-card sr">
+<div class="svc-icon c2">🤖</div>
+<h3>Task Agents</h3>
+<p>Agents that handle research, data entry, follow-ups, and scheduling autonomously. They learn your preferences and get better over time.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c1">💬</div>
+<h3>Customer-Facing Agents</h3>
+<p>AI that handles inbound inquiries, qualifies leads, answers support questions, and routes complex issues — trained on your knowledge base.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c5">🧩</div>
+<h3>Decision Agents</h3>
+<p>Agents that analyze data, flag anomalies, recommend actions, and execute approved decisions — with full audit trails and guardrails.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ══════════════════ CUSTOM APPS ══════════════════ -->
+<section class="svc-section" id="apps">
+<div class="ct">
+<div class="sl sr">CUSTOM APPS</div>
+<h2 class="sh sr">Bespoke tools built<br>around your exact workflows.</h2>
+<p class="ss sr">Off-the-shelf software forces you to adapt. We build apps that adapt to you — internal tools, portals, and platforms designed for how your team actually works.</p>
+<div class="svc-grid">
+<div class="svc-card sr">
+<div class="svc-icon c6">🛠️</div>
+<h3>Internal Tools</h3>
+<p>Custom operational apps for your team — approval flows, resource management, onboarding systems, and anything else that's currently stuck in spreadsheets.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c4">🌐</div>
+<h3>Client Portals</h3>
+<p>Branded portals where your clients can track projects, approve deliverables, view reports, and communicate — all in one place.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c3">📱</div>
+<h3>Operational Platforms</h3>
+<p>End-to-end platforms that unify your operations — connecting teams, data, and workflows into a single system built for your business.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ══════════════════ DASHBOARDS & REPORTING ══════════════════ -->
+<section class="svc-section" id="dashboards">
+<div class="ct">
+<div class="sl sr">DASHBOARDS & REPORTING</div>
+<h2 class="sh sr">Real-time visibility<br>into everything that matters.</h2>
+<p class="ss sr">We build dashboards and automated reports that give you instant clarity — no more chasing data across tools or waiting for someone to compile numbers.</p>
+<div class="svc-grid">
+<div class="svc-card sr">
+<div class="svc-icon c1">📈</div>
+<h3>Live Dashboards</h3>
+<p>Real-time views of your KPIs, pipeline, operations, and team performance — pulling from every data source, updating automatically.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c5">📋</div>
+<h3>Automated Reports</h3>
+<p>Daily, weekly, or monthly reports generated and delivered automatically — formatted, contextualized, and ready to share with stakeholders.</p>
+</div>
+<div class="svc-card sr">
+<div class="svc-icon c2">🔍</div>
+<h3>AI-Powered Insights</h3>
+<p>Go beyond charts. Our systems surface trends, flag risks, and recommend actions based on your data — so you're always one step ahead.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ══════════════════ CTA ══════════════════ -->
+<section class="final-cta">
+<h2>Ready to see what we<br>can build for you?</h2>
+<p>Book a free strategy call. We'll map your workflows, identify the biggest opportunities, and show you exactly what's possible.</p>
+<a href="audit.html" class="btn-p" style="position:relative;z-index:1">Book a Call &rarr;</a>
+</section>
+
+<footer>
+<div class="fl">YourEdge<span class="dot">.</span></div>
+<div class="fr">
+&copy; 2026 YourEdge AI Integrations
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+<a href="security.html">Security</a>
+<a href="contact.html">Contact</a>
+</div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.querySelector('nav').classList.toggle('scrolled',window.scrollY>50)});
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('vis');obs.unobserve(el.target)}})},{threshold:.15});
+document.querySelectorAll('.sr').forEach(el=>obs.observe(el));
+function closeMobile(){document.querySelector('.ham').classList.remove('open');document.getElementById('mobileMenu').classList.remove('open')}
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

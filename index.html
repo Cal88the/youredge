@@ -27,7 +27,7 @@
 --blue:#2563eb;--blue-h:#3b82f6;--blue-g:rgba(37,99,235,.12);--blue-gs:rgba(37,99,235,.25);
 --green:#22c55e;--green-s:rgba(34,197,94,.1);
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--blue);color:var(--w)}
 
@@ -112,13 +112,19 @@ section{padding:100px 0}
 
 /* ══ HOW IT WORKS ══ */
 .how{background:var(--surface);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;counter-reset:step}
-.step{position:relative;padding:32px 24px;background:var(--card);border:1px solid var(--bdr);border-radius:16px;transition:.3s}
-.step:hover{border-color:var(--bdr-h);transform:translateY(-2px)}
-.step-num{width:36px;height:36px;border-radius:10px;background:var(--blue-g);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;margin-bottom:16px}
-.step h3{font-size:16px;font-weight:800;letter-spacing:-.3px;margin-bottom:8px}
-.step p{font-size:13px;color:var(--g);line-height:1.6}
-.step-arrow{position:absolute;right:-16px;top:50%;transform:translateY(-50%);color:var(--d);font-size:18px;z-index:2}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.steps::before{content:'';position:absolute;top:40px;left:calc(12.5% + 20px);right:calc(12.5% + 20px);height:2px;background:linear-gradient(90deg,var(--blue),rgba(37,99,235,.3) 50%,var(--blue));opacity:.3}
+.step{position:relative;padding:0 16px;text-align:center;transition:.3s}
+.step:hover .step-top{transform:translateY(-4px);box-shadow:0 12px 40px rgba(37,99,235,.15)}
+.step-top{background:linear-gradient(145deg,var(--card),#0a0a0a);border:1px solid var(--bdr-l);border-radius:20px;padding:36px 24px 32px;transition:.4s;position:relative;overflow:hidden}
+.step-top::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:.6}
+.step-num{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,rgba(37,99,235,.15),rgba(37,99,235,.05));border:2px solid rgba(37,99,235,.4);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;margin:0 auto 20px;position:relative;box-shadow:0 0 24px rgba(37,99,235,.1),inset 0 0 16px rgba(37,99,235,.08)}
+.step-num::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid rgba(37,99,235,.1);animation:numPulse 3s ease infinite}
+@keyframes numPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.6;transform:scale(1.08)}}
+.step-icon{font-size:28px;margin-bottom:8px}
+.step h3{font-size:16px;font-weight:800;letter-spacing:-.3px;margin-bottom:10px}
+.step p{font-size:13px;color:var(--g);line-height:1.6;text-align:left}
+.step-arrow{position:absolute;right:-12px;top:40px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;z-index:2;color:var(--blue);font-size:14px;background:var(--surface);border-radius:50%;border:1px solid var(--bdr-l)}
 
 /* ══ RESULTS SHOWCASE ══ */
 .results-box{background:var(--card);border:1px solid var(--bdr);border-radius:20px;overflow:hidden;max-width:800px;margin:0 auto}
@@ -232,7 +238,8 @@ section{padding:72px 0}
 .cs-detail-grid,.cs-meta-grid,.cs-improvements{grid-template-columns:1fr}
 .cs-results-grid{grid-template-columns:1fr 1fr}
 .prob-grid,.cap-grid,.test-grid{grid-template-columns:1fr}
-.steps{grid-template-columns:1fr}
+.steps{grid-template-columns:1fr 1fr;gap:16px}
+.steps::before{display:none}
 .step-arrow{display:none}
 .proof-row{gap:24px}
 .proof-stat{min-width:120px}
@@ -254,9 +261,9 @@ footer a{margin-left:0}
 <nav>
 <a href="#" class="nl">YourEdge<span class="dot">.</span></a>
 <ul class="nv">
-<li><a href="#capabilities">What We Build</a></li>
+<li><a href="services.html">What We Build</a></li>
 <li><a href="#how">Process</a></li>
-<li><a href="product.html">Learn More</a></li>
+<li><a href="services.html">Learn More</a></li>
 <li><a href="audit.html" class="nv-cta">Book a Call &rarr;</a></li>
 </ul>
 <button class="ham" onclick="this.classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
@@ -264,9 +271,9 @@ footer a{margin-left:0}
 </button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-<a href="#capabilities" onclick="closeMobile()">What We Build</a>
+<a href="services.html" onclick="closeMobile()">What We Build</a>
 <a href="#how" onclick="closeMobile()">Process</a>
-<a href="product.html">Documentation</a>
+<a href="services.html">Documentation</a>
 <a href="audit.html" class="nv-cta" onclick="closeMobile()">Book a Call &rarr;</a>
 </div>
 
@@ -356,6 +363,9 @@ footer a{margin-left:0}
 </div>
 </div>
 
+</div>
+<div style="text-align:center;margin-top:48px" class="sr">
+<a href="audit.html" class="btn-p">Schedule a Free AI Strategy Call &rarr;</a>
 </div>
 </div>
 </section>
@@ -541,84 +551,6 @@ footer a{margin-left:0}
 </div>
 </div>
 
-<!-- ══════════════════ BEFORE / AFTER ══════════════════ -->
-<section class="problem">
-<div class="ct">
-<div class="sl sr">THE PROBLEM</div>
-<h2 class="sh sr">Your team is drowning<br>in manual work.</h2>
-<p class="ss sr">Every hour spent on repetitive tasks is an hour not spent on growth. We map your workflows, find the bottlenecks, and build systems that eliminate them — for you.</p>
-<div class="prob-grid sr">
-<div class="prob-card before">
-<h3><span>😩</span> Before YourEdge</h3>
-<ul class="prob-list">
-<li><span class="mk">✗</span> 6 hours/day triaging email, scheduling, and chasing follow-ups</li>
-<li><span class="mk">✗</span> Scattered data across 15+ tools with no source of truth</li>
-<li><span class="mk">✗</span> Manual reports that take all week to assemble</li>
-<li><span class="mk">✗</span> Leads going cold because nobody followed up</li>
-<li><span class="mk">✗</span> Every new hire means more overhead, not more output</li>
-</ul>
-</div>
-<div class="prob-card after">
-<h3><span>⚡</span> After We Build Your System</h3>
-<ul class="prob-list">
-<li><span class="mk">✓</span> We build an inbox system that triages, preps, and follows up — automatically</li>
-<li><span class="mk">✓</span> We connect your tools into one AI-powered source of truth</li>
-<li><span class="mk">✓</span> We deploy report automation — zero human time, delivered on schedule</li>
-<li><span class="mk">✓</span> We set up lead tracking and automated follow-ups so nothing slips</li>
-<li><span class="mk">✓</span> We build systems that scale operations without scaling headcount</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-
-<!-- ══════════════════ CAPABILITIES ══════════════════ -->
-<section id="capabilities">
-<div class="ct">
-<div class="sl sr">WHAT WE BUILD FOR YOU</div>
-<h2 class="sh sr">Six AI systems.<br>Custom-built. Fully managed.</h2>
-<p class="ss sr">We map your workflows, architect the solution, build the system, and manage it ongoing. You don't configure anything — we deliver results.</p>
-<div class="cap-grid">
-<div class="cap-card sr">
-<div class="cap-icon c1">📧</div>
-<h3>We Build Your Inbox Intelligence</h3>
-<p>We set up AI that triages, prioritizes, and drafts replies in your voice. Guardrail controls ensure nothing sends without your approval. We manage and optimize it ongoing.</p>
-<span class="cap-tag">Done for you</span>
-</div>
-<div class="cap-card sr">
-<div class="cap-icon c2">📄</div>
-<h3>We Build Your Document Engine</h3>
-<p>We create a system that generates proposals, decks, reports, and SOPs on demand — formatted in your brand, populated with your real data. One click.</p>
-<span class="cap-tag">Done for you</span>
-</div>
-<div class="cap-card sr">
-<div class="cap-icon c3">📅</div>
-<h3>We Build Your Calendar System</h3>
-<p>We deploy smart scheduling, meeting prep briefs, attendee context, and automatic follow-ups. Your calendar runs itself — we built it that way.</p>
-<span class="cap-tag">Done for you</span>
-</div>
-<div class="cap-card sr">
-<div class="cap-icon c4">🧠</div>
-<h3>We Build Your Knowledge Hub</h3>
-<p>We connect every data source — emails, docs, CRM, meetings, financials — into one searchable AI brain. Ask any question about your business, get the real answer.</p>
-<span class="cap-tag">Done for you</span>
-</div>
-<div class="cap-card sr">
-<div class="cap-icon c5">📊</div>
-<h3>We Build Your Content Engine</h3>
-<p>We set up performance tracking, audience insights, and AI-drafted content in your voice. We monitor what's working and keep the system optimized.</p>
-<span class="cap-tag">Done for you</span>
-</div>
-<div class="cap-card sr">
-<div class="cap-icon c6">💰</div>
-<h3>We Build Your Sales System</h3>
-<p>We deploy pipeline tracking, lead scoring, deal velocity monitoring, and automated follow-up sequences — built around how you actually sell.</p>
-<span class="cap-tag">Done for you</span>
-</div>
-</div>
-</div>
-</section>
-
 <!-- ══════════════════ HOW IT WORKS ══════════════════ -->
 <section class="how" id="how">
 <div class="ct">
@@ -627,75 +559,45 @@ footer a{margin-left:0}
 <p class="ss sr" style="text-align:center;margin-left:auto;margin-right:auto">We don't install tools. We map your workflows, identify the highest-ROI automations, build a custom system, and manage it so you never have to think about it.</p>
 <div class="steps sr">
 <div class="step">
+<div class="step-top">
 <div class="step-num">1</div>
 <h3>Free AI Audit</h3>
 <p>We diagnose your bottlenecks, map your workflows, and calculate the ROI of fixing them. Free. 30 minutes. No commitment.</p>
-<span class="step-arrow">→</span>
+</div>
 </div>
 <div class="step">
+<div class="step-top">
 <div class="step-num">2</div>
 <h3>Workflow Mapping</h3>
 <p>Every process documented. Every bottleneck identified. Every opportunity quantified. You see your business clearly — maybe for the first time.</p>
-<span class="step-arrow">→</span>
+</div>
 </div>
 <div class="step">
+<div class="step-top">
 <div class="step-num">3</div>
 <h3>System Build</h3>
 <p>We architect and deploy your custom AI system — database, automations, agents, integrations, dashboards. Built to your exact workflows.</p>
-<span class="step-arrow">→</span>
+</div>
 </div>
 <div class="step">
+<div class="step-top">
 <div class="step-num">4</div>
-<h3>Launch & Managed Support</h3>
-<p>Go live in days, not months. We train your team, document everything, and continuously optimize the system as your business scales.</p>
-</div>
-</div>
-</div>
-</section>
-
-
-<!-- ══════════════════ TESTIMONIALS ══════════════════ -->
-<section>
-<div class="ct">
-<div class="sl sr" style="text-align:center">CLIENT EXPERIENCE</div>
-<h2 class="sh sr" style="text-align:center;margin-left:auto;margin-right:auto">What clients say about<br>working with us.</h2>
-<div style="height:48px"></div>
-<div class="test-grid sr">
-<div class="test-card">
-<div class="test-stars">★★★★★</div>
-<blockquote>"We were spending 6 hours a day on intake processing. YourEdge came in, mapped everything, and built a system that handles it in 11 minutes. We didn't have to figure out a single thing — they did it all."</blockquote>
-<div class="test-author">
-<div class="test-av">MR</div>
-<div><div class="test-name">Marcus R.</div><div class="test-role">COO, Logistics Company</div></div>
-</div>
-</div>
-<div class="test-card">
-<div class="test-stars">★★★★★</div>
-<blockquote>"I didn't want another tool to learn. YourEdge built the entire system, trained my team, and manages it for us. We replaced 3 SaaS subscriptions and 40 hours/week of manual work. The ROI was immediate."</blockquote>
-<div class="test-author">
-<div class="test-av">JK</div>
-<div><div class="test-name">Jessica K.</div><div class="test-role">Founder & CEO</div></div>
-</div>
-</div>
-<div class="test-card">
-<div class="test-stars">★★★★★</div>
-<blockquote>"I've tried Lindy, I've tried hiring VAs, I've tried building it myself. YourEdge mapped our entire workflow, built a custom system in 2 weeks, and manages it ongoing. True done-for-you. Nothing else compares."</blockquote>
-<div class="test-author">
-<div class="test-av">AP</div>
-<div><div class="test-name">Alex P.</div><div class="test-role">Managing Partner</div></div>
+<h3>Managed Support</h3>
+<p>Go live in days, not months. We train your team, document everything, and optimize the system as your business scales.</p>
 </div>
 </div>
 </div>
 </div>
 </section>
+
 
 
 <!-- ══════════════════ FINAL CTA ══════════════════ -->
 <section class="final-cta" id="start">
-<h2>Stop hiring for tasks<br>AI should handle.</h2>
-<p>Book a free AI audit. We'll map your workflows, show you the ROI, and build a system that cuts process time by 95%.</p>
-<a href="audit.html" class="btn-p" style="position:relative;z-index:1">Book Your Free AI Audit &rarr;</a>
-<p style="margin-top:20px;font-size:14px;color:var(--m);position:relative;z-index:1">Free 30-minute diagnostic · No commitment · See your ROI in real time</p>
+<h2>Ready to transform your<br>business operations?</h2>
+<p>Book a free strategy call. We'll map your workflows, show you where AI fits, and give you a roadmap.</p>
+<a href="audit.html" class="btn-p" style="position:relative;z-index:1">Schedule a Free AI Strategy Call &rarr;</a>
+<p style="margin-top:20px;font-size:14px;color:var(--m);position:relative;z-index:1">No obligation · 30 minutes · Actionable roadmap included</p>
 </section>
 
 <!-- ══════════════════ FOOTER ══════════════════ -->
