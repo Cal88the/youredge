@@ -53,7 +53,7 @@ nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
 
 /* TABS */
 .dash-tabs{display:flex;gap:0;max-width:800px;margin:32px auto 0;padding:0 24px;border-bottom:1px solid var(--bdr)}
-.dash-tab{padding:14px 24px;background:none;border:none;border-bottom:2px solid transparent;font-family:inherit;font-size:14px;font-weight:600;color:var(--m);cursor:pointer;transition:.2s;min-height:44px}
+.dash-tab{padding:14px 24px;background:none;border:none;border-bottom:2px solid transparent;font-family:inherit;font-size:14px;font-weight:600;color:var(--m);cursor:pointer;transition:.2s;min-height:44px;white-space:nowrap}
 .dash-tab:hover{color:var(--g)}
 .dash-tab.active{color:var(--w);border-bottom-color:var(--blue)}
 .tab-count{background:var(--blue);color:var(--w);font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;margin-left:6px}
@@ -208,6 +208,7 @@ nav{padding:0 20px}
 .ham{display:flex}
 .dash-header{padding:90px 20px 0}
 .dash-tabs{padding:0 16px}
+.dash-tab{padding:14px 16px;white-space:nowrap}
 .dash-wrap{padding:24px 16px 60px}
 .leads-toolbar{flex-wrap:wrap}
 .leads-toolbar .form-input{width:100%;flex:1 1 100%}
@@ -307,8 +308,8 @@ footer a{margin-left:0}
 <div class="dash-tabs">
 <button class="dash-tab active" onclick="switchTab('leads')">Leads <span class="tab-count" id="tab-lead-count">8</span></button>
 <button class="dash-tab" onclick="switchTab('analytics')">Analytics</button>
-<button class="dash-tab" onclick="switchTab('intake')">Intake Form</button>
-<button class="dash-tab" onclick="switchTab('qrcode')">QR Code</button>
+<button class="dash-tab" onclick="switchTab('intake')">Add Lead</button>
+<button class="dash-tab" onclick="switchTab('qrcode')">QR</button>
 </div>
 
 <!-- CONTENT -->
@@ -318,8 +319,6 @@ footer a{margin-left:0}
 <div id="tab-leads" class="tab-content active">
 <div class="leads-toolbar">
 <input class="form-input" type="text" id="lead-search" placeholder="Search by name, email, or interest..." oninput="filterLeads()">
-<button class="btn-export" onclick="toggleAddLead()">+ Add Lead</button>
-<button class="btn-export" onclick="exportCSV()">Export CSV</button>
 </div>
 
 <!-- Manual Entry Form -->
