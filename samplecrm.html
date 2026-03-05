@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acme Home Renovations — Lead Dashboard</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='g'><stop offset='0%25' stop-color='%23fff'/><stop offset='40%25' stop-color='%23bfdbfe'/><stop offset='100%25' stop-color='%232563eb'/></radialGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23g)'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#000;--surface:#080808;--card:#111;--card-h:#161616;
+--bdr:#1a1a1a;--bdr-l:#222;--bdr-h:#333;
+--w:#fafafa;--g:#a0a0a0;--m:#666;--d:#444;
+--blue:#2563eb;--blue-h:#3b82f6;--blue-g:rgba(37,99,235,.12);--blue-gs:rgba(37,99,235,.25);
+--green:#22c55e;--green-s:rgba(34,197,94,.1);
+--red:#ef4444;--red-g:rgba(239,68,68,.1);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--blue);color:var(--w)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.04);transition:.3s}
+nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
+.nl{font-size:20px;font-weight:900;letter-spacing:-.5px;color:var(--w);text-decoration:none}
+.dot{color:var(--blue)}
+.nv{display:flex;align-items:center;gap:32px;list-style:none}
+.nv a{font-size:13px;font-weight:500;color:var(--g);text-decoration:none;transition:.2s}
+.nv a:hover{color:var(--w)}
+.nv-cta{font-size:13px;font-weight:700;color:var(--w)!important;background:var(--blue);padding:10px 28px;border-radius:8px;transition:.2s}
+.nv-cta:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-gs)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;min-width:44px;min-height:44px;justify-content:center;align-items:center;background:none;border:none}
+.ham span{display:block;width:22px;height:2px;background:var(--w);border-radius:2px;transition:.3s}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);padding:24px;border-bottom:1px solid var(--bdr);flex-direction:column;gap:16px;z-index:99}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:16px;font-weight:500;color:var(--g);text-decoration:none;padding:12px 0;min-height:44px;display:flex;align-items:center}
+.mobile-menu a:hover{color:var(--w)}
+.mobile-menu .nv-cta{text-align:center;justify-content:center;padding:14px 28px;border-radius:10px}
+
+/* HEADER */
+.dash-header{padding:100px 48px 0;text-align:center}
+.dash-company{font-size:clamp(24px,4vw,36px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:4px}
+.dash-event{font-size:13px;color:var(--m);font-weight:500;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
+.dash-powered{font-size:11px;color:var(--d);font-weight:500}
+.dash-powered a{color:var(--blue);text-decoration:none}
+
+/* TABS */
+.dash-tabs{display:flex;gap:0;max-width:800px;margin:32px auto 0;padding:0 24px;border-bottom:1px solid var(--bdr)}
+.dash-tab{padding:14px 24px;background:none;border:none;border-bottom:2px solid transparent;font-family:inherit;font-size:14px;font-weight:600;color:var(--m);cursor:pointer;transition:.2s;min-height:44px}
+.dash-tab:hover{color:var(--g)}
+.dash-tab.active{color:var(--w);border-bottom-color:var(--blue)}
+.tab-count{background:var(--blue);color:var(--w);font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;margin-left:6px}
+.dash-wrap{max-width:800px;margin:0 auto;padding:32px 24px 80px}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* TOOLBAR */
+.leads-toolbar{display:flex;gap:12px;margin-bottom:24px;align-items:center}
+.form-input{width:100%;padding:14px 16px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;color:var(--w);font-family:inherit;font-size:15px;outline:none;transition:.2s;min-height:44px}
+.form-input:focus{border-color:var(--blue)}
+.form-input::placeholder{color:var(--d)}
+.btn-export{padding:14px 20px;background:var(--card);color:var(--w);border:1px solid var(--bdr);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;min-height:44px}
+.btn-export:hover{border-color:var(--bdr-h);background:var(--card-h)}
+
+/* LEAD CARDS */
+.lead-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:20px 24px;margin-bottom:12px;transition:.2s}
+.lead-card:hover{border-color:var(--bdr-h)}
+.lead-card.new-lead{animation:slideIn .4s ease-out}
+@keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.lead-header{display:flex;justify-content:space-between;align-items:center}
+.lead-info{display:flex;align-items:center;gap:12px}
+.lead-name{font-size:16px;font-weight:700}
+.lead-time{font-size:12px;color:var(--m)}
+.lead-toggle{background:none;border:none;color:var(--m);cursor:pointer;font-size:12px;padding:8px;transition:.2s;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
+.lead-toggle:hover{background:var(--card-h);color:var(--g)}
+.lead-toggle.open{transform:rotate(180deg)}
+.lead-details{display:flex;gap:24px;margin-top:12px;flex-wrap:wrap}
+.lead-field{}
+.lead-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--d);margin-bottom:2px}
+.lead-value{font-size:14px;color:var(--g);text-decoration:none;display:block}
+a.lead-value:hover{color:var(--blue)}
+.lead-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr)}
+.lead-tag{font-size:12px;font-weight:600;color:var(--blue);background:var(--blue-g);padding:4px 12px;border-radius:100px;border:1px solid rgba(37,99,235,.15)}
+.lead-custnote{margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr);font-size:13px;color:var(--m);line-height:1.6}
+.lead-custnote strong{color:var(--d);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px}
+.lead-notes{margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr);display:none}
+.lead-notes.open{display:block}
+.lead-notes textarea{width:100%;padding:12px 14px;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;color:var(--w);font-family:inherit;font-size:13px;outline:none;transition:.2s;min-height:70px;resize:vertical}
+.lead-notes textarea:focus{border-color:var(--blue)}
+.lead-notes textarea::placeholder{color:var(--d)}
+.notes-status{font-size:11px;font-weight:600;margin-top:6px;height:16px}
+.notes-status.saved{color:var(--green)}
+
+/* ADD LEAD FORM */
+.add-lead-form{display:none;margin-bottom:20px}
+.add-lead-form.open{display:block}
+.add-lead-card{background:var(--card);border:1px solid var(--bdr-l);border-radius:16px;padding:24px}
+.add-lead-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.add-lead-card .form-group{margin-bottom:14px}
+.add-lead-card .form-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--m);margin-bottom:6px;display:block}
+.add-tags{display:flex;flex-wrap:wrap;gap:8px}
+.add-tag{font-size:12px;font-weight:600;color:var(--m);background:var(--bg);padding:6px 14px;border-radius:100px;border:1px solid var(--bdr);cursor:pointer;transition:.2s;user-select:none}
+.add-tag:hover{border-color:var(--bdr-h);color:var(--g)}
+.add-tag.selected{color:var(--blue);background:var(--blue-g);border-color:rgba(37,99,235,.25)}
+.add-lead-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:4px}
+.add-lead-actions .btn-p,.add-lead-actions .btn-s{padding:12px 24px;font-size:13px}
+@media(max-width:768px){.add-lead-row{grid-template-columns:1fr}}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 24px;color:var(--m)}
+.empty-state p{font-size:15px}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.stat-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:24px;text-align:center}
+.stat-value{font-size:clamp(28px,4vw,36px);font-weight:900;letter-spacing:-1.5px;color:var(--w)}
+.stat-label{font-size:11px;color:var(--m);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-top:4px}
+
+/* BAR CHART */
+.chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:24px;margin-bottom:24px}
+.chart-card h3{font-size:14px;font-weight:700;margin-bottom:20px;color:var(--g)}
+.bar-chart{display:flex;align-items:flex-end;gap:3px;height:140px;border-bottom:1px solid var(--bdr);padding-bottom:4px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end}
+.bar{width:100%;max-width:28px;background:var(--blue);border-radius:3px 3px 0 0;transition:height .3s ease;min-height:0}
+.bar-label{font-size:8px;color:var(--d);margin-top:6px;text-align:center}
+.bar-count{font-size:9px;color:var(--g);font-weight:700;margin-bottom:3px;min-height:12px}
+
+/* ACTIVITY FEED */
+.activity-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:24px}
+.activity-card h3{font-size:14px;font-weight:700;margin-bottom:16px;color:var(--g)}
+.activity-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.activity-item:last-child{border-bottom:none}
+.activity-name{font-size:14px;font-weight:600}
+.activity-interest{font-size:12px;color:var(--m);margin-top:2px}
+.activity-time{font-size:11px;color:var(--d);white-space:nowrap}
+
+/* QR CODE */
+.qr-card{max-width:560px;margin:0 auto;text-align:center;background:var(--card);border:1px solid var(--bdr-l);border-radius:24px;padding:40px}
+.qr-card h2{font-size:24px;font-weight:800;margin-bottom:8px}
+.qr-card>p{font-size:14px;color:var(--g);margin-bottom:32px;line-height:1.7}
+.qr-display{margin:0 auto 24px;padding:24px;background:#fff;border-radius:16px;display:inline-block}
+.qr-display img{display:block}
+.qr-url{display:flex;gap:8px;margin-bottom:24px}
+.qr-url .form-input{flex:1;font-size:13px}
+.btn-copy{padding:14px 20px;background:var(--card-h);color:var(--w);border:1px solid var(--bdr);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:.2s}
+.btn-copy:hover{border-color:var(--bdr-h)}
+.qr-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-p{display:inline-flex;align-items:center;justify-content:center;padding:16px 32px;background:var(--blue);color:var(--w);border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;text-decoration:none}
+.btn-p:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-gs)}
+.btn-s{display:inline-flex;align-items:center;justify-content:center;padding:16px 32px;background:var(--card);color:var(--w);border:1px solid var(--bdr);border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;text-decoration:none}
+.btn-s:hover{border-color:var(--bdr-h);background:var(--card-h)}
+
+/* QR INTAKE VIEW (standalone for visitors) */
+.intake-view{display:none}
+.intake-view.active{display:block}
+.intake-hero{padding:120px 48px 40px;text-align:center;position:relative;overflow:hidden}
+.intake-hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,var(--blue-g) 0%,transparent 70%);pointer-events:none;opacity:.5}
+.intake-hero h1{font-size:clamp(24px,4vw,32px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:8px;position:relative;z-index:1}
+.intake-hero .intake-event{font-size:12px;color:var(--m);font-weight:500;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;position:relative;z-index:1}
+.intake-hero p{font-size:15px;color:var(--g);position:relative;z-index:1}
+.intake-powered{font-size:11px;color:var(--d);margin-top:12px;position:relative;z-index:1}
+.intake-powered a{color:var(--blue);text-decoration:none}
+.intake-wrap{max-width:520px;margin:0 auto 80px;padding:0 24px}
+@media(max-width:768px){
+.intake-hero{padding:100px 20px 30px}
+.intake-wrap{padding:0 16px}
+}
+
+/* INTAKE FORM TAB */
+.intake-card{background:var(--card);border:1px solid var(--bdr-l);border-radius:24px;padding:36px}
+.intake-card .form-group{margin-bottom:18px}
+.intake-card .form-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--m);margin-bottom:6px;display:block}
+.intake-tags{display:flex;flex-wrap:wrap;gap:8px}
+.intake-tag{font-size:13px;font-weight:600;color:var(--m);background:var(--bg);padding:8px 16px;border-radius:100px;border:1px solid var(--bdr);cursor:pointer;transition:.2s;user-select:none}
+.intake-tag:hover{border-color:var(--bdr-h);color:var(--g)}
+.intake-tag.selected{color:var(--blue);background:var(--blue-g);border-color:rgba(37,99,235,.25)}
+.intake-submit{width:100%;padding:16px;background:var(--blue);color:var(--w);border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;min-height:44px;margin-top:8px}
+.intake-submit:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-gs)}
+.intake-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.intake-success{text-align:center;padding:40px 0;display:none}
+.intake-success.visible{display:block}
+.intake-success .check-icon{width:64px;height:64px;border-radius:50%;background:rgba(34,197,94,.15);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 20px}
+.intake-success h3{font-size:22px;font-weight:800;margin-bottom:8px}
+.intake-success p{font-size:14px;color:var(--g);line-height:1.6}
+.intake-error{font-size:12px;color:var(--red);margin-top:6px;min-height:18px;font-weight:500}
+@media(max-width:768px){
+.intake-card{padding:24px}
+}
+
+/* FOOTER */
+footer{padding:40px 48px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer .fl{font-size:16px;font-weight:900;letter-spacing:-.5px}
+footer .fr{font-size:12px;color:var(--m)}
+footer a{color:var(--m);text-decoration:none;transition:.2s;margin-left:20px}
+footer a:hover{color:var(--g)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+nav{padding:0 20px}
+.nv{display:none}
+.ham{display:flex}
+.dash-header{padding:90px 20px 0}
+.dash-tabs{padding:0 16px}
+.dash-wrap{padding:24px 16px 60px}
+.leads-toolbar{flex-wrap:wrap}
+.leads-toolbar .form-input{width:100%;flex:1 1 100%}
+.leads-toolbar .btn-export{flex:1}
+.lead-details{flex-direction:column;gap:8px}
+.stats-grid{grid-template-columns:1fr 1fr}
+.qr-card{padding:24px}
+.qr-url{flex-direction:column}
+.qr-actions{flex-direction:column}
+footer{padding:32px 20px;flex-direction:column;text-align:center}
+footer .fr{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+footer a{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+<a href="/" class="nl">YourEdge<span class="dot">.</span></a>
+<ul class="nv">
+<li><a href="services.html">What We Build</a></li>
+<li><a href="/#how">Process</a></li>
+<li><a href="product.html">Learn More</a></li>
+<li><a href="audit.html" class="nv-cta">Get Started &rarr;</a></li>
+</ul>
+<button class="ham" onclick="this.classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Menu">
+<span></span><span></span><span></span>
+</button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+<a href="services.html" onclick="closeMobile()">What We Build</a>
+<a href="/#how" onclick="closeMobile()">Process</a>
+<a href="product.html">Documentation</a>
+<a href="audit.html" class="nv-cta" onclick="closeMobile()">Get Started &rarr;</a>
+</div>
+
+<!-- ═══ QR INTAKE VIEW (visitor sees this after scanning) ═══ -->
+<div class="intake-view" id="qrIntakeView">
+<section class="intake-hero">
+<div class="intake-event">Toronto Home Show 2026</div>
+<h1>Acme Home Renovations</h1>
+<p>Connect with us! Fill out the form below and we'll follow up with you.</p>
+<div class="intake-powered">Powered by <a href="/">YourEdge</a></div>
+</section>
+<div class="intake-wrap">
+<div class="intake-card">
+<form id="qrIntakeForm">
+<div class="form-group">
+<label class="form-label" for="qr-name">Your Name *</label>
+<input class="form-input" type="text" id="qr-name" placeholder="Full name" autocomplete="name">
+<div class="intake-error" id="qr-err-name"></div>
+</div>
+<div class="form-group">
+<label class="form-label" for="qr-email">Email Address *</label>
+<input class="form-input" type="email" id="qr-email" placeholder="you@example.com" autocomplete="email">
+<div class="intake-error" id="qr-err-email"></div>
+</div>
+<div class="form-group">
+<label class="form-label" for="qr-phone">Phone Number</label>
+<input class="form-input" type="tel" id="qr-phone" placeholder="(416) 555-0000" autocomplete="tel">
+</div>
+<div class="form-group">
+<label class="form-label" for="qr-address">Address</label>
+<input class="form-input" type="text" id="qr-address" placeholder="Street address, city" autocomplete="street-address">
+</div>
+<div class="form-group">
+<label class="form-label">What are you interested in?</label>
+<div class="intake-tags" id="qrIntakeTags"></div>
+</div>
+<div class="form-group">
+<label class="form-label" for="qr-notes">Anything else you'd like us to know?</label>
+<textarea class="form-input" id="qr-notes" placeholder="Budget, timeline, specific requirements..." style="min-height:90px"></textarea>
+</div>
+<button type="submit" class="intake-submit" id="qrSubmitBtn">Submit &rarr;</button>
+</form>
+<div class="intake-success" id="qrIntakeSuccess">
+<div class="check-icon">&check;</div>
+<h3>You're all set!</h3>
+<p>Thanks for connecting with Acme Home Renovations. We'll be in touch soon!</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div id="dashboardView">
+
+<!-- HEADER -->
+<div class="dash-header">
+<div class="dash-event">Toronto Home Show 2026</div>
+<h1 class="dash-company">Acme Home Renovations</h1>
+<div class="dash-powered">Powered by <a href="/">YourEdge</a></div>
+</div>
+
+<!-- TABS -->
+<div class="dash-tabs">
+<button class="dash-tab active" onclick="switchTab('leads')">Leads <span class="tab-count" id="tab-lead-count">8</span></button>
+<button class="dash-tab" onclick="switchTab('analytics')">Analytics</button>
+<button class="dash-tab" onclick="switchTab('intake')">Intake Form</button>
+<button class="dash-tab" onclick="switchTab('qrcode')">QR Code</button>
+</div>
+
+<!-- CONTENT -->
+<div class="dash-wrap">
+
+<!-- LEADS TAB -->
+<div id="tab-leads" class="tab-content active">
+<div class="leads-toolbar">
+<input class="form-input" type="text" id="lead-search" placeholder="Search by name, email, or interest..." oninput="filterLeads()">
+<button class="btn-export" onclick="toggleAddLead()">+ Add Lead</button>
+<button class="btn-export" onclick="exportCSV()">Export CSV</button>
+</div>
+
+<!-- Manual Entry Form -->
+<div class="add-lead-form" id="addLeadForm">
+<div class="add-lead-card">
+<div class="add-lead-row">
+<div class="form-group"><label class="form-label">Name *</label><input class="form-input" type="text" id="add-name" placeholder="Full name" autocomplete="off"></div>
+<div class="form-group"><label class="form-label">Email *</label><input class="form-input" type="email" id="add-email" placeholder="email@example.com" autocomplete="off"></div>
+</div>
+<div class="add-lead-row">
+<div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" id="add-phone" placeholder="(416) 555-0000" autocomplete="off"></div>
+<div class="form-group"><label class="form-label">Address</label><input class="form-input" type="text" id="add-address" placeholder="Street address, city" autocomplete="off"></div>
+</div>
+<div class="form-group"><label class="form-label">Interests</label>
+<div class="add-tags" id="add-tags"></div>
+</div>
+<div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="add-notes" placeholder="Any additional context..." style="min-height:70px"></textarea></div>
+<div class="add-lead-actions">
+<button class="btn-s" onclick="toggleAddLead()">Cancel</button>
+<button class="btn-p" onclick="submitManualLead()">Add Lead</button>
+</div>
+</div>
+</div>
+
+<div id="leads-list"></div>
+</div>
+
+<!-- ANALYTICS TAB -->
+<div id="tab-analytics" class="tab-content">
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-value" id="stat-total">0</div><div class="stat-label">Total Leads</div></div>
+<div class="stat-card"><div class="stat-value" id="stat-today">0</div><div class="stat-label">Today</div></div>
+<div class="stat-card"><div class="stat-value" id="stat-avg">0</div><div class="stat-label">Avg / Hour</div></div>
+<div class="stat-card"><div class="stat-value" id="stat-peak">--</div><div class="stat-label">Peak Hour</div></div>
+</div>
+<div class="chart-card">
+<h3>Leads Per Hour (Today)</h3>
+<div class="bar-chart" id="hourly-chart"></div>
+</div>
+<div class="activity-card">
+<h3>Recent Activity</h3>
+<div id="activity-feed"></div>
+</div>
+</div>
+
+<!-- INTAKE FORM TAB -->
+<div id="tab-intake" class="tab-content">
+<div class="intake-card">
+<h2 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px">New Lead Intake</h2>
+<p style="font-size:13px;color:var(--m);margin-bottom:24px">Hand this device to a visitor or fill it in together at the booth.</p>
+<form id="intakeForm">
+<div class="form-group">
+<label class="form-label" for="in-name">Name *</label>
+<input class="form-input" type="text" id="in-name" placeholder="Full name" autocomplete="name">
+<div class="intake-error" id="in-err-name"></div>
+</div>
+<div class="form-group">
+<label class="form-label" for="in-email">Email *</label>
+<input class="form-input" type="email" id="in-email" placeholder="you@example.com" autocomplete="email">
+<div class="intake-error" id="in-err-email"></div>
+</div>
+<div class="form-group">
+<label class="form-label" for="in-phone">Phone</label>
+<input class="form-input" type="tel" id="in-phone" placeholder="(416) 555-0000" autocomplete="tel">
+</div>
+<div class="form-group">
+<label class="form-label" for="in-address">Address</label>
+<input class="form-input" type="text" id="in-address" placeholder="Street address, city" autocomplete="street-address">
+</div>
+<div class="form-group">
+<label class="form-label">Interested In</label>
+<div class="intake-tags" id="intakeTags"></div>
+</div>
+<div class="form-group">
+<label class="form-label" for="in-notes">Anything else?</label>
+<textarea class="form-input" id="in-notes" placeholder="Budget, timeline, specific requirements..." style="min-height:90px"></textarea>
+</div>
+<button type="submit" class="intake-submit" id="intakeSubmitBtn">Add Lead &rarr;</button>
+</form>
+
+<div class="intake-success" id="intakeSuccess">
+<div class="check-icon">&check;</div>
+<h3>Lead captured!</h3>
+<p>Added to your leads list. Ready for the next one.</p>
+<button class="btn-p" style="margin-top:20px" onclick="resetIntakeForm()">Add Another &rarr;</button>
+</div>
+</div>
+</div>
+
+<!-- QR CODE TAB -->
+<div id="tab-qrcode" class="tab-content">
+<div class="qr-card">
+<h2>Your QR Code</h2>
+<p>Display this at your booth. Visitors scan it to fill out your lead capture form instantly.</p>
+<div class="qr-display"><img id="qr-img" width="280" height="280" alt="QR Code" style="display:block"></div>
+<div class="qr-url">
+<input class="form-input" id="qr-url-input" readonly>
+<button class="btn-copy" onclick="copyUrl()">Copy Link</button>
+</div>
+<div class="qr-actions">
+<button class="btn-p" onclick="downloadQR()">Download PNG</button>
+<button class="btn-s" onclick="printQR()">Print</button>
+</div>
+</div>
+</div>
+
+</div>
+
+</div><!-- /dashboardView -->
+
+<!-- FOOTER -->
+<footer>
+<div class="fl">YourEdge<span class="dot">.</span></div>
+<div class="fr">
+&copy; 2026 YourEdge AI Integrations
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+<a href="security.html">Security</a>
+<a href="contact.html">Contact</a>
+</div>
+</footer>
+
+<script>
+/* ══ NAV ══ */
+window.addEventListener('scroll',function(){document.querySelector('nav').classList.toggle('scrolled',window.scrollY>50)});
+function closeMobile(){document.querySelector('.ham').classList.remove('open');document.getElementById('mobileMenu').classList.remove('open')}
+
+/* ══ MOCK DATA ══ */
+var now=new Date();
+function ago(mins){return new Date(now.getTime()-mins*60000).toISOString()}
+
+var leads=[
+{id:'1',name:'Sarah Mitchell',email:'sarah.m@gmail.com',phone:'(416) 555-0142',address:'42 Maple Ridge Dr, Toronto ON M4B 1T7',interests:['Kitchen','Bathroom'],customer_notes:'Looking for a modern island layout with quartz countertops',notes:'Very interested. Has a $40K budget. Follow up Monday.',created_at:ago(3)},
+{id:'2',name:'David Chen',email:'dchen@outlook.com',phone:'(647) 555-0387',address:'118 Bloor St W, Unit 2204, Toronto ON M5S 1M4',interests:['Bathroom'],customer_notes:'',notes:'',created_at:ago(18)},
+{id:'3',name:'Priya Patel',email:'priya.p@yahoo.com',phone:'(905) 555-0219',address:'7 Oakwood Cres, Mississauga ON L5B 3H2',interests:['Smart Home','Electrical'],customer_notes:'Already has Nest — wants everything integrated',notes:'Already has Nest. Wants full integration.',created_at:ago(35)},
+{id:'4',name:'Marcus Williams',email:'m.williams@icloud.com',phone:'(416) 555-0891',address:'305 Queen St E, Toronto ON M5A 1S7',interests:['Flooring'],customer_notes:'',notes:'',created_at:ago(52)},
+{id:'5',name:'Jennifer Okafor',email:'jen.okafor@gmail.com',phone:'(647) 555-0634',address:'89 Weston Rd, York ON M6N 3P4',interests:['Windows','Doors'],customer_notes:'Townhouse, 12 windows total. Wants energy efficient options.',notes:'Townhouse, 12 windows total. Wants a quote.',created_at:ago(78)},
+{id:'6',name:'Tom Bergeron',email:'tberg@rogers.com',phone:'(905) 555-0445',address:'15 Lakeshore Blvd, Oakville ON L6J 1H3',interests:['Roofing','Insulation'],customer_notes:'',notes:'',created_at:ago(105)},
+{id:'7',name:'Aisha Rahman',email:'aisha.r@hotmail.com',phone:'(416) 555-0776',address:'201 Danforth Ave, Toronto ON M4K 1N2',interests:['Basement'],customer_notes:'Need a home office and rec room for the kids',notes:'',created_at:ago(140)},
+{id:'8',name:'Mike Thornton',email:'mthornton22@gmail.com',phone:'(647) 555-0158',address:'53 Royal York Rd, Etobicoke ON M8V 2B7',interests:['Deck','Outdoor'],customer_notes:'Has architectural drawings already',notes:'Has architectural drawings already.',created_at:ago(195)}
+];
+
+/* ══ TIME AGO ══ */
+function timeAgo(iso){
+var d=new Date(iso),diff=Math.floor((now-d)/1000);
+if(diff<60)return 'Just now';
+if(diff<3600)return Math.floor(diff/60)+' min ago';
+if(diff<86400)return Math.floor(diff/3600)+' hr ago';
+return Math.floor(diff/86400)+' day ago';
+}
+
+/* ══ TAB SWITCHING ══ */
+function switchTab(tab){
+document.querySelectorAll('.tab-content').forEach(function(el){el.classList.remove('active')});
+document.getElementById('tab-'+tab).classList.add('active');
+document.querySelectorAll('.dash-tab').forEach(function(btn){btn.classList.remove('active')});
+var tabs=['leads','analytics','intake','qrcode'];
+document.querySelectorAll('.dash-tab')[tabs.indexOf(tab)].classList.add('active');
+if(tab==='intake')renderIntakeTags();
+if(tab==='qrcode')renderQR();
+}
+
+/* ══ RENDER LEADS ══ */
+function renderLeads(){
+var list=document.getElementById('leads-list');
+list.innerHTML='';
+if(!leads.length){
+list.innerHTML='<div class="empty-state"><p>No leads yet. Share your QR code to start capturing!</p></div>';
+return;
+}
+leads.forEach(function(l){list.appendChild(createLeadCard(l))});
+document.getElementById('tab-lead-count').textContent=leads.length;
+}
+
+function createLeadCard(l){
+var card=document.createElement('div');
+card.className='lead-card';
+card.dataset.leadId=l.id;
+var tagsHtml='';
+if(l.interests&&l.interests.length){
+tagsHtml='<div class="lead-tags">';
+l.interests.forEach(function(t){tagsHtml+='<span class="lead-tag">'+esc(t)+'</span>'});
+tagsHtml+='</div>';
+}
+var custNotes=l.customer_notes?'<div class="lead-custnote"><strong>Customer Notes</strong>'+esc(l.customer_notes)+'</div>':'';
+card.innerHTML=
+'<div class="lead-header">'+
+'<div class="lead-info"><span class="lead-name">'+esc(l.name)+'</span><span class="lead-time">'+timeAgo(l.created_at)+'</span></div>'+
+'<button class="lead-toggle" onclick="toggleNotes(this)" aria-label="Toggle notes">&#9660;</button>'+
+'</div>'+
+'<div class="lead-details">'+
+'<div class="lead-field"><div class="lead-label">Email</div><a class="lead-value" href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a></div>'+
+'<div class="lead-field"><div class="lead-label">Phone</div><a class="lead-value" href="tel:'+esc(l.phone)+'">'+esc(l.phone)+'</a></div>'+
+(l.address?'<div class="lead-field"><div class="lead-label">Address</div><span class="lead-value">'+esc(l.address)+'</span></div>':'')+
+'</div>'+
+tagsHtml+
+custNotes+
+'<div class="lead-notes" id="notes-'+l.id+'">'+
+'<textarea placeholder="Add notes about this lead..." oninput="saveNotes(this,\''+l.id+'\')">'+esc(l.notes)+'</textarea>'+
+'<div class="notes-status" id="ns-'+l.id+'"></div>'+
+'</div>';
+return card;
+}
+
+function esc(s){if(!s)return '';var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+/* ══ NOTES ══ */
+function toggleNotes(btn){
+btn.classList.toggle('open');
+var card=btn.closest('.lead-card');
+var notes=card.querySelector('.lead-notes');
+notes.classList.toggle('open');
+if(notes.classList.contains('open'))notes.querySelector('textarea').focus();
+}
+
+var noteTimers={};
+function saveNotes(textarea,id){
+clearTimeout(noteTimers[id]);
+var status=document.getElementById('ns-'+id);
+status.textContent='';status.className='notes-status';
+noteTimers[id]=setTimeout(function(){
+var lead=leads.find(function(l){return l.id===id});
+if(lead)lead.notes=textarea.value;
+status.textContent='Saved';status.className='notes-status saved';
+setTimeout(function(){status.textContent=''},2000);
+},800);
+}
+
+/* ══ SEARCH ══ */
+function filterLeads(){
+var q=document.getElementById('lead-search').value.toLowerCase();
+document.querySelectorAll('.lead-card').forEach(function(card){
+card.style.display=card.textContent.toLowerCase().includes(q)?'':'none';
+});
+}
+
+/* ══ CSV EXPORT ══ */
+function exportCSV(){
+var rows=[['Name','Email','Phone','Address','Interests','Customer Notes','Team Notes','Timestamp']];
+leads.forEach(function(l){
+rows.push([l.name,l.email,l.phone||'',l.address||'',(l.interests||[]).join(', '),l.customer_notes||'',l.notes||'',new Date(l.created_at).toLocaleString()]);
+});
+var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"'}).join(',')}).join('\n');
+var blob=new Blob([csv],{type:'text/csv'});
+var url=URL.createObjectURL(blob);
+var a=document.createElement('a');
+a.href=url;a.download='leads-acme-home-renovations.csv';a.click();
+URL.revokeObjectURL(url);
+}
+
+/* ══ ANALYTICS ══ */
+function renderAnalytics(){
+document.getElementById('stat-total').textContent=leads.length;
+
+var todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+var todayLeads=leads.filter(function(l){return new Date(l.created_at)>=todayStart});
+document.getElementById('stat-today').textContent=todayLeads.length;
+
+/* Mock hourly data for a realistic trade show curve */
+var hours=[0,0,0,0,0,0,0,0,1,3,5,7,8,6,7,5,4,3,1,0,0,0,0,0];
+var maxH=Math.max.apply(null,hours);
+
+var activeHrs=hours.filter(function(h){return h>0}).length||1;
+var total=hours.reduce(function(a,b){return a+b},0);
+document.getElementById('stat-avg').textContent=(total/activeHrs).toFixed(1);
+
+var peakIdx=hours.indexOf(maxH);
+var peakLabel=peakIdx===0?'12 AM':peakIdx<12?peakIdx+' AM':peakIdx===12?'12 PM':(peakIdx-12)+' PM';
+document.getElementById('stat-peak').textContent=peakLabel;
+
+/* Render bars */
+var chart=document.getElementById('hourly-chart');
+chart.innerHTML='';
+for(var i=8;i<=18;i++){
+var col=document.createElement('div');col.className='bar-col';
+var count=document.createElement('div');count.className='bar-count';count.textContent=hours[i]||'';
+var bar=document.createElement('div');bar.className='bar';
+bar.style.height=maxH?Math.round(hours[i]/maxH*100)+'%':'0';
+var label=document.createElement('div');label.className='bar-label';
+label.textContent=i<=12?(i+'a'):(i-12+'p');
+col.appendChild(count);col.appendChild(bar);col.appendChild(label);
+chart.appendChild(col);
+}
+
+/* Activity feed */
+var feed=document.getElementById('activity-feed');
+feed.innerHTML='';
+leads.slice(0,5).forEach(function(l){
+var item=document.createElement('div');item.className='activity-item';
+item.innerHTML='<div><div class="activity-name">'+esc(l.name)+'</div>'+(l.interests&&l.interests.length?'<div class="activity-interest">'+l.interests.map(function(t){return esc(t)}).join(', ')+'</div>':'')+'</div><div class="activity-time">'+timeAgo(l.created_at)+'</div>';
+feed.appendChild(item);
+});
+}
+
+/* ══ QR CODE ══ */
+var qrUrl='https://weareyouredge.com/samplecrm?booth=acme-home';
+var qrRendered=false;
+function renderQR(){
+document.getElementById('qr-url-input').value=qrUrl;
+if(qrRendered)return;
+var apiUrl='https://api.qrserver.com/v1/create-qr-code/?size=280x280&data='+encodeURIComponent(qrUrl);
+var img=document.getElementById('qr-img');
+img.src=apiUrl;
+qrRendered=true;
+}
+function copyUrl(){
+navigator.clipboard.writeText(qrUrl);
+var btn=document.querySelector('.btn-copy');
+btn.textContent='Copied!';
+setTimeout(function(){btn.textContent='Copy Link'},2000);
+}
+function downloadQR(){
+var a=document.createElement('a');
+a.download='qr-acme-home-renovations.png';
+a.href='https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data='+encodeURIComponent(qrUrl);
+a.click();
+}
+function printQR(){
+var imgSrc='https://api.qrserver.com/v1/create-qr-code/?size=600x600&data='+encodeURIComponent(qrUrl);
+var win=window.open('');
+win.document.write('<html><body style="display:flex;justify-content:center;align-items:center;min-height:100vh;flex-direction:column;font-family:sans-serif"><h1 style="margin-bottom:8px">Acme Home Renovations</h1><p style="color:#666;margin-bottom:32px">Scan to connect with us!</p><img src="'+imgSrc+'" style="width:400px;height:400px"><p style="margin-top:24px;color:#999;font-size:13px">Powered by YourEdge</p></body></html>');
+setTimeout(function(){win.print()},300);
+}
+
+/* ══ ADD LEAD ══ */
+var interestOptions=['Kitchen','Bathroom','Roofing','Windows','Doors','Flooring','Basement','Deck','Smart Home','Electrical','Insulation','Outdoor','Painting','Plumbing','HVAC'];
+
+function renderAddTags(){
+var wrap=document.getElementById('add-tags');
+wrap.innerHTML='';
+interestOptions.forEach(function(t){
+var tag=document.createElement('span');
+tag.className='add-tag';
+tag.textContent=t;
+tag.onclick=function(){this.classList.toggle('selected')};
+wrap.appendChild(tag);
+});
+}
+
+function toggleAddLead(){
+var form=document.getElementById('addLeadForm');
+form.classList.toggle('open');
+if(form.classList.contains('open')){
+renderAddTags();
+document.getElementById('add-name').focus();
+}
+}
+
+function submitManualLead(){
+var name=document.getElementById('add-name').value.trim();
+var email=document.getElementById('add-email').value.trim();
+if(!name||!email){alert('Name and email are required.');return}
+var phone=document.getElementById('add-phone').value.trim();
+var address=document.getElementById('add-address').value.trim();
+var notes=document.getElementById('add-notes').value.trim();
+var selected=[];
+document.querySelectorAll('.add-tag.selected').forEach(function(t){selected.push(t.textContent)});
+
+var newLead={
+id:String(Date.now()),
+name:name,email:email,phone:phone,address:address,
+interests:selected,customer_notes:notes,notes:'',
+created_at:new Date().toISOString()
+};
+leads.unshift(newLead);
+renderLeads();
+renderAnalytics();
+
+/* Reset form */
+document.getElementById('add-name').value='';
+document.getElementById('add-email').value='';
+document.getElementById('add-phone').value='';
+document.getElementById('add-address').value='';
+document.getElementById('add-notes').value='';
+document.getElementById('addLeadForm').classList.remove('open');
+}
+
+/* ══ INTAKE FORM ══ */
+function renderIntakeTags(){
+var wrap=document.getElementById('intakeTags');
+if(!wrap)return;
+wrap.innerHTML='';
+interestOptions.forEach(function(t){
+var tag=document.createElement('span');
+tag.className='intake-tag';
+tag.textContent=t;
+tag.onclick=function(){this.classList.toggle('selected')};
+wrap.appendChild(tag);
+});
+}
+
+function showIntakeError(id,msg){
+var el=document.getElementById(id);
+if(el)el.textContent=msg;
+}
+function clearIntakeError(id){
+var el=document.getElementById(id);
+if(el)el.textContent='';
+}
+
+function resetIntakeForm(){
+document.getElementById('intakeForm').style.display='';
+document.getElementById('intakeSuccess').classList.remove('visible');
+document.getElementById('in-name').value='';
+document.getElementById('in-email').value='';
+document.getElementById('in-phone').value='';
+document.getElementById('in-address').value='';
+document.getElementById('in-notes').value='';
+document.getElementById('intakeSubmitBtn').textContent='Add Lead \u2192';
+document.getElementById('intakeSubmitBtn').disabled=false;
+clearIntakeError('in-err-name');
+clearIntakeError('in-err-email');
+renderIntakeTags();
+document.getElementById('in-name').focus();
+}
+
+document.getElementById('intakeForm').addEventListener('submit',function(e){
+e.preventDefault();
+var name=document.getElementById('in-name').value.trim();
+var email=document.getElementById('in-email').value.trim();
+var phone=document.getElementById('in-phone').value.trim();
+var address=document.getElementById('in-address').value.trim();
+var notes=document.getElementById('in-notes').value.trim();
+var selected=[];
+document.querySelectorAll('.intake-tag.selected').forEach(function(t){selected.push(t.textContent)});
+
+var valid=true;
+if(!name||name.length<2){showIntakeError('in-err-name','Please enter your name');valid=false}else{clearIntakeError('in-err-name')}
+if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){showIntakeError('in-err-email','Please enter a valid email');valid=false}else{clearIntakeError('in-err-email')}
+if(!valid)return;
+
+var btn=document.getElementById('intakeSubmitBtn');
+btn.textContent='Adding...';
+btn.disabled=true;
+
+var newLead={
+id:String(Date.now()),
+name:name,email:email,phone:phone,address:address,
+interests:selected,customer_notes:notes,notes:'',
+created_at:new Date().toISOString(),
+source:'intake'
+};
+
+leads.unshift(newLead);
+renderLeads();
+renderAnalytics();
+
+/* Show success */
+document.getElementById('intakeForm').style.display='none';
+document.getElementById('intakeSuccess').classList.add('visible');
+});
+
+/* Clear errors on input */
+document.querySelectorAll('#intakeForm .form-input').forEach(function(input){
+input.addEventListener('input',function(){
+var errId=input.id.replace('in-','in-err-');
+clearIntakeError(errId);
+});
+});
+
+/* ══ QR INTAKE FORM (standalone visitor view) ══ */
+function renderQrIntakeTags(){
+var wrap=document.getElementById('qrIntakeTags');
+if(!wrap)return;
+wrap.innerHTML='';
+interestOptions.forEach(function(t){
+var tag=document.createElement('span');
+tag.className='intake-tag';
+tag.textContent=t;
+tag.onclick=function(){this.classList.toggle('selected')};
+wrap.appendChild(tag);
+});
+}
+
+document.getElementById('qrIntakeForm').addEventListener('submit',function(e){
+e.preventDefault();
+var name=document.getElementById('qr-name').value.trim();
+var email=document.getElementById('qr-email').value.trim();
+var phone=document.getElementById('qr-phone').value.trim();
+var address=document.getElementById('qr-address').value.trim();
+var notes=document.getElementById('qr-notes').value.trim();
+var selected=[];
+document.querySelectorAll('#qrIntakeTags .intake-tag.selected').forEach(function(t){selected.push(t.textContent)});
+
+var valid=true;
+var errName=document.getElementById('qr-err-name');
+var errEmail=document.getElementById('qr-err-email');
+if(!name||name.length<2){errName.textContent='Please enter your name';valid=false}else{errName.textContent=''}
+if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){errEmail.textContent='Please enter a valid email';valid=false}else{errEmail.textContent=''}
+if(!valid)return;
+
+var btn=document.getElementById('qrSubmitBtn');
+btn.textContent='Submitting...';
+btn.disabled=true;
+
+/* Save to localStorage so dashboard picks it up */
+var newLead={
+id:String(Date.now()),
+name:name,email:email,phone:phone,address:address,
+interests:selected,customer_notes:notes,notes:'',
+created_at:new Date().toISOString(),
+source:'qr'
+};
+var key='ye-leads-acme-home';
+var stored=[];
+try{stored=JSON.parse(localStorage.getItem(key))||[]}catch(ex){}
+stored.unshift(newLead);
+localStorage.setItem(key,JSON.stringify(stored));
+
+document.getElementById('qrIntakeForm').style.display='none';
+document.getElementById('qrIntakeSuccess').classList.add('visible');
+});
+
+/* Clear errors on QR form input */
+document.querySelectorAll('#qrIntakeForm .form-input').forEach(function(input){
+input.addEventListener('input',function(){
+var errId=input.id.replace('qr-','qr-err-');
+var el=document.getElementById(errId);
+if(el)el.textContent='';
+});
+});
+
+/* ══ LOAD LEADS FROM LOCALSTORAGE ══ */
+function loadLocalLeads(){
+var key='ye-leads-acme-home';
+try{
+var stored=JSON.parse(localStorage.getItem(key))||[];
+if(stored.length){
+var existingIds={};
+leads.forEach(function(l){existingIds[l.id]=true});
+stored.forEach(function(l){
+if(!existingIds[l.id]){leads.unshift(l);existingIds[l.id]=true}
+});
+leads.sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at)});
+}
+}catch(ex){}
+}
+
+/* ══ INIT / ROUTING ══ */
+var params=new URLSearchParams(window.location.search);
+var boothSlug=params.get('booth');
+
+if(boothSlug){
+/* Visitor scanned QR — show only the intake form */
+document.getElementById('qrIntakeView').classList.add('active');
+document.getElementById('dashboardView').style.display='none';
+document.querySelector('nav').style.display='none';
+document.querySelector('footer').style.display='none';
+renderQrIntakeTags();
+}else{
+/* Vendor dashboard */
+loadLocalLeads();
+renderLeads();
+renderAnalytics();
+}
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
