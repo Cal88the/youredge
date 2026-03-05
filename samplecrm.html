@@ -102,13 +102,14 @@ a.lead-value:hover{color:var(--blue)}
 .notes-status{font-size:11px;font-weight:600;margin-top:6px;height:16px}
 .notes-status.saved{color:var(--green)}
 .voice-section{margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.btn-mic{width:40px;height:40px;border-radius:50%;background:var(--bg);border:1px solid var(--bdr);color:var(--g);font-size:16px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.btn-mic:hover{border-color:var(--bdr-h);color:var(--w)}
+.btn-mic{width:32px;height:32px;border-radius:8px;background:var(--bg);border:1px solid var(--bdr);color:var(--d);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0}
+.btn-mic svg{width:14px;height:14px}
+.btn-mic:hover{border-color:var(--bdr-h);color:var(--g)}
 .btn-mic.recording{background:var(--red-g);border-color:var(--red);color:var(--red);animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .voice-player{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
 .voice-player audio{height:32px;flex:1;min-width:0}
-.btn-del-voice{background:none;border:none;color:var(--d);cursor:pointer;font-size:14px;padding:4px 8px;border-radius:6px;transition:.2s}
+.btn-del-voice{background:none;border:none;color:var(--d);cursor:pointer;font-size:12px;padding:4px 6px;border-radius:6px;transition:.2s}
 .btn-del-voice:hover{color:var(--red);background:var(--red-g)}
 .voice-time{font-size:11px;color:var(--m);font-weight:600}
 
@@ -465,14 +466,14 @@ var now=new Date();
 function ago(mins){return new Date(now.getTime()-mins*60000).toISOString()}
 
 var leads=[
-{id:'1',name:'Sarah Mitchell',email:'sarah.m@gmail.com',phone:'(416) 555-0142',address:'42 Maple Ridge Dr, Toronto ON M4B 1T7',interests:['Kitchen','Bathroom'],customer_notes:'Looking for a modern island layout with quartz countertops',notes:'Very interested. Has a $40K budget. Follow up Monday.',starred:true,created_at:ago(3)},
+{id:'1',name:'Sarah Mitchell',email:'sarah.m@gmail.com',phone:'(416) 555-0142',address:'42 Maple Ridge Dr, Toronto ON M4B 1T7',interests:['Kitchen','Bathroom'],customer_notes:'Looking for a modern island layout with quartz countertops',notes:'',created_at:ago(3)},
 {id:'2',name:'David Chen',email:'dchen@outlook.com',phone:'(647) 555-0387',address:'118 Bloor St W, Unit 2204, Toronto ON M5S 1M4',interests:['Bathroom'],customer_notes:'',notes:'',created_at:ago(18)},
-{id:'3',name:'Priya Patel',email:'priya.p@yahoo.com',phone:'(905) 555-0219',address:'7 Oakwood Cres, Mississauga ON L5B 3H2',interests:['Smart Home','Electrical'],customer_notes:'Already has Nest — wants everything integrated',notes:'Already has Nest. Wants full integration.',created_at:ago(35)},
+{id:'3',name:'Priya Patel',email:'priya.p@yahoo.com',phone:'(905) 555-0219',address:'7 Oakwood Cres, Mississauga ON L5B 3H2',interests:['Smart Home','Electrical'],customer_notes:'Already has Nest — wants everything integrated',notes:'',created_at:ago(35)},
 {id:'4',name:'Marcus Williams',email:'m.williams@icloud.com',phone:'(416) 555-0891',address:'305 Queen St E, Toronto ON M5A 1S7',interests:['Flooring'],customer_notes:'',notes:'',created_at:ago(52)},
-{id:'5',name:'Jennifer Okafor',email:'jen.okafor@gmail.com',phone:'(647) 555-0634',address:'89 Weston Rd, York ON M6N 3P4',interests:['Windows','Doors'],customer_notes:'Townhouse, 12 windows total. Wants energy efficient options.',notes:'Townhouse, 12 windows total. Wants a quote.',starred:true,created_at:ago(78)},
+{id:'5',name:'Jennifer Okafor',email:'jen.okafor@gmail.com',phone:'(647) 555-0634',address:'89 Weston Rd, York ON M6N 3P4',interests:['Windows','Doors'],customer_notes:'Townhouse, 12 windows total. Wants energy efficient options.',notes:'',created_at:ago(78)},
 {id:'6',name:'Tom Bergeron',email:'tberg@rogers.com',phone:'(905) 555-0445',address:'15 Lakeshore Blvd, Oakville ON L6J 1H3',interests:['Roofing','Insulation'],customer_notes:'',notes:'',created_at:ago(105)},
 {id:'7',name:'Aisha Rahman',email:'aisha.r@hotmail.com',phone:'(416) 555-0776',address:'201 Danforth Ave, Toronto ON M4K 1N2',interests:['Basement'],customer_notes:'Need a home office and rec room for the kids',notes:'',created_at:ago(140)},
-{id:'8',name:'Mike Thornton',email:'mthornton22@gmail.com',phone:'(647) 555-0158',address:'53 Royal York Rd, Etobicoke ON M8V 2B7',interests:['Deck','Outdoor'],customer_notes:'Has architectural drawings already',notes:'Has architectural drawings already.',created_at:ago(195)}
+{id:'8',name:'Mike Thornton',email:'mthornton22@gmail.com',phone:'(647) 555-0158',address:'53 Royal York Rd, Etobicoke ON M8V 2B7',interests:['Deck','Outdoor'],customer_notes:'Has architectural drawings already',notes:'',created_at:ago(195)}
 ];
 
 /* ══ TIME AGO ══ */
@@ -534,7 +535,7 @@ custNotes+
 '<textarea placeholder="Add notes about this lead..." oninput="saveNotes(this,\''+l.id+'\')">'+esc(l.notes)+'</textarea>'+
 '<div class="notes-status" id="ns-'+l.id+'"></div>'+
 '<div class="voice-section" id="voice-'+l.id+'">'+
-'<button class="btn-mic" onclick="toggleRecording(\''+l.id+'\')" id="mic-'+l.id+'" aria-label="Record voice note" title="Record voice note">&#127908;</button>'+
+'<button class="btn-mic" onclick="toggleRecording(\''+l.id+'\')" id="mic-'+l.id+'" aria-label="Record voice note" title="Record voice note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="1" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/></svg></button>'+
 '<span class="voice-time" id="vtime-'+l.id+'"></span>'+
 '<div class="voice-player" id="vplayer-'+l.id+'" style="display:none"></div>'+
 '</div>'+
@@ -587,65 +588,119 @@ setTimeout(function(){status.textContent=''},2000);
 }
 
 /* ══ VOICE NOTES ══ */
-var recorders={};
-var recTimers={};
+var activeRec=null; /* {id, recorder, stream, timer, recognizer} */
+var SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
 
 function toggleRecording(id){
-if(recorders[id]){
-stopRecording(id);
-}else{
-startRecording(id);
+if(activeRec&&activeRec.id===id){
+/* Stop current recording */
+try{activeRec.recorder.stop()}catch(ex){}
+if(activeRec.recognizer){try{activeRec.recognizer.abort()}catch(ex){}}
+return;
 }
+/* Stop any other active recording first */
+if(activeRec){
+try{activeRec.recorder.stop()}catch(ex){}
+if(activeRec.recognizer){try{activeRec.recognizer.abort()}catch(ex){}}
+}
+startRecording(id);
 }
 
 function startRecording(id){
-navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
 var mic=document.getElementById('mic-'+id);
 var vtime=document.getElementById('vtime-'+id);
+var textarea=document.querySelector('#notes-'+id+' textarea');
+
+navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
 var chunks=[];
-var rec=new MediaRecorder(stream);
+var opts={};
+if(MediaRecorder.isTypeSupported('audio/webm'))opts.mimeType='audio/webm';
+else if(MediaRecorder.isTypeSupported('audio/mp4'))opts.mimeType='audio/mp4';
+var rec=new MediaRecorder(stream,opts);
+
 rec.ondataavailable=function(e){if(e.data.size>0)chunks.push(e.data)};
+
 rec.onstop=function(){
 stream.getTracks().forEach(function(t){t.stop()});
-var blob=new Blob(chunks,{type:'audio/webm'});
+clearInterval(activeRec.timer);
+mic.classList.remove('recording');
+vtime.textContent='';
+
+if(chunks.length){
+var blob=new Blob(chunks,{type:rec.mimeType||'audio/webm'});
 var url=URL.createObjectURL(blob);
 var lead=leads.find(function(l){return l.id===id});
 if(lead)lead.voiceUrl=url;
 showVoicePlayer(id,url);
-mic.classList.remove('recording');
-vtime.textContent='';
-clearInterval(recTimers[id]);
-delete recorders[id];
+}
+activeRec=null;
 };
-rec.start();
-recorders[id]=rec;
-mic.classList.add('recording');
+
+rec.start(1000); /* collect data every second */
+
+/* Timer display */
 var secs=0;
+mic.classList.add('recording');
 vtime.textContent='0:00';
-recTimers[id]=setInterval(function(){
+var timer=setInterval(function(){
 secs++;
-var m=Math.floor(secs/60);
-var s=secs%60;
-vtime.textContent=m+':'+(s<10?'0':'')+s;
+vtime.textContent=Math.floor(secs/60)+':'+(secs%60<10?'0':'')+(secs%60);
 },1000);
-}).catch(function(){
-alert('Microphone access is required to record voice notes.');
-});
+
+activeRec={id:id,recorder:rec,stream:stream,timer:timer,recognizer:null};
+
+/* Live transcription */
+if(SpeechRecognition&&textarea){
+try{
+var sr=new SpeechRecognition();
+sr.continuous=true;
+sr.interimResults=true;
+sr.lang='en-US';
+var baseText=textarea.value;
+if(baseText&&!/[\s\n]$/.test(baseText))baseText+='\n';
+
+sr.onresult=function(e){
+var final='',interim='';
+for(var i=e.resultIndex;i<e.results.length;i++){
+if(e.results[i].isFinal){
+final+=e.results[i][0].transcript;
+}else{
+interim+=e.results[i][0].transcript;
+}
+}
+if(final){
+baseText+=final;
+var lead=leads.find(function(l){return l.id===id});
+if(lead)lead.notes=baseText;
+var status=document.getElementById('ns-'+id);
+if(status){status.textContent='Transcribed';status.className='notes-status saved';
+setTimeout(function(){if(status.textContent==='Transcribed')status.textContent=''},2000)}
+}
+textarea.value=baseText+(interim?' '+interim:'');
+};
+
+sr.onerror=function(){};
+sr.onend=function(){
+if(activeRec&&activeRec.id===id){
+try{sr.start()}catch(ex){}
+}
+};
+sr.start();
+activeRec.recognizer=sr;
+}catch(ex){}
 }
 
-function stopRecording(id){
-if(recorders[id]&&recorders[id].state==='recording'){
-recorders[id].stop();
-}
+}).catch(function(){
+alert('Microphone access is required for voice notes.');
+});
 }
 
 function showVoicePlayer(id,url){
 var player=document.getElementById('vplayer-'+id);
 if(!player)return;
 player.style.display='flex';
-player.innerHTML='<audio controls src="'+url+'" style="height:32px;flex:1;min-width:0"></audio>'+
-'<button class="btn-del-voice" onclick="deleteVoice(\''+id+'\')" title="Delete recording">&#10005;</button>';
-/* Hide mic button since we have a recording */
+player.innerHTML='<audio controls src="'+url+'"></audio>'+
+'<button class="btn-del-voice" onclick="deleteVoice(\''+id+'\')" title="Delete">&#10005;</button>';
 var mic=document.getElementById('mic-'+id);
 if(mic)mic.style.display='none';
 var vtime=document.getElementById('vtime-'+id);
