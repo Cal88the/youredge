@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acme Home Renovations — Lead Dashboard</title>
+<title>Above All Awnings Inc. — Lead Dashboard</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='g'><stop offset='0%25' stop-color='%23fff'/><stop offset='40%25' stop-color='%23bfdbfe'/><stop offset='100%25' stop-color='%232563eb'/></radialGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23g)'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,10 +44,16 @@ nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
 .mobile-menu a:hover{color:var(--w)}
 .mobile-menu .nv-cta{text-align:center;justify-content:center;padding:14px 28px;border-radius:10px}
 
+/* CRM TOP BAR */
+.crm-topbar{display:flex;align-items:center;gap:16px;padding:16px 32px;border-bottom:1px solid var(--bdr)}
+.crm-topbar-sep{color:var(--d);font-size:20px;font-weight:300}
+.crm-topbar-logo{height:40px}
+
 /* HEADER */
-.dash-header{padding:100px 48px 0;text-align:center}
+.dash-header{padding:48px 48px 0;text-align:center}
 .dash-company{font-size:clamp(24px,4vw,36px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:4px}
 .dash-event{font-size:13px;color:var(--m);font-weight:500;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
+.dash-event-logo{max-width:280px;height:auto;margin-bottom:12px;filter:invert(1)}
 .dash-powered{font-size:11px;color:var(--d);font-weight:500}
 .dash-powered a{color:var(--blue);text-decoration:none}
 
@@ -179,6 +185,7 @@ a.lead-value:hover{color:var(--blue)}
 .intake-hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,var(--blue-g) 0%,transparent 70%);pointer-events:none;opacity:.5}
 .intake-hero h1{font-size:clamp(24px,4vw,32px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:8px;position:relative;z-index:1}
 .intake-hero .intake-event{font-size:12px;color:var(--m);font-weight:500;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;position:relative;z-index:1}
+.intake-event-logo{max-width:240px;height:auto;margin-bottom:12px;position:relative;z-index:1;filter:invert(1)}
 .intake-hero p{font-size:15px;color:var(--g);position:relative;z-index:1}
 .intake-powered{font-size:11px;color:var(--d);margin-top:12px;position:relative;z-index:1}
 .intake-powered a{color:var(--blue);text-decoration:none}
@@ -221,7 +228,7 @@ footer a:hover{color:var(--g)}
 nav{padding:0 20px}
 .nv{display:none}
 .ham{display:flex}
-.dash-header{padding:90px 20px 0}
+.dash-header{padding:36px 20px 0}
 .dash-tabs{padding:0 16px}
 .dash-tab{padding:14px 16px;white-space:nowrap}
 .dash-wrap{padding:24px 16px 60px}
@@ -264,8 +271,8 @@ footer a{margin-left:0}
 <!-- ═══ QR INTAKE VIEW (visitor sees this after scanning) ═══ -->
 <div class="intake-view" id="qrIntakeView">
 <section class="intake-hero">
-<div class="intake-event">Toronto Home Show 2026</div>
-<h1>Acme Home Renovations</h1>
+<div class="intake-event">National Home Show 2026</div>
+<h1>Above All Awnings Inc.</h1>
 <p>Connect with us! Fill out the form below and we'll follow up with you.</p>
 <div class="intake-powered">Powered by <a href="/">YourEdge</a></div>
 </section>
@@ -303,7 +310,7 @@ footer a{margin-left:0}
 <div class="intake-success" id="qrIntakeSuccess">
 <div class="check-icon">&check;</div>
 <h3>You're all set!</h3>
-<p>Thanks for connecting with Acme Home Renovations. We'll be in touch soon!</p>
+<p>Thanks for connecting with Above All Awnings Inc.. We'll be in touch soon!</p>
 </div>
 </div>
 </div>
@@ -312,10 +319,17 @@ footer a{margin-left:0}
 <!-- ═══ DASHBOARD ═══ -->
 <div id="dashboardView">
 
+<!-- CRM TOP BAR -->
+<div class="crm-topbar">
+<a href="/" class="nl">YourEdge<span class="dot">.</span></a>
+<span class="crm-topbar-sep">|</span>
+<img src="NHS_2026_HorizontaLogo_White.webp" alt="National Home Show 2026" class="crm-topbar-logo">
+</div>
+
 <!-- HEADER -->
 <div class="dash-header">
-<div class="dash-event">Toronto Home Show 2026</div>
-<h1 class="dash-company">Acme Home Renovations</h1>
+<div class="dash-event">National Home Show 2026 | LEAD CAPTURE PORTAL</div>
+<h1 class="dash-company">Above All Awnings Inc.</h1>
 <div class="dash-powered">Powered by <a href="/">YourEdge</a></div>
 </div>
 
@@ -446,13 +460,8 @@ footer a{margin-left:0}
 
 <!-- FOOTER -->
 <footer>
-<div class="fl">YourEdge<span class="dot">.</span></div>
-<div class="fr">
+<div class="fr" style="width:100%;text-align:center">
 &copy; 2026 YourEdge AI Integrations
-<a href="privacy.html">Privacy</a>
-<a href="terms.html">Terms</a>
-<a href="security.html">Security</a>
-<a href="contact.html">Contact</a>
 </div>
 </footer>
 
@@ -808,7 +817,7 @@ a.click();
 function printQR(){
 var imgSrc='https://api.qrserver.com/v1/create-qr-code/?size=600x600&data='+encodeURIComponent(qrUrl);
 var win=window.open('');
-win.document.write('<html><body style="display:flex;justify-content:center;align-items:center;min-height:100vh;flex-direction:column;font-family:sans-serif"><h1 style="margin-bottom:8px">Acme Home Renovations</h1><p style="color:#666;margin-bottom:32px">Scan to connect with us!</p><img src="'+imgSrc+'" style="width:400px;height:400px"><p style="margin-top:24px;color:#999;font-size:13px">Powered by YourEdge</p></body></html>');
+win.document.write('<html><body style="display:flex;justify-content:center;align-items:center;min-height:100vh;flex-direction:column;font-family:sans-serif"><h1 style="margin-bottom:8px">Above All Awnings Inc.</h1><p style="color:#666;margin-bottom:32px">Scan to connect with us!</p><img src="'+imgSrc+'" style="width:400px;height:400px"><p style="margin-top:24px;color:#999;font-size:13px">Powered by YourEdge</p></body></html>');
 setTimeout(function(){win.print()},300);
 }
 
@@ -1038,7 +1047,9 @@ document.querySelector('nav').style.display='none';
 document.querySelector('footer').style.display='none';
 renderQrIntakeTags();
 }else{
-/* Vendor dashboard */
+/* Vendor dashboard — hide main site nav, show CRM top bar */
+document.querySelector('nav').style.display='none';
+document.querySelector('.mobile-menu').style.display='none';
 loadLocalLeads();
 renderLeads();
 renderAnalytics();
