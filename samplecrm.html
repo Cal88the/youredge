@@ -427,8 +427,15 @@ footer a{margin-left:0}
 <div class="form-group"><label class="form-label">Email *</label><input class="form-input" type="email" id="add-email" placeholder="email@example.com" autocomplete="off"></div>
 </div>
 <div class="add-lead-row">
-<div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" id="add-phone" placeholder="(416) 555-0000" autocomplete="off"></div>
-<div class="form-group"><label class="form-label">Address</label><input class="form-input" type="text" id="add-address" placeholder="Street address, city" autocomplete="off"></div>
+<div class="form-group"><label class="form-label">Phone *</label><input class="form-input" type="tel" id="add-phone" placeholder="(416) 555-0000" autocomplete="off" oninput="formatPhone(this)" maxlength="14"><div class="intake-error" id="add-err-phone"></div></div>
+<div class="form-group"><label class="form-label">Street Address *</label><input class="form-input" type="text" id="add-street" placeholder="123 Main St" autocomplete="off"><div class="intake-error" id="add-err-street"></div></div>
+</div>
+<div class="add-lead-row">
+<div class="form-group"><label class="form-label">City *</label><input class="form-input" type="text" id="add-city" placeholder="Toronto" autocomplete="off"><div class="intake-error" id="add-err-city"></div></div>
+<div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div><label class="form-label">Province</label><select class="form-input" id="add-province" style="height:48px"><option value="ON">ON</option><option value="AB">AB</option><option value="BC">BC</option><option value="MB">MB</option><option value="NB">NB</option><option value="NL">NL</option><option value="NS">NS</option><option value="NT">NT</option><option value="NU">NU</option><option value="PE">PE</option><option value="QC">QC</option><option value="SK">SK</option><option value="YT">YT</option></select></div>
+<div><label class="form-label">Postal Code</label><input class="form-input" type="text" id="add-postal" placeholder="M5V 2T6" autocomplete="off" oninput="formatPostal(this)" maxlength="7"></div>
+</div>
 </div>
 <div class="form-group"><label class="form-label">Interests</label>
 <div class="add-tags" id="add-tags"></div>
@@ -481,12 +488,25 @@ footer a{margin-left:0}
 <div class="intake-error" id="in-err-email"></div>
 </div>
 <div class="form-group">
-<label class="form-label" for="in-phone">Phone</label>
-<input class="form-input" type="tel" id="in-phone" placeholder="(416) 555-0000" autocomplete="tel">
+<label class="form-label" for="in-phone">Phone *</label>
+<input class="form-input" type="tel" id="in-phone" placeholder="(416) 555-0000" autocomplete="tel" oninput="formatPhone(this)" maxlength="14">
+<div class="intake-error" id="in-err-phone"></div>
 </div>
 <div class="form-group">
-<label class="form-label" for="in-address">Address</label>
-<input class="form-input" type="text" id="in-address" placeholder="Street address, city" autocomplete="street-address">
+<label class="form-label" for="in-street">Street Address *</label>
+<input class="form-input" type="text" id="in-street" placeholder="123 Main St" autocomplete="street-address">
+<div class="intake-error" id="in-err-street"></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div class="form-group">
+<label class="form-label" for="in-city">City *</label>
+<input class="form-input" type="text" id="in-city" placeholder="Toronto" autocomplete="address-level2">
+<div class="intake-error" id="in-err-city"></div>
+</div>
+<div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div><label class="form-label" for="in-province">Province</label><select class="form-input" id="in-province" style="height:48px"><option value="ON">ON</option><option value="AB">AB</option><option value="BC">BC</option><option value="MB">MB</option><option value="NB">NB</option><option value="NL">NL</option><option value="NS">NS</option><option value="NT">NT</option><option value="NU">NU</option><option value="PE">PE</option><option value="QC">QC</option><option value="SK">SK</option><option value="YT">YT</option></select></div>
+<div><label class="form-label" for="in-postal">Postal Code</label><input class="form-input" type="text" id="in-postal" placeholder="M5V 2T6" autocomplete="postal-code" oninput="formatPostal(this)" maxlength="7"></div>
+</div>
 </div>
 <div class="form-group">
 <label class="form-label">Interested In</label>
@@ -1101,13 +1121,59 @@ document.getElementById('add-name').focus();
 }
 }
 
+function formatPhone(input){
+var d=input.value.replace(/\D/g,'');
+if(d.length>10)d=d.substring(0,10);
+if(d.length>=7)input.value='('+d.substring(0,3)+') '+d.substring(3,6)+'-'+d.substring(6);
+else if(d.length>=4)input.value='('+d.substring(0,3)+') '+d.substring(3);
+else if(d.length>0)input.value='('+d;
+else input.value='';
+}
+
+function formatPostal(input){
+var v=input.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+if(v.length>6)v=v.substring(0,6);
+if(v.length>3)input.value=v.substring(0,3)+' '+v.substring(3);
+else input.value=v;
+}
+
+function validatePhone(val){
+return /^\(\d{3}\) \d{3}-\d{4}$/.test(val);
+}
+
+function clearAddErrors(){
+['add-err-phone','add-err-street','add-err-city'].forEach(function(id){
+var el=document.getElementById(id);if(el)el.textContent='';
+});
+}
+
+function buildAddress(street,city,province,postal){
+var parts=[street];
+if(city)parts.push(city);
+if(province)parts[parts.length-1]+=' '+province;
+if(postal)parts[parts.length-1]+=' '+postal;
+return parts.join(', ');
+}
+
 function submitManualLead(){
+clearAddErrors();
 var name=document.getElementById('add-name').value.trim();
 var email=document.getElementById('add-email').value.trim();
-if(!name||!email){alert('Name and email are required.');return}
 var phone=document.getElementById('add-phone').value.trim();
-var address=document.getElementById('add-address').value.trim();
+var street=document.getElementById('add-street').value.trim();
+var city=document.getElementById('add-city').value.trim();
+var province=document.getElementById('add-province').value;
+var postal=document.getElementById('add-postal').value.trim();
 var notes=document.getElementById('add-notes').value.trim();
+
+var valid=true;
+if(!name||!email){alert('Name and email are required.');return}
+if(!phone||!validatePhone(phone)){document.getElementById('add-err-phone').textContent='Enter a valid phone: (416) 555-0000';valid=false}
+if(!street){document.getElementById('add-err-street').textContent='Street address is required';valid=false}
+if(!city){document.getElementById('add-err-city').textContent='City is required';valid=false}
+if(!valid)return;
+
+var address=buildAddress(street,city,province,postal);
 var selected=[];
 document.querySelectorAll('.add-tag.selected').forEach(function(t){selected.push(t.textContent)});
 
@@ -1121,13 +1187,16 @@ leads.unshift(newLead);
 renderLeads();
 renderAnalytics();
 
-
 /* Reset form */
 document.getElementById('add-name').value='';
 document.getElementById('add-email').value='';
 document.getElementById('add-phone').value='';
-document.getElementById('add-address').value='';
+document.getElementById('add-street').value='';
+document.getElementById('add-city').value='';
+document.getElementById('add-province').value='ON';
+document.getElementById('add-postal').value='';
 document.getElementById('add-notes').value='';
+clearAddErrors();
 document.getElementById('addLeadForm').classList.remove('open');
 }
 
@@ -1160,12 +1229,14 @@ document.getElementById('intakeSuccess').classList.remove('visible');
 document.getElementById('in-name').value='';
 document.getElementById('in-email').value='';
 document.getElementById('in-phone').value='';
-document.getElementById('in-address').value='';
+document.getElementById('in-street').value='';
+document.getElementById('in-city').value='';
+document.getElementById('in-province').value='ON';
+document.getElementById('in-postal').value='';
 document.getElementById('in-notes').value='';
 document.getElementById('intakeSubmitBtn').textContent='Add Lead \u2192';
 document.getElementById('intakeSubmitBtn').disabled=false;
-clearIntakeError('in-err-name');
-clearIntakeError('in-err-email');
+['in-err-name','in-err-email','in-err-phone','in-err-street','in-err-city'].forEach(function(id){clearIntakeError(id)});
 renderIntakeTags();
 document.getElementById('in-name').focus();
 }
@@ -1175,7 +1246,10 @@ e.preventDefault();
 var name=document.getElementById('in-name').value.trim();
 var email=document.getElementById('in-email').value.trim();
 var phone=document.getElementById('in-phone').value.trim();
-var address=document.getElementById('in-address').value.trim();
+var street=document.getElementById('in-street').value.trim();
+var city=document.getElementById('in-city').value.trim();
+var province=document.getElementById('in-province').value;
+var postal=document.getElementById('in-postal').value.trim();
 var notes=document.getElementById('in-notes').value.trim();
 var selected=[];
 document.querySelectorAll('.intake-tag.selected').forEach(function(t){selected.push(t.textContent)});
@@ -1183,7 +1257,12 @@ document.querySelectorAll('.intake-tag.selected').forEach(function(t){selected.p
 var valid=true;
 if(!name||name.length<2){showIntakeError('in-err-name','Please enter your name');valid=false}else{clearIntakeError('in-err-name')}
 if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){showIntakeError('in-err-email','Please enter a valid email');valid=false}else{clearIntakeError('in-err-email')}
+if(!phone||!validatePhone(phone)){showIntakeError('in-err-phone','Enter a valid phone: (416) 555-0000');valid=false}else{clearIntakeError('in-err-phone')}
+if(!street){showIntakeError('in-err-street','Street address is required');valid=false}else{clearIntakeError('in-err-street')}
+if(!city){showIntakeError('in-err-city','City is required');valid=false}else{clearIntakeError('in-err-city')}
 if(!valid)return;
+
+var address=buildAddress(street,city,province,postal);
 
 var btn=document.getElementById('intakeSubmitBtn');
 btn.textContent='Adding...';
@@ -1201,17 +1280,23 @@ leads.unshift(newLead);
 renderLeads();
 renderAnalytics();
 
-
 /* Show success */
 document.getElementById('intakeForm').style.display='none';
 document.getElementById('intakeSuccess').classList.add('visible');
 });
 
 /* Clear errors on input */
-document.querySelectorAll('#intakeForm .form-input').forEach(function(input){
+document.querySelectorAll('#intakeForm input, #intakeForm select').forEach(function(input){
 input.addEventListener('input',function(){
 var errId=input.id.replace('in-','in-err-');
 clearIntakeError(errId);
+});
+});
+/* Same for manual add form */
+document.querySelectorAll('#addLeadForm input, #addLeadForm select').forEach(function(input){
+input.addEventListener('input',function(){
+var errId=input.id.replace('add-','add-err-');
+var el=document.getElementById(errId);if(el)el.textContent='';
 });
 });
 
