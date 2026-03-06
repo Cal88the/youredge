@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Above All Awnings Inc. — Lead Dashboard</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='g'><stop offset='0%25' stop-color='%23fff'/><stop offset='40%25' stop-color='%23bfdbfe'/><stop offset='100%25' stop-color='%232563eb'/></radialGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23g)'/></svg>">
@@ -19,7 +19,7 @@
 --green:#22c55e;--green-s:rgba(34,197,94,.1);
 --red:#ef4444;--red-g:rgba(239,68,68,.1);
 }
-html{scroll-behavior:smooth;overflow-x:hidden}
+html{scroll-behavior:smooth;overflow-x:hidden;touch-action:manipulation}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--blue);color:var(--w)}
 
@@ -90,6 +90,16 @@ nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
 .lead-dropdown-item.danger:hover{background:var(--red-g)}
 .lead-dropdown-item svg{width:14px;height:14px;flex-shrink:0}
 .lead-dropdown-sep{height:1px;background:var(--bdr);margin:2px 0}
+
+/* Google Places Autocomplete dark theme */
+.pac-container{background:var(--card)!important;border:1px solid var(--bdr-h)!important;border-radius:10px!important;box-shadow:0 8px 32px rgba(0,0,0,.6)!important;margin-top:4px!important;font-family:'Inter',-apple-system,sans-serif!important}
+.pac-item{border-top:1px solid var(--bdr)!important;padding:10px 14px!important;color:var(--g)!important;font-size:14px!important;cursor:pointer!important;line-height:1.4!important}
+.pac-item:first-child{border-top:none!important}
+.pac-item:hover,.pac-item-selected{background:var(--card-h)!important}
+.pac-item-query{color:var(--w)!important;font-weight:600!important}
+.pac-matched{color:var(--blue-h)!important;font-weight:700!important}
+.pac-icon{display:none!important}
+.pac-logo::after{display:none!important}
 .lead-card.new-lead{animation:slideIn .4s ease-out}
 @keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 .lead-header{display:flex;justify-content:space-between;align-items:center}
@@ -112,6 +122,26 @@ a.lead-value:hover{color:var(--blue)}
 .lead-notes textarea::placeholder{color:var(--d)}
 .notes-status{font-size:11px;font-weight:600;margin-top:4px;height:14px}
 .notes-status.saved{color:var(--green)}
+.notes-area{position:relative}
+.notes-area textarea{padding-right:44px}
+.note-save-btn{position:absolute;right:8px;top:8px;width:32px;height:32px;border-radius:8px;border:1px solid var(--bdr);background:var(--card);color:var(--d);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.note-save-btn:hover{border-color:var(--green);color:var(--green);background:rgba(34,197,94,.08)}
+.note-save-btn.saved{border-color:var(--green);color:var(--green);background:rgba(34,197,94,.12)}
+.note-save-btn svg{width:16px;height:16px}
+
+/* Delete confirm modal */
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+.confirm-overlay.visible{opacity:1}
+.confirm-box{background:var(--card);border:1px solid var(--bdr-h);border-radius:16px;padding:28px;max-width:360px;width:90%;text-align:center;transform:scale(.95);transition:transform .2s}
+.confirm-overlay.visible .confirm-box{transform:scale(1)}
+.confirm-box h3{font-size:17px;font-weight:800;margin-bottom:8px}
+.confirm-box p{font-size:14px;color:var(--g);margin-bottom:24px;line-height:1.5}
+.confirm-actions{display:flex;gap:10px}
+.confirm-actions button{flex:1;padding:12px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;border:none;min-height:44px;transition:.2s}
+.confirm-cancel{background:var(--card-h);color:var(--w);border:1px solid var(--bdr-h)!important}
+.confirm-cancel:hover{background:var(--bdr)}
+.confirm-delete{background:var(--red);color:var(--w)}
+.confirm-delete:hover{background:#dc2626}
 .voice-section{margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .btn-mic{height:30px;border-radius:8px;background:var(--bg);border:1px solid var(--bdr);color:var(--d);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;padding:0 10px;font-family:inherit;font-size:11px;font-weight:600}
 .btn-mic svg{width:14px;height:14px}
@@ -192,10 +222,19 @@ a.lead-value:hover{color:var(--blue)}
 .add-lead-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .add-lead-card .form-group{margin-bottom:14px}
 .add-lead-card .form-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--m);margin-bottom:6px;display:block}
-.add-tags{display:flex;flex-wrap:wrap;gap:8px}
-.add-tag{font-size:12px;font-weight:600;color:var(--m);background:var(--bg);padding:6px 14px;border-radius:100px;border:1px solid var(--bdr);cursor:pointer;transition:.2s;user-select:none}
-.add-tag:hover{border-color:var(--bdr-h);color:var(--g)}
-.add-tag.selected{color:var(--blue);background:var(--blue-g);border-color:rgba(37,99,235,.25)}
+.interest-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--bdr);border-radius:10px;overflow:hidden}
+.interest-item{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;transition:.15s;user-select:none;border-bottom:1px solid var(--bdr);border-right:1px solid var(--bdr)}
+.interest-item:nth-child(2n){border-right:none}
+.interest-item:nth-last-child(-n+2){border-bottom:none}
+.interest-item:last-child:nth-child(odd){grid-column:1/-1;border-right:none}
+.interest-item:hover{background:rgba(255,255,255,.02)}
+.interest-item.selected{background:var(--blue-g)}
+.interest-check{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--bdr-h);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s}
+.interest-item.selected .interest-check{background:var(--blue);border-color:var(--blue)}
+.interest-check svg{width:12px;height:12px;opacity:0;transition:.15s}
+.interest-item.selected .interest-check svg{opacity:1}
+.interest-label{font-size:13px;font-weight:500;color:var(--g);transition:.15s}
+.interest-item.selected .interest-label{color:var(--w)}
 .add-lead-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:4px}
 .add-lead-actions .btn-p,.add-lead-actions .btn-s{padding:12px 24px;font-size:13px}
 @media(max-width:768px){.add-lead-row{grid-template-columns:1fr}}
@@ -265,10 +304,8 @@ a.lead-value:hover{color:var(--blue)}
 .intake-card{background:var(--card);border:1px solid var(--bdr-l);border-radius:24px;padding:36px}
 .intake-card .form-group{margin-bottom:18px}
 .intake-card .form-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--m);margin-bottom:6px;display:block}
-.intake-tags{display:flex;flex-wrap:wrap;gap:8px}
-.intake-tag{font-size:13px;font-weight:600;color:var(--m);background:var(--bg);padding:8px 16px;border-radius:100px;border:1px solid var(--bdr);cursor:pointer;transition:.2s;user-select:none}
-.intake-tag:hover{border-color:var(--bdr-h);color:var(--g)}
-.intake-tag.selected{color:var(--blue);background:var(--blue-g);border-color:rgba(37,99,235,.25)}
+.intake-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.intake-tags{/* replaced by interest-grid */}
 .intake-submit{width:100%;padding:16px;background:var(--blue);color:var(--w);border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;min-height:44px;margin-top:8px}
 .intake-submit:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-gs)}
 .intake-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
@@ -280,6 +317,8 @@ a.lead-value:hover{color:var(--blue)}
 .intake-error{font-size:12px;color:var(--red);margin-top:6px;min-height:18px;font-weight:500}
 @media(max-width:768px){
 .intake-card{padding:24px}
+.intake-row{grid-template-columns:1fr}
+.intake-row.row-half{grid-template-columns:1fr 1fr}
 }
 
 /* FOOTER */
@@ -368,7 +407,7 @@ footer a{margin-left:0}
 </div>
 <div class="form-group">
 <label class="form-label">What are you interested in?</label>
-<div class="intake-tags" id="qrIntakeTags"></div>
+<div class="interest-grid" id="qrIntakeTags"></div>
 </div>
 <div class="form-group">
 <label class="form-label" for="qr-notes">Anything else you'd like us to know?</label>
@@ -404,9 +443,9 @@ footer a{margin-left:0}
 
 <!-- TABS -->
 <div class="dash-tabs">
-<button class="dash-tab active" onclick="switchTab('leads')">Leads <span class="tab-count" id="tab-lead-count">8</span></button>
+<button class="dash-tab active" onclick="switchTab('intake')">Add Lead</button>
+<button class="dash-tab" onclick="switchTab('leads')">Leads <span class="tab-count" id="tab-lead-count">8</span></button>
 <button class="dash-tab" onclick="switchTab('analytics')">Analytics</button>
-<button class="dash-tab" onclick="switchTab('intake')">Add Lead</button>
 <button class="dash-tab" onclick="switchTab('qrcode')">QR</button>
 </div>
 
@@ -414,7 +453,7 @@ footer a{margin-left:0}
 <div class="dash-wrap">
 
 <!-- LEADS TAB -->
-<div id="tab-leads" class="tab-content active">
+<div id="tab-leads" class="tab-content">
 <div class="leads-toolbar">
 <input class="form-input" type="text" id="lead-search" placeholder="Search by name, email, or interest..." oninput="filterLeads()">
 </div>
@@ -426,19 +465,18 @@ footer a{margin-left:0}
 <div class="form-group"><label class="form-label">Name *</label><input class="form-input" type="text" id="add-name" placeholder="Full name" autocomplete="off"></div>
 <div class="form-group"><label class="form-label">Email *</label><input class="form-input" type="email" id="add-email" placeholder="email@example.com" autocomplete="off"></div>
 </div>
-<div class="add-lead-row">
 <div class="form-group"><label class="form-label">Phone *</label><input class="form-input" type="tel" id="add-phone" placeholder="(416) 555-0000" autocomplete="off" oninput="formatPhone(this)" maxlength="14"><div class="intake-error" id="add-err-phone"></div></div>
-<div class="form-group"><label class="form-label">Street Address *</label><input class="form-input" type="text" id="add-street" placeholder="123 Main St" autocomplete="off"><div class="intake-error" id="add-err-street"></div></div>
+<div class="form-group"><label class="form-label">Street Address *</label><input class="form-input" type="text" id="add-street" placeholder="Start typing an address..." autocomplete="off"><div class="intake-error" id="add-err-street"></div></div>
+<div class="add-lead-row">
+<div class="form-group"><label class="form-label">Suite / Unit</label><input class="form-input" type="text" id="add-unit" placeholder="Apt 4, Unit 12, etc." autocomplete="off"></div>
+<div class="form-group"><label class="form-label">City *</label><input class="form-input" type="text" id="add-city" placeholder="Toronto" autocomplete="off"><div class="intake-error" id="add-err-city"></div></div>
 </div>
 <div class="add-lead-row">
-<div class="form-group"><label class="form-label">City *</label><input class="form-input" type="text" id="add-city" placeholder="Toronto" autocomplete="off"><div class="intake-error" id="add-err-city"></div></div>
-<div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div><label class="form-label">Province</label><select class="form-input" id="add-province" style="height:48px"><option value="ON">ON</option><option value="AB">AB</option><option value="BC">BC</option><option value="MB">MB</option><option value="NB">NB</option><option value="NL">NL</option><option value="NS">NS</option><option value="NT">NT</option><option value="NU">NU</option><option value="PE">PE</option><option value="QC">QC</option><option value="SK">SK</option><option value="YT">YT</option></select></div>
-<div><label class="form-label">Postal Code</label><input class="form-input" type="text" id="add-postal" placeholder="M5V 2T6" autocomplete="off" oninput="formatPostal(this)" maxlength="7"></div>
-</div>
+<div class="form-group"><label class="form-label">Province</label><select class="form-input" id="add-province" style="height:48px"><option value="ON">ON</option><option value="AB">AB</option><option value="BC">BC</option><option value="MB">MB</option><option value="NB">NB</option><option value="NL">NL</option><option value="NS">NS</option><option value="NT">NT</option><option value="NU">NU</option><option value="PE">PE</option><option value="QC">QC</option><option value="SK">SK</option><option value="YT">YT</option></select></div>
+<div class="form-group"><label class="form-label">Postal Code</label><input class="form-input" type="text" id="add-postal" placeholder="M5V 2T6" autocomplete="off" oninput="formatPostal(this)" maxlength="7"></div>
 </div>
 <div class="form-group"><label class="form-label">Interests</label>
-<div class="add-tags" id="add-tags"></div>
+<div class="interest-grid" id="add-tags"></div>
 </div>
 <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="add-notes" placeholder="Any additional context..." style="min-height:70px"></textarea></div>
 <div class="add-lead-actions">
@@ -472,7 +510,7 @@ footer a{margin-left:0}
 </div>
 
 <!-- INTAKE FORM TAB -->
-<div id="tab-intake" class="tab-content">
+<div id="tab-intake" class="tab-content active">
 <div class="intake-card">
 <h2 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px">New Lead Intake</h2>
 <p style="font-size:13px;color:var(--m);margin-bottom:24px">Hand this device to a visitor or fill it in together at the booth.</p>
@@ -494,23 +532,33 @@ footer a{margin-left:0}
 </div>
 <div class="form-group">
 <label class="form-label" for="in-street">Street Address *</label>
-<input class="form-input" type="text" id="in-street" placeholder="123 Main St" autocomplete="street-address">
+<input class="form-input" type="text" id="in-street" placeholder="Start typing an address..." autocomplete="off">
 <div class="intake-error" id="in-err-street"></div>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div class="intake-row">
+<div class="form-group">
+<label class="form-label" for="in-unit">Suite / Unit</label>
+<input class="form-input" type="text" id="in-unit" placeholder="Apt 4, Unit 12, etc." autocomplete="off">
+</div>
 <div class="form-group">
 <label class="form-label" for="in-city">City *</label>
 <input class="form-input" type="text" id="in-city" placeholder="Toronto" autocomplete="address-level2">
 <div class="intake-error" id="in-err-city"></div>
 </div>
-<div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div><label class="form-label" for="in-province">Province</label><select class="form-input" id="in-province" style="height:48px"><option value="ON">ON</option><option value="AB">AB</option><option value="BC">BC</option><option value="MB">MB</option><option value="NB">NB</option><option value="NL">NL</option><option value="NS">NS</option><option value="NT">NT</option><option value="NU">NU</option><option value="PE">PE</option><option value="QC">QC</option><option value="SK">SK</option><option value="YT">YT</option></select></div>
-<div><label class="form-label" for="in-postal">Postal Code</label><input class="form-input" type="text" id="in-postal" placeholder="M5V 2T6" autocomplete="postal-code" oninput="formatPostal(this)" maxlength="7"></div>
+</div>
+<div class="intake-row row-half">
+<div class="form-group">
+<label class="form-label" for="in-province">Province</label>
+<select class="form-input" id="in-province" style="height:48px"><option value="ON">ON</option><option value="AB">AB</option><option value="BC">BC</option><option value="MB">MB</option><option value="NB">NB</option><option value="NL">NL</option><option value="NS">NS</option><option value="NT">NT</option><option value="NU">NU</option><option value="PE">PE</option><option value="QC">QC</option><option value="SK">SK</option><option value="YT">YT</option></select>
+</div>
+<div class="form-group">
+<label class="form-label" for="in-postal">Postal Code</label>
+<input class="form-input" type="text" id="in-postal" placeholder="M5V 2T6" autocomplete="postal-code" oninput="formatPostal(this)" maxlength="7">
 </div>
 </div>
 <div class="form-group">
 <label class="form-label">Interested In</label>
-<div class="intake-tags" id="intakeTags"></div>
+<div class="interest-grid" id="intakeTags"></div>
 </div>
 <div class="form-group">
 <label class="form-label" for="in-notes">Anything else?</label>
@@ -590,7 +638,7 @@ function switchTab(tab){
 document.querySelectorAll('.tab-content').forEach(function(el){el.classList.remove('active')});
 document.getElementById('tab-'+tab).classList.add('active');
 document.querySelectorAll('.dash-tab').forEach(function(btn){btn.classList.remove('active')});
-var tabs=['leads','analytics','intake','qrcode'];
+var tabs=['intake','leads','analytics','qrcode'];
 document.querySelectorAll('.dash-tab')[tabs.indexOf(tab)].classList.add('active');
 if(tab==='intake')renderIntakeTags();
 if(tab==='qrcode')renderQR();
@@ -668,7 +716,10 @@ card.innerHTML=
 tagsHtml+
 custNotes+
 '<div class="lead-notes" id="notes-'+l.id+'">'+
-'<textarea placeholder="Add notes about this lead..." oninput="saveNotes(this,\''+l.id+'\')">'+esc(l.notes)+'</textarea>'+
+'<div class="notes-area">'+
+'<textarea placeholder="Add notes about this lead..." oninput="onNoteInput(this,\''+l.id+'\')">'+esc(l.notes)+'</textarea>'+
+'<button class="note-save-btn" id="nbtn-'+l.id+'" onclick="confirmNote(\''+l.id+'\')" title="Save note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>'+
+'</div>'+
 '<div class="notes-status" id="ns-'+l.id+'"></div>'+
 '<div class="voice-section" id="voice-'+l.id+'">'+
 '<button class="btn-mic" onclick="toggleRecording(\''+l.id+'\')" id="mic-'+l.id+'" aria-label="Record voice note" title="Record voice note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="1" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/></svg> Record</button>'+
@@ -763,15 +814,27 @@ if(a.pinned&&!b.pinned)return -1;
 if(!a.pinned&&b.pinned)return 1;
 return new Date(b.created_at)-new Date(a.created_at);
 });
+persistLeads();
 renderLeads();
 }
 
 function menuDeleteLead(id){
 openMenu.classList.remove('open');openMenu=null;
-if(!confirm('Delete this lead?'))return;
+var lead=leads.find(function(l){return l.id===id});
+var name=lead?lead.name:'this lead';
+var overlay=document.createElement('div');
+overlay.className='confirm-overlay';
+overlay.innerHTML='<div class="confirm-box"><h3>Delete Lead</h3><p>Are you sure you want to delete <strong>'+esc(name)+'</strong>? This cannot be undone.</p><div class="confirm-actions"><button class="confirm-cancel" onclick="this.closest(\'.confirm-overlay\').remove()">Cancel</button><button class="confirm-delete" id="confirm-del-btn">Delete</button></div></div>';
+document.body.appendChild(overlay);
+requestAnimationFrame(function(){overlay.classList.add('visible')});
+overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.remove()});
+document.getElementById('confirm-del-btn').onclick=function(){
 leads=leads.filter(function(l){return l.id!==id});
+persistLeads();
+overlay.remove();
 renderLeads();
 renderAnalytics();
+};
 }
 
 function menuEditLead(id){
@@ -805,22 +868,36 @@ lead.name=document.getElementById('edit-name-'+id).value.trim()||lead.name;
 lead.email=document.getElementById('edit-email-'+id).value.trim()||lead.email;
 lead.phone=document.getElementById('edit-phone-'+id).value.trim();
 lead.address=document.getElementById('edit-addr-'+id).value.trim();
+persistLeads();
 renderLeads();
 renderAnalytics();
 }
 
 var noteTimers={};
-function saveNotes(textarea,id){
+function onNoteInput(textarea,id){
 clearTimeout(noteTimers[id]);
+var btn=document.getElementById('nbtn-'+id);
+if(btn)btn.classList.remove('saved');
 var status=document.getElementById('ns-'+id);
 status.textContent='';status.className='notes-status';
 noteTimers[id]=setTimeout(function(){
 var lead=leads.find(function(l){return l.id===id});
 if(lead)lead.notes=textarea.value;
-status.textContent='Saved';status.className='notes-status saved';
-setTimeout(function(){status.textContent=''},2000);
-},800);
+},400);
 }
+function confirmNote(id){
+var lead=leads.find(function(l){return l.id===id});
+var card=document.querySelector('[data-lead-id="'+id+'"]');
+var textarea=card.querySelector('.lead-notes textarea');
+if(lead){lead.notes=textarea.value;persistLeads()}
+var btn=document.getElementById('nbtn-'+id);
+var status=document.getElementById('ns-'+id);
+if(btn)btn.classList.add('saved');
+status.textContent='Saved';status.className='notes-status saved';
+setTimeout(function(){status.textContent='';if(btn)btn.classList.remove('saved')},2500);
+}
+/* legacy alias for voice transcription */
+function saveNotes(textarea,id){onNoteInput(textarea,id);setTimeout(function(){confirmNote(id)},500)}
 
 /* ══ VOICE NOTES ══ */
 var activeRec=null; /* {id, recorder, stream, timer, recognizer} */
@@ -1100,16 +1177,19 @@ setTimeout(function(){win.print()},300);
 /* ══ ADD LEAD ══ */
 var interestOptions=['Kitchen','Bathroom','Roofing','Windows','Doors','Flooring','Basement','Deck','Smart Home','Electrical','Insulation','Outdoor','Painting','Plumbing','HVAC'];
 
-function renderAddTags(){
-var wrap=document.getElementById('add-tags');
+function renderInterestGrid(wrap){
 wrap.innerHTML='';
 interestOptions.forEach(function(t){
-var tag=document.createElement('span');
-tag.className='add-tag';
-tag.textContent=t;
-tag.onclick=function(){this.classList.toggle('selected')};
-wrap.appendChild(tag);
+var item=document.createElement('div');
+item.className='interest-item';
+item.setAttribute('data-interest',t);
+item.innerHTML='<div class="interest-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="interest-label">'+t+'</span>';
+item.onclick=function(){this.classList.toggle('selected')};
+wrap.appendChild(item);
 });
+}
+function renderAddTags(){
+renderInterestGrid(document.getElementById('add-tags'));
 }
 
 function toggleAddLead(){
@@ -1147,8 +1227,10 @@ var el=document.getElementById(id);if(el)el.textContent='';
 });
 }
 
-function buildAddress(street,city,province,postal){
-var parts=[street];
+function buildAddress(street,unit,city,province,postal){
+var addr=street;
+if(unit)addr+=' '+unit;
+var parts=[addr];
 if(city)parts.push(city);
 if(province)parts[parts.length-1]+=' '+province;
 if(postal)parts[parts.length-1]+=' '+postal;
@@ -1161,6 +1243,7 @@ var name=document.getElementById('add-name').value.trim();
 var email=document.getElementById('add-email').value.trim();
 var phone=document.getElementById('add-phone').value.trim();
 var street=document.getElementById('add-street').value.trim();
+var unit=document.getElementById('add-unit').value.trim();
 var city=document.getElementById('add-city').value.trim();
 var province=document.getElementById('add-province').value;
 var postal=document.getElementById('add-postal').value.trim();
@@ -1173,9 +1256,9 @@ if(!street){document.getElementById('add-err-street').textContent='Street addres
 if(!city){document.getElementById('add-err-city').textContent='City is required';valid=false}
 if(!valid)return;
 
-var address=buildAddress(street,city,province,postal);
+var address=buildAddress(street,unit,city,province,postal);
 var selected=[];
-document.querySelectorAll('.add-tag.selected').forEach(function(t){selected.push(t.textContent)});
+document.querySelectorAll('#add-tags .interest-item.selected').forEach(function(t){selected.push(t.getAttribute('data-interest'))});
 
 var newLead={
 id:String(Date.now()),
@@ -1184,6 +1267,7 @@ interests:selected,customer_notes:notes,notes:'',
 created_at:new Date().toISOString()
 };
 leads.unshift(newLead);
+persistLeads();
 renderLeads();
 renderAnalytics();
 
@@ -1192,6 +1276,7 @@ document.getElementById('add-name').value='';
 document.getElementById('add-email').value='';
 document.getElementById('add-phone').value='';
 document.getElementById('add-street').value='';
+document.getElementById('add-unit').value='';
 document.getElementById('add-city').value='';
 document.getElementById('add-province').value='ON';
 document.getElementById('add-postal').value='';
@@ -1204,14 +1289,7 @@ document.getElementById('addLeadForm').classList.remove('open');
 function renderIntakeTags(){
 var wrap=document.getElementById('intakeTags');
 if(!wrap)return;
-wrap.innerHTML='';
-interestOptions.forEach(function(t){
-var tag=document.createElement('span');
-tag.className='intake-tag';
-tag.textContent=t;
-tag.onclick=function(){this.classList.toggle('selected')};
-wrap.appendChild(tag);
-});
+renderInterestGrid(wrap);
 }
 
 function showIntakeError(id,msg){
@@ -1230,6 +1308,7 @@ document.getElementById('in-name').value='';
 document.getElementById('in-email').value='';
 document.getElementById('in-phone').value='';
 document.getElementById('in-street').value='';
+document.getElementById('in-unit').value='';
 document.getElementById('in-city').value='';
 document.getElementById('in-province').value='ON';
 document.getElementById('in-postal').value='';
@@ -1247,12 +1326,13 @@ var name=document.getElementById('in-name').value.trim();
 var email=document.getElementById('in-email').value.trim();
 var phone=document.getElementById('in-phone').value.trim();
 var street=document.getElementById('in-street').value.trim();
+var unit=document.getElementById('in-unit').value.trim();
 var city=document.getElementById('in-city').value.trim();
 var province=document.getElementById('in-province').value;
 var postal=document.getElementById('in-postal').value.trim();
 var notes=document.getElementById('in-notes').value.trim();
 var selected=[];
-document.querySelectorAll('.intake-tag.selected').forEach(function(t){selected.push(t.textContent)});
+document.querySelectorAll('#intakeTags .interest-item.selected').forEach(function(t){selected.push(t.getAttribute('data-interest'))});
 
 var valid=true;
 if(!name||name.length<2){showIntakeError('in-err-name','Please enter your name');valid=false}else{clearIntakeError('in-err-name')}
@@ -1262,7 +1342,7 @@ if(!street){showIntakeError('in-err-street','Street address is required');valid=
 if(!city){showIntakeError('in-err-city','City is required');valid=false}else{clearIntakeError('in-err-city')}
 if(!valid)return;
 
-var address=buildAddress(street,city,province,postal);
+var address=buildAddress(street,unit,city,province,postal);
 
 var btn=document.getElementById('intakeSubmitBtn');
 btn.textContent='Adding...';
@@ -1277,6 +1357,7 @@ source:'intake'
 };
 
 leads.unshift(newLead);
+persistLeads();
 renderLeads();
 renderAnalytics();
 
@@ -1304,14 +1385,7 @@ var el=document.getElementById(errId);if(el)el.textContent='';
 function renderQrIntakeTags(){
 var wrap=document.getElementById('qrIntakeTags');
 if(!wrap)return;
-wrap.innerHTML='';
-interestOptions.forEach(function(t){
-var tag=document.createElement('span');
-tag.className='intake-tag';
-tag.textContent=t;
-tag.onclick=function(){this.classList.toggle('selected')};
-wrap.appendChild(tag);
-});
+renderInterestGrid(wrap);
 }
 
 document.getElementById('qrIntakeForm').addEventListener('submit',function(e){
@@ -1322,7 +1396,7 @@ var phone=document.getElementById('qr-phone').value.trim();
 var address=document.getElementById('qr-address').value.trim();
 var notes=document.getElementById('qr-notes').value.trim();
 var selected=[];
-document.querySelectorAll('#qrIntakeTags .intake-tag.selected').forEach(function(t){selected.push(t.textContent)});
+document.querySelectorAll('#qrIntakeTags .interest-item.selected').forEach(function(t){selected.push(t.getAttribute('data-interest'))});
 
 var valid=true;
 var errName=document.getElementById('qr-err-name');
@@ -1343,11 +1417,10 @@ interests:selected,customer_notes:notes,notes:'',
 created_at:new Date().toISOString(),
 source:'qr'
 };
-var key='ye-leads-acme-home';
 var stored=[];
-try{stored=JSON.parse(localStorage.getItem(key))||[]}catch(ex){}
+try{stored=JSON.parse(localStorage.getItem(LS_KEY))||[]}catch(ex){}
 stored.unshift(newLead);
-localStorage.setItem(key,JSON.stringify(stored));
+localStorage.setItem(LS_KEY,JSON.stringify(stored));
 
 document.getElementById('qrIntakeForm').style.display='none';
 document.getElementById('qrIntakeSuccess').classList.add('visible');
@@ -1362,18 +1435,17 @@ if(el)el.textContent='';
 });
 });
 
-/* ══ LOAD LEADS FROM LOCALSTORAGE ══ */
+/* ══ PERSIST & LOAD LEADS ══ */
+var LS_KEY='ye-leads-acme-home';
+function persistLeads(){
+try{localStorage.setItem(LS_KEY,JSON.stringify(leads))}catch(ex){}
+}
 function loadLocalLeads(){
-var key='ye-leads-acme-home';
 try{
-var stored=JSON.parse(localStorage.getItem(key))||[];
+var stored=JSON.parse(localStorage.getItem(LS_KEY))||[];
 if(stored.length){
-var existingIds={};
-leads.forEach(function(l){existingIds[l.id]=true});
-stored.forEach(function(l){
-if(!existingIds[l.id]){leads.unshift(l);existingIds[l.id]=true}
-});
-leads.sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at)});
+/* Replace hardcoded leads with stored data */
+leads=stored;
 }
 }catch(ex){}
 }
@@ -1396,8 +1468,54 @@ document.querySelector('.mobile-menu').style.display='none';
 loadLocalLeads();
 renderLeads();
 renderAnalytics();
+renderIntakeTags();
 }
+
+/* ══ GOOGLE PLACES AUTOCOMPLETE ══ */
+window.initAutocomplete=function(){
+function setupAutocomplete(streetId,cityId,provinceId,postalId){
+var input=document.getElementById(streetId);
+if(!input)return;
+var ac=new google.maps.places.Autocomplete(input,{
+types:['address'],
+componentRestrictions:{country:'ca'},
+fields:['address_components','formatted_address']
+});
+ac.addListener('place_changed',function(){
+var place=ac.getPlace();
+if(!place||!place.address_components)return;
+var street_number='',route='',city='',province='',postal='';
+place.address_components.forEach(function(c){
+var t=c.types;
+if(t.includes('street_number'))street_number=c.long_name;
+if(t.includes('route'))route=c.short_name;
+if(t.includes('locality')||t.includes('sublocality_level_1'))city=c.long_name;
+if(t.includes('administrative_area_level_1'))province=c.short_name;
+if(t.includes('postal_code'))postal=c.long_name;
+});
+input.value=(street_number?street_number+' ':'')+route;
+var cityEl=document.getElementById(cityId);
+if(cityEl&&city)cityEl.value=city;
+var provEl=document.getElementById(provinceId);
+if(provEl&&province)provEl.value=province;
+var postalEl=document.getElementById(postalId);
+if(postalEl&&postal){postalEl.value=postal;formatPostal(postalEl)}
+/* Clear any errors */
+var errStreet=document.getElementById(streetId.replace('add-','add-err-').replace('in-','in-err-'));
+if(errStreet)errStreet.textContent='';
+var errCity=document.getElementById(cityId.replace('add-','add-err-').replace('in-','in-err-'));
+if(errCity)errCity.textContent='';
+});
+/* Prevent form submit on Enter when dropdown is open */
+input.addEventListener('keydown',function(e){
+if(e.key==='Enter'){var pac=document.querySelector('.pac-container');if(pac&&pac.style.display!=='none')e.preventDefault()}
+});
+}
+setupAutocomplete('add-street','add-city','add-province','add-postal');
+setupAutocomplete('in-street','in-city','in-province','in-postal');
+};
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqMdGU6RwvfHDGnukFhMno5dhRZfBo0RY&libraries=places&callback=initAutocomplete" async defer></script>
 </body>
 </html>
