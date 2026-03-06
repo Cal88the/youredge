@@ -961,7 +961,7 @@ var status=document.getElementById('ns-'+id);
 status.textContent='';status.className='notes-status';
 noteTimers[id]=setTimeout(function(){
 var lead=leads.find(function(l){return l.id===id});
-if(lead)lead.notes=textarea.value;
+if(lead){lead.notes=textarea.value;persistLeads();}
 },400);
 }
 function confirmNote(id){

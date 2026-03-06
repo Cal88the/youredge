@@ -9,6 +9,18 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'vendor_slug is required' });
   }
 
+  // Verify vendor exists
+  var checkRes = await fetch(process.env.SUPABASE_URL + '/rest/v1/vendors?slug=eq.' + encodeURIComponent(vendor_slug) + '&select=slug&limit=1', {
+    headers: {
+      'apikey': process.env.SUPABASE_SERVICE_KEY,
+      'Authorization': 'Bearer ' + process.env.SUPABASE_SERVICE_KEY
+    }
+  });
+  var found = await checkRes.json();
+  if (!found || !found.length) {
+    return res.status(404).json({ error: 'Vendor not found' });
+  }
+
   var row = {
     vendor_slug: vendor_slug,
     contact_name: contact_name || null,

@@ -111,6 +111,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .add-result{font-size:13px;color:var(--green);font-weight:600;margin-top:8px;display:none}
 .add-result.show{display:block}
 .add-result.error{color:var(--red)}
+/* LIGHTBOX */
+.lb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.lb-overlay img{max-width:100%;max-height:90dvh;border-radius:8px;object-fit:contain;cursor:default}
+.lb-close{position:fixed;top:16px;right:16px;width:44px;height:44px;background:rgba(255,255,255,.1);border:none;border-radius:50%;color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:201}
+
 /* EMPTY */
 .empty{text-align:center;padding:60px 24px;color:var(--m);font-size:15px}
 
@@ -292,7 +297,7 @@ function render(){
     html+='<span class="save-msg" id="saved-'+v.slug+'">Saved</span>';
     html+='</div>';
     if(c.cardPhoto){
-      html+='<div class="card-photo-area"><div class="card-thumb-wrap"><img class="card-thumb" src="'+c.cardPhoto+'" onclick="window.open(this.src)"><button class="card-thumb-x" onclick="removePhoto(\''+v.slug+'\')">&times;</button></div></div>';
+      html+='<div class="card-photo-area"><div class="card-thumb-wrap"><img class="card-thumb" src="'+c.cardPhoto+'" onclick="openCardLightbox(this.src)"><button class="card-thumb-x" onclick="removePhoto(\''+v.slug+'\')">&times;</button></div></div>';
     }
 
     html+='</div>';
@@ -414,6 +419,14 @@ function removePhoto(slug){
   saveContact(slug);
   render();
   setTimeout(function(){toggleRow(slug);},50);
+}
+
+function openCardLightbox(src){
+  var overlay=document.createElement('div');
+  overlay.className='lb-overlay';
+  overlay.onclick=function(e){if(e.target===overlay||e.target.className==='lb-close')overlay.remove();};
+  overlay.innerHTML='<button class="lb-close">&times;</button><img src="'+src+'">';
+  document.body.appendChild(overlay);
 }
 
 function showToast(msg){
