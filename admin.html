@@ -40,6 +40,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .stat-pill{padding:10px 16px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;font-size:13px;font-weight:600;color:var(--g);white-space:nowrap}
 .stat-pill strong{color:var(--w)}
 
+/* FILTER */
+.filter-row{max-width:700px;margin:12px auto 0;padding:0 24px}
+.filter-select{width:100%;padding:12px 16px;background:var(--surface);border:1px solid var(--bdr);border-radius:12px;color:var(--w);font-family:inherit;font-size:14px;font-weight:500;outline:none;transition:.2s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;cursor:pointer}
+.filter-select:focus{border-color:var(--blue)}
+
 /* VENDOR LIST */
 .list{max-width:700px;margin:20px auto;padding:0 24px 120px}
 .vendor-row{background:var(--card);border:1px solid var(--bdr);border-radius:14px;margin-bottom:8px;overflow:hidden;transition:.2s}
@@ -124,6 +129,12 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div class="stat-pill" id="statPill"><strong>0</strong> vendors</div>
 </div>
 
+<div class="filter-row">
+  <select class="filter-select" id="categoryFilter" onchange="render()">
+    <option value="">All Industries</option>
+  </select>
+</div>
+
 <div class="list" id="vendorList"></div>
 
 <div class="toast" id="toast"></div>
@@ -145,6 +156,16 @@ async function loadVendors(){
       headers:{'apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON}
     });
     vendors=await res.json();
+    // Build category dropdown
+    var cats={};
+    vendors.forEach(function(v){if(v.category)cats[v.category]=(cats[v.category]||0)+1;});
+    var sorted=Object.entries(cats).sort(function(a,b){return a[0].localeCompare(b[0]);});
+    var sel=document.getElementById('categoryFilter');
+    sorted.forEach(function(c){
+      var opt=document.createElement('option');
+      opt.value=c[0];opt.textContent=c[0]+' ('+c[1]+')';
+      sel.appendChild(opt);
+    });
     render();
     document.getElementById('statPill').innerHTML='<strong>'+vendors.length+'</strong> vendors';
   }catch(e){
@@ -154,8 +175,10 @@ async function loadVendors(){
 
 function getFiltered(){
   var q=document.getElementById('searchInput').value.toLowerCase().trim();
-  if(!q)return vendors;
+  var cat=document.getElementById('categoryFilter').value;
   return vendors.filter(function(v){
+    if(cat&&v.category!==cat)return false;
+    if(!q)return true;
     return (v.name+' '+v.category+' '+v.booth).toLowerCase().indexOf(q)>=0;
   });
 }
@@ -176,9 +199,10 @@ function render(){
     html+='<div class="vendor-name">'+v.name+'</div>';
     html+='<div class="vendor-meta">';
     if(v.category)html+='<span>'+v.category+'</span>';
-    if(v.booth)html+='<span style="color:var(--blue-h);font-weight:600">Booth '+v.booth+'</span>';
     if(hasContact)html+='<span style="color:var(--green)">Contact saved</span>';
-    html+='</div></div>';
+    html+='</div>';
+    if(v.booth)html+='<div style="font-size:12px;color:var(--blue-h);font-weight:600;margin-top:2px">Booth '+v.booth+'</div>';
+    html+='</div>';
     html+='<div class="vendor-actions">';
     html+='<button class="act-btn" onclick="event.stopPropagation();copyUrl(\''+v.slug+'\')" id="copy-'+v.slug+'" title="Copy URL">';
     html+='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>';
