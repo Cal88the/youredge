@@ -671,10 +671,9 @@ body.classList.toggle('open');
 function buildEnrichmentContent(l){
 var e=l.enrichment;
 if(!e){
-return '<div class="enrichment-empty">'+(l.address?
-'<button class="btn-enrich" onclick="fetchEnrichment(\''+l.id+'\')">Fetch Property Data</button>':
-'<span class="enrichment-noaddr">No address — add one to enrich</span>')+
-'</div>';
+/* No data yet — show subtle loading if address exists, otherwise nothing */
+if(l.address) return '<div class="enrichment-loading"><div class="enrich-spinner"></div> Loading property data...</div>';
+return '<div class="enrichment-empty"><span class="enrichment-noaddr">No address provided</span></div>';
 }
 var fields=[
 ['Year Built',e.year_built],['Property Type',e.property_type],['Neighbourhood',e.neighbourhood],
@@ -693,9 +692,6 @@ html+='<div class="enrichment-field"><div class="enrichment-label">'+f[0]+'</div
 }
 });
 html+='</div></div>';
-if(l.address){
-html+='<button class="btn-enrich btn-enrich-refresh" onclick="fetchEnrichment(\''+l.id+'\')" style="margin-top:8px">Refresh Data</button>';
-}
 return html;
 }
 
@@ -706,33 +702,43 @@ if(overlay)overlay.style.display='none';
 if(grid){grid.style.filter='none';grid.style.userSelect='auto';grid.style.pointerEvents='auto';}
 }
 
+/* ══ AUTO-ENRICHMENT ══ */
 var ENRICH_API='http://localhost:3001';
-function fetchEnrichment(id){
+var enrichQueue=[];
+var enrichRunning=false;
+
+function queueEnrichment(id){
+if(enrichQueue.indexOf(id)===-1)enrichQueue.push(id);
+processEnrichQueue();
+}
+
+function processEnrichQueue(){
+if(enrichRunning||!enrichQueue.length)return;
+enrichRunning=true;
+var id=enrichQueue.shift();
 var lead=leads.find(function(l){return l.id===id});
-if(!lead||!lead.address)return;
-var container=document.getElementById('enrich-'+id);
-if(!container)return;
-container.innerHTML='<div class="enrichment-loading"><div class="enrich-spinner"></div> Fetching property data...</div>';
-// Make sure enrichment body is visible
-var body=container.closest('.enrichment-body');
-if(body&&!body.classList.contains('open'))body.classList.add('open');
-var toggle=container.closest('.lead-enrichment').querySelector('.enrichment-toggle');
-if(toggle&&!toggle.classList.contains('open'))toggle.classList.add('open');
+if(!lead||!lead.address||lead.enrichment){enrichRunning=false;processEnrichQueue();return}
 
 fetch(ENRICH_API+'/enrich',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({address:lead.address})})
 .then(function(r){return r.json()})
 .then(function(data){
 if(data.success&&data.enrichment){
 lead.enrichment=data.enrichment;
-container.innerHTML=buildEnrichmentContent(lead);
-}else{
-container.innerHTML='<div class="enrichment-empty"><span class="enrichment-error">Could not find property data for this address.</span><button class="btn-enrich" onclick="fetchEnrichment(\''+id+'\')" style="margin-top:8px">Try Again</button></div>';
+var container=document.getElementById('enrich-'+id);
+if(container)container.innerHTML=buildEnrichmentContent(lead);
 }
 })
-.catch(function(err){
-container.innerHTML='<div class="enrichment-empty"><span class="enrichment-error">Enrichment server not running. Start with: node enrichment/server.js</span></div>';
+.catch(function(){/* Server not running — silently skip */})
+.finally(function(){enrichRunning=false;processEnrichQueue()});
+}
+
+/* On page load, auto-enrich any leads that have an address but no enrichment data */
+function autoEnrichAll(){
+leads.forEach(function(l){
+if(l.address&&!l.enrichment)queueEnrichment(l.id);
 });
 }
+setTimeout(autoEnrichAll,1000);
 
 function toggleStar(btn,id){
 var lead=leads.find(function(l){return l.id===id});
@@ -1081,8 +1087,7 @@ created_at:new Date().toISOString()
 leads.unshift(newLead);
 renderLeads();
 renderAnalytics();
-/* Auto-enrich if address provided */
-if(address){setTimeout(function(){fetchEnrichment(newLead.id)},500)}
+if(address)queueEnrichment(newLead.id);
 
 /* Reset form */
 document.getElementById('add-name').value='';
@@ -1162,8 +1167,7 @@ source:'intake'
 leads.unshift(newLead);
 renderLeads();
 renderAnalytics();
-/* Auto-enrich if address provided */
-if(address){setTimeout(function(){fetchEnrichment(newLead.id)},500)}
+if(address)queueEnrichment(newLead.id);
 
 /* Show success */
 document.getElementById('intakeForm').style.display='none';
