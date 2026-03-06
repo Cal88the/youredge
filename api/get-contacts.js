@@ -1,7 +1,7 @@
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
-  var password = req.headers['x-admin-password'] || req.query.password;
+  var password = req.headers['x-admin-password'];
   if (!password || password !== process.env.ADMIN_PASSWORD) {
     return res.status(401).json({ error: 'Invalid password' });
   }
@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
 
   if (!supaRes.ok) {
     var err = await supaRes.text();
-    return res.status(500).json({ error: 'Failed to load contacts', detail: err });
+    return res.status(500).json({ error: 'Failed to load contacts' });
   }
 
   var rows = await supaRes.json();

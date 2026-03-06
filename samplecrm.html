@@ -687,7 +687,7 @@ document.getElementById('tab-lead-count').textContent=leads.length;
 function getLeadScore(l){
 if(!l.enrichment)return{label:'--',cls:'cold'};
 var age=l.enrichment.year_built?(new Date().getFullYear()-l.enrichment.year_built):null;
-var lastSaleDate=l.enrichment.last_sale?new Date(l.enrichment.last_sale+' 1, 2025'):null;
+var lastSaleDate=l.enrichment.last_sale?new Date(l.enrichment.last_sale+' 1, '+new Date().getFullYear()):null;
 var isNewOwner=lastSaleDate&&((now-lastSaleDate)/(1000*60*60*24*365))<2;
 if(age&&age>30)return{label:'Hot',cls:'hot'};
 if((age&&age>20)||isNewOwner)return{label:'Warm',cls:'warm'};

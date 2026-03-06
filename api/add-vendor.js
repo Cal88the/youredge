@@ -19,6 +19,10 @@ module.exports = async function handler(req, res) {
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 
+  if (!slug) {
+    return res.status(400).json({ error: 'Vendor name produces an invalid URL. Try a different name.' });
+  }
+
   var row = {
     slug: slug,
     name: name.trim(),

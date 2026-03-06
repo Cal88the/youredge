@@ -189,6 +189,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 <input type="file" id="cardFileInput" accept="image/*" capture="environment" style="display:none">
 
 <script>
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
 var SUPABASE_URL='https://oyeedqoecsbtixiodhyp.supabase.co';
 var SUPABASE_ANON='sb_publishable_E0-8ppn-ZfRqEa5GWicwtQ_uW_dK1fL';
 var BASE_URL='https://weareyouredge.com';
@@ -244,12 +246,12 @@ function render(){
     html+='<div class="vendor-row'+(hasContact?' contacted':'')+'" id="vr-'+v.slug+'">';
     html+='<div class="vendor-main" onclick="toggleRow(\''+v.slug+'\')">';
     html+='<div class="vendor-info">';
-    html+='<div class="vendor-name">'+v.name+'</div>';
+    html+='<div class="vendor-name">'+esc(v.name)+'</div>';
     html+='<div class="vendor-meta">';
-    if(v.category)html+='<span>'+v.category+'</span>';
+    if(v.category)html+='<span>'+esc(v.category)+'</span>';
     if(hasContact)html+='<span style="color:var(--green)">Contact saved</span>';
     html+='</div>';
-    if(v.booth)html+='<div style="font-size:12px;color:var(--blue-h);font-weight:600;margin-top:2px">Booth '+v.booth+'</div>';
+    if(v.booth)html+='<div style="font-size:12px;color:var(--blue-h);font-weight:600;margin-top:2px">Booth '+esc(v.booth)+'</div>';
     html+='</div>';
     html+='<div class="vendor-actions">';
     html+='<button class="act-btn" onclick="event.stopPropagation();copyUrl(\''+v.slug+'\')" id="copy-'+v.slug+'" title="Copy URL">';
@@ -274,11 +276,11 @@ function render(){
     html+='<div class="expand-section">';
     html+='<div class="expand-label">Vendor Contact</div>';
     html+='<div class="contact-grid">';
-    html+='<input class="contact-input" placeholder="Contact name" data-slug="'+v.slug+'" data-field="name" value="'+(c.name||'')+'">';
-    html+='<input class="contact-input" placeholder="Title / Role" data-slug="'+v.slug+'" data-field="title" value="'+(c.title||'')+'">';
-    html+='<input class="contact-input" placeholder="Email" type="email" data-slug="'+v.slug+'" data-field="email" value="'+(c.email||'')+'">';
-    html+='<input class="contact-input" placeholder="Phone" type="tel" data-slug="'+v.slug+'" data-field="phone" value="'+(c.phone||'')+'">';
-    html+='<input class="contact-input contact-full" placeholder="Notes (interests, conversation, follow-up...)" data-slug="'+v.slug+'" data-field="notes" value="'+(c.notes||'')+'">';
+    html+='<input class="contact-input" placeholder="Contact name" data-slug="'+v.slug+'" data-field="name" value="'+esc(c.name||'')+'">';
+    html+='<input class="contact-input" placeholder="Title / Role" data-slug="'+v.slug+'" data-field="title" value="'+esc(c.title||'')+'">';
+    html+='<input class="contact-input" placeholder="Email" type="email" data-slug="'+v.slug+'" data-field="email" value="'+esc(c.email||'')+'">';
+    html+='<input class="contact-input" placeholder="Phone" type="tel" data-slug="'+v.slug+'" data-field="phone" value="'+esc(c.phone||'')+'">';
+    html+='<input class="contact-input contact-full" placeholder="Notes (interests, conversation, follow-up...)" data-slug="'+v.slug+'" data-field="notes" value="'+esc(c.notes||'')+'">';
     html+='</div>';
 
     // Business card photo + save
@@ -366,6 +368,8 @@ function captureCard(slug){
 
 document.getElementById('cardFileInput').addEventListener('change',function(e){
   if(!e.target.files[0]||!currentPhotoTarget)return;
+  var file=e.target.files[0];
+  if(file.size>500*1024){showToast('Photo too large (max 500KB). Please use a smaller image.');e.target.value='';return;}
   var reader=new FileReader();
   reader.onload=function(ev){
     var slug=currentPhotoTarget;
