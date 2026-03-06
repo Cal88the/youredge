@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Admin — YourEdge</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='g'><stop offset='0%25' stop-color='%23fff'/><stop offset='40%25' stop-color='%23bfdbfe'/><stop offset='100%25' stop-color='%232563eb'/></radialGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23g)'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#000;--surface:#080808;--card:#111;--card-h:#161616;
+--bdr:#1a1a1a;--bdr-l:#222;--bdr-h:#333;
+--w:#fafafa;--g:#a0a0a0;--m:#666;--d:#444;
+--blue:#2563eb;--blue-h:#3b82f6;--blue-g:rgba(37,99,235,.12);--blue-gs:rgba(37,99,235,.25);
+--green:#22c55e;--green-s:rgba(34,197,94,.1);
+--red:#ef4444;--red-g:rgba(239,68,68,.1);
+--amber:#f59e0b;--amber-s:rgba(245,158,11,.1);
+}
+html{scroll-behavior:smooth;touch-action:manipulation}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100dvh}
+::selection{background:var(--blue);color:var(--w)}
+
+/* HEADER */
+.header{padding:32px 24px 24px;text-align:center;border-bottom:1px solid var(--bdr)}
+.header h1{font-size:clamp(22px,4vw,32px);font-weight:900;letter-spacing:-1px;margin-bottom:2px}
+.header h1 span{color:var(--blue)}
+.header p{font-size:13px;color:var(--m);font-weight:500}
+
+/* SEARCH + STATS */
+.toolbar{max-width:700px;margin:24px auto 0;padding:0 24px;display:flex;gap:12px;align-items:center}
+.search-wrap{flex:1;position:relative}
+.search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--d);pointer-events:none}
+.search{width:100%;padding:14px 16px 14px 42px;background:var(--surface);border:1px solid var(--bdr);border-radius:12px;color:var(--w);font-family:inherit;font-size:15px;outline:none;transition:.2s}
+.search:focus{border-color:var(--blue)}
+.search::placeholder{color:var(--d)}
+.stat-pill{padding:10px 16px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;font-size:13px;font-weight:600;color:var(--g);white-space:nowrap}
+.stat-pill strong{color:var(--w)}
+
+/* FILTER TABS */
+.filters{max-width:700px;margin:16px auto 0;padding:0 24px;display:flex;gap:8px;flex-wrap:wrap}
+.filter-btn{padding:8px 16px;background:var(--card);border:1px solid var(--bdr);border-radius:100px;font-family:inherit;font-size:12px;font-weight:600;color:var(--g);cursor:pointer;transition:.2s}
+.filter-btn:hover{border-color:var(--bdr-h)}
+.filter-btn.active{background:var(--blue-g);border-color:var(--blue);color:var(--blue-h)}
+
+/* VENDOR LIST */
+.list{max-width:700px;margin:20px auto;padding:0 24px 120px}
+.vendor-row{background:var(--card);border:1px solid var(--bdr);border-radius:14px;margin-bottom:8px;overflow:hidden;transition:.2s}
+.vendor-row:hover{border-color:var(--bdr-h)}
+.vendor-main{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.vendor-info{flex:1;min-width:0}
+.vendor-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vendor-meta{font-size:12px;color:var(--m);margin-top:1px}
+.vendor-meta span{margin-right:12px}
+.vendor-booth{display:inline-flex;align-items:center;gap:4px;background:var(--blue-g);color:var(--blue-h);font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px}
+.vendor-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.act-btn{width:40px;height:40px;border-radius:10px;border:1px solid var(--bdr);background:var(--surface);color:var(--g);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
+.act-btn:hover{border-color:var(--bdr-h);color:var(--w)}
+.act-btn.copied{background:var(--green-s);border-color:var(--green);color:var(--green)}
+.act-btn.has-contact{background:var(--blue-g);border-color:var(--blue);color:var(--blue-h)}
+.visit-btn{padding:8px 16px;border-radius:10px;border:1px solid var(--blue);background:var(--blue-g);color:var(--blue-h);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap;text-decoration:none;display:flex;align-items:center;gap:6px}
+.visit-btn:hover{background:var(--blue);color:var(--w)}
+
+/* EXPAND PANEL */
+.vendor-expand{display:none;padding:0 20px 20px;border-top:1px solid var(--bdr)}
+.vendor-row.open .vendor-expand{display:block}
+.expand-section{margin-top:16px}
+.expand-label{font-size:11px;font-weight:700;color:var(--m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:500px){.contact-grid{grid-template-columns:1fr}}
+.contact-input{width:100%;padding:12px 14px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;color:var(--w);font-family:inherit;font-size:14px;outline:none;transition:.2s}
+.contact-input:focus{border-color:var(--blue)}
+.contact-input::placeholder{color:var(--d)}
+.contact-full{grid-column:1/-1}
+.card-photo-area{margin-top:12px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.card-photo-btn{padding:12px 20px;background:var(--card);border:1px solid var(--bdr-l);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--g);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px}
+.card-photo-btn:hover{border-color:var(--bdr-h);color:var(--w)}
+.card-thumb{width:120px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--bdr)}
+.card-thumb-wrap{position:relative;display:inline-block}
+.card-thumb-x{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;border:none;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.save-row{margin-top:12px;display:flex;gap:8px;align-items:center}
+.save-btn{padding:12px 24px;background:var(--blue);color:var(--w);border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
+.save-btn:hover{background:var(--blue-h)}
+.save-msg{font-size:13px;color:var(--green);font-weight:600;opacity:0;transition:.3s}
+.save-msg.show{opacity:1}
+
+/* URL DISPLAY */
+.url-row{margin-top:12px;display:flex;gap:8px;align-items:center}
+.url-display{flex:1;padding:10px 14px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;font-size:13px;color:var(--blue-h);font-family:'Inter',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:all}
+.url-copy-btn{padding:10px 16px;background:var(--card);border:1px solid var(--bdr);border-radius:10px;font-family:inherit;font-size:12px;font-weight:700;color:var(--g);cursor:pointer;transition:.2s;white-space:nowrap}
+.url-copy-btn:hover{border-color:var(--bdr-h);color:var(--w)}
+.url-copy-btn.copied{background:var(--green-s);border-color:var(--green);color:var(--green)}
+
+/* CHEVRON */
+.chev{transition:transform .2s;color:var(--d);flex-shrink:0}
+.vendor-row.open .chev{transform:rotate(180deg)}
+
+/* EMPTY */
+.empty{text-align:center;padding:60px 24px;color:var(--m);font-size:15px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--bdr-h);border-radius:12px;padding:14px 24px;font-size:14px;font-weight:600;color:var(--w);z-index:100;transition:transform .3s ease;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:600px){
+.header{padding:24px 16px 20px}
+.toolbar{padding:0 16px}
+.filters{padding:0 16px}
+.list{padding:0 16px 120px}
+.vendor-main{padding:14px 16px;gap:10px}
+.vendor-actions{gap:6px}
+.visit-btn span{display:none}
+.contact-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>YourEdge<span>.</span> Admin</h1>
+  <p>NATIONAL HOME SHOW 2026 — VENDOR DIRECTORY</p>
+</div>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="search" id="searchInput" placeholder="Search vendors..." autocomplete="off">
+  </div>
+  <div class="stat-pill" id="statPill"><strong>0</strong> vendors</div>
+</div>
+
+<div class="filters" id="filters"></div>
+
+<div class="list" id="vendorList"></div>
+
+<div class="toast" id="toast"></div>
+
+<input type="file" id="cardFileInput" accept="image/*" capture="environment" style="display:none">
+
+<script>
+var SUPABASE_URL='https://oyeedqoecsbtixiodhyp.supabase.co';
+var SUPABASE_ANON='sb_publishable_E0-8ppn-ZfRqEa5GWicwtQ_uW_dK1fL';
+var BASE_URL='https://weareyouredge.com';
+var vendors=[];
+var contacts=JSON.parse(localStorage.getItem('ye-admin-contacts')||'{}');
+var activeFilter='All';
+var currentPhotoTarget=null;
+
+// Fetch vendors from Supabase
+async function loadVendors(){
+  try{
+    var res=await fetch(SUPABASE_URL+'/rest/v1/vendors?select=*&order=name',{
+      headers:{'apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON}
+    });
+    vendors=await res.json();
+    buildFilters();
+    render();
+    document.getElementById('statPill').innerHTML='<strong>'+vendors.length+'</strong> vendors';
+  }catch(e){
+    document.getElementById('vendorList').innerHTML='<div class="empty">Failed to load vendors. Check connection.</div>';
+  }
+}
+
+function buildFilters(){
+  var cats={};
+  vendors.forEach(function(v){if(v.category)cats[v.category]=(cats[v.category]||0)+1;});
+  var sorted=Object.entries(cats).sort(function(a,b){return b[1]-a[1];});
+  var html='<button class="filter-btn active" onclick="setFilter(\'All\')">All</button>';
+  html+='<button class="filter-btn" onclick="setFilter(\'_contacted\')">Contacted</button>';
+  sorted.forEach(function(c){
+    html+='<button class="filter-btn" onclick="setFilter(\''+c[0].replace(/'/g,"\\'")+'\')">'+c[0]+' <span style="opacity:.5">('+c[1]+')</span></button>';
+  });
+  document.getElementById('filters').innerHTML=html;
+}
+
+function setFilter(f){
+  activeFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  event.target.classList.add('active');
+  render();
+}
+
+function getFiltered(){
+  var q=document.getElementById('searchInput').value.toLowerCase().trim();
+  return vendors.filter(function(v){
+    if(activeFilter==='_contacted'){
+      if(!contacts[v.slug]||!contacts[v.slug].name)return false;
+    }else if(activeFilter!=='All'&&v.category!==activeFilter)return false;
+    if(!q)return true;
+    return (v.name+' '+v.category+' '+v.booth).toLowerCase().indexOf(q)>=0;
+  });
+}
+
+function render(){
+  var filtered=getFiltered();
+  if(!filtered.length){
+    document.getElementById('vendorList').innerHTML='<div class="empty">No vendors found</div>';
+    return;
+  }
+  var html='';
+  filtered.forEach(function(v){
+    var c=contacts[v.slug]||{};
+    var hasContact=c.name||c.email||c.phone;
+    html+='<div class="vendor-row" id="vr-'+v.slug+'">';
+    html+='<div class="vendor-main" onclick="toggleRow(\''+v.slug+'\')">';
+    html+='<div class="vendor-info">';
+    html+='<div class="vendor-name">'+v.name+'</div>';
+    html+='<div class="vendor-meta">';
+    if(v.category)html+='<span>'+v.category+'</span>';
+    if(v.booth)html+='<span>Booth '+v.booth+'</span>';
+    if(hasContact)html+='<span style="color:var(--green)">Contact saved</span>';
+    html+='</div></div>';
+    if(v.booth)html+='<div class="vendor-booth">'+v.booth+'</div>';
+    html+='<div class="vendor-actions">';
+    html+='<button class="act-btn'+(hasContact?' has-contact':'')+'" onclick="event.stopPropagation();toggleRow(\''+v.slug+'\')" title="'+(hasContact?'Edit':'Add')+' contact">';
+    html+='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>';
+    html+='<button class="act-btn" onclick="event.stopPropagation();copyUrl(\''+v.slug+'\')" id="copy-'+v.slug+'" title="Copy URL">';
+    html+='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>';
+    html+='<a class="visit-btn" href="/'+v.slug+'" target="_blank" onclick="event.stopPropagation()">';
+    html+='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+    html+='<span>Visit CRM</span></a>';
+    html+='</div></div>';
+
+    // Expand panel
+    html+='<div class="vendor-expand">';
+
+    // URL section
+    html+='<div class="expand-section">';
+    html+='<div class="expand-label">CRM Link</div>';
+    html+='<div class="url-row">';
+    html+='<div class="url-display">'+BASE_URL+'/'+v.slug+'</div>';
+    html+='<button class="url-copy-btn" onclick="copyUrl(\''+v.slug+'\',this)">Copy</button>';
+    html+='</div></div>';
+
+    // Contact form
+    html+='<div class="expand-section">';
+    html+='<div class="expand-label">Vendor Contact</div>';
+    html+='<div class="contact-grid">';
+    html+='<input class="contact-input" placeholder="Contact name" data-slug="'+v.slug+'" data-field="name" value="'+(c.name||'')+'">';
+    html+='<input class="contact-input" placeholder="Title / Role" data-slug="'+v.slug+'" data-field="title" value="'+(c.title||'')+'">';
+    html+='<input class="contact-input" placeholder="Email" type="email" data-slug="'+v.slug+'" data-field="email" value="'+(c.email||'')+'">';
+    html+='<input class="contact-input" placeholder="Phone" type="tel" data-slug="'+v.slug+'" data-field="phone" value="'+(c.phone||'')+'">';
+    html+='<input class="contact-input contact-full" placeholder="Notes (interests, conversation, follow-up...)" data-slug="'+v.slug+'" data-field="notes" value="'+(c.notes||'')+'">';
+    html+='</div>';
+
+    // Business card photo
+    html+='<div class="card-photo-area">';
+    html+='<button class="card-photo-btn" onclick="captureCard(\''+v.slug+'\')">';
+    html+='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>';
+    html+=(c.cardPhoto?'Retake':'Snap Business Card')+'</button>';
+    if(c.cardPhoto){
+      html+='<div class="card-thumb-wrap"><img class="card-thumb" src="'+c.cardPhoto+'" onclick="window.open(this.src)"><button class="card-thumb-x" onclick="removePhoto(\''+v.slug+'\')">&times;</button></div>';
+    }
+    html+='</div>';
+
+    // Save
+    html+='<div class="save-row">';
+    html+='<button class="save-btn" onclick="saveContact(\''+v.slug+'\')">Save Contact</button>';
+    html+='<span class="save-msg" id="saved-'+v.slug+'">Saved</span>';
+    html+='</div>';
+
+    html+='</div>';
+    html+='</div></div>';
+  });
+  document.getElementById('vendorList').innerHTML=html;
+}
+
+function toggleRow(slug){
+  var row=document.getElementById('vr-'+slug);
+  if(!row)return;
+  var wasOpen=row.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.vendor-row.open').forEach(function(r){r.classList.remove('open');});
+  if(!wasOpen)row.classList.add('open');
+}
+
+function copyUrl(slug,btn){
+  var url=BASE_URL+'/'+slug;
+  navigator.clipboard.writeText(url).then(function(){
+    showToast('Copied: '+url);
+    if(btn){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);}
+    var ab=document.getElementById('copy-'+slug);
+    if(ab){ab.classList.add('copied');setTimeout(function(){ab.classList.remove('copied');},2000);}
+  });
+}
+
+function saveContact(slug){
+  if(!contacts[slug])contacts[slug]={};
+  document.querySelectorAll('[data-slug="'+slug+'"]').forEach(function(inp){
+    contacts[slug][inp.dataset.field]=inp.value.trim();
+  });
+  localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
+  var msg=document.getElementById('saved-'+slug);
+  if(msg){msg.classList.add('show');setTimeout(function(){msg.classList.remove('show');},2000);}
+  // Update the contact button state
+  var ab=document.querySelector('#vr-'+slug+' .act-btn');
+  if(ab&&(contacts[slug].name||contacts[slug].email||contacts[slug].phone)){
+    ab.classList.add('has-contact');
+  }
+  showToast('Contact saved for '+vendors.find(function(v){return v.slug===slug;}).name);
+}
+
+function captureCard(slug){
+  currentPhotoTarget=slug;
+  document.getElementById('cardFileInput').click();
+}
+
+document.getElementById('cardFileInput').addEventListener('change',function(e){
+  if(!e.target.files[0]||!currentPhotoTarget)return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    if(!contacts[currentPhotoTarget])contacts[currentPhotoTarget]={};
+    contacts[currentPhotoTarget].cardPhoto=ev.target.result;
+    localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
+    render();
+    // Re-open the row
+    setTimeout(function(){toggleRow(currentPhotoTarget);currentPhotoTarget=null;},50);
+  };
+  reader.readAsDataURL(e.target.files[0]);
+  e.target.value='';
+});
+
+function removePhoto(slug){
+  if(contacts[slug])delete contacts[slug].cardPhoto;
+  localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
+  render();
+  setTimeout(function(){toggleRow(slug);},50);
+}
+
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2500);
+}
+
+// Search
+document.getElementById('searchInput').addEventListener('input',function(){render();});
+
+// Init
+loadVendors();
+</script>
+</body>
+</html>
