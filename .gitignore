@@ -1,1 +1,12 @@
 .vercel
+.DS_Store
+node_modules/
+enrichment/node_modules/
+enrichment/api-test*.js
+enrichment/batch-test*.js
+enrichment/inspect*.js
+enrichment/intercept-test.js
+enrichment/map-test.js
+enrichment/page-debug*.js
+enrichment/quick-test.js
+enrichment/open-agreement.js

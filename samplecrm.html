@@ -78,10 +78,11 @@ nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
 /* LEAD CARDS */
 .lead-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:20px 24px;margin-bottom:12px;transition:.2s}
 .lead-card:hover{border-color:var(--bdr-h)}
-.lead-card.starred{border-color:rgba(234,179,8,.25)}
-.lead-star{background:none;border:none;cursor:pointer;font-size:18px;padding:4px;line-height:1;color:var(--d);transition:.2s;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
-.lead-star:hover{color:#eab308}
-.lead-star.active{color:#eab308}
+.lead-card.starred{border-color:rgba(249,115,22,.25)}
+.lead-actions{display:flex;align-items:center;gap:4px}
+.lead-star{background:none;border:none;cursor:pointer;font-size:18px;padding:4px;line-height:1;opacity:.25;transition:.2s;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;filter:grayscale(1)}
+.lead-star:hover{opacity:.7;filter:none}
+.lead-star.active{opacity:1;filter:none}
 .lead-card.new-lead{animation:slideIn .4s ease-out}
 @keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 .lead-header{display:flex;justify-content:space-between;align-items:center}
@@ -90,7 +91,7 @@ nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
 .lead-time{font-size:12px;color:var(--m)}
 .lead-toggle{background:none;border:none;color:var(--m);cursor:pointer;font-size:12px;padding:8px;transition:.2s;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
 .lead-toggle:hover{background:var(--card-h);color:var(--g)}
-.lead-toggle.open{transform:rotate(180deg)}
+.lead-toggle.open{color:var(--blue)}
 .lead-details{display:flex;gap:24px;margin-top:12px;flex-wrap:wrap}
 .lead-field{}
 .lead-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--d);margin-bottom:2px}
@@ -100,24 +101,85 @@ a.lead-value:hover{color:var(--blue)}
 .lead-tag{font-size:12px;font-weight:600;color:var(--blue);background:var(--blue-g);padding:4px 12px;border-radius:100px;border:1px solid rgba(37,99,235,.15)}
 .lead-custnote{margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr);font-size:13px;color:var(--m);line-height:1.6}
 .lead-custnote strong{color:var(--d);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:2px}
-.lead-notes{margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr);display:none}
+.lead-notes{margin-top:8px;padding-top:8px;border-top:1px solid var(--bdr);display:none}
 .lead-notes.open{display:block}
-.lead-notes textarea{width:100%;padding:12px 14px;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;color:var(--w);font-family:inherit;font-size:13px;outline:none;transition:.2s;min-height:70px;resize:vertical}
+.lead-notes textarea{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;color:var(--w);font-family:inherit;font-size:13px;outline:none;transition:.2s;min-height:40px;resize:vertical}
 .lead-notes textarea:focus{border-color:var(--blue)}
 .lead-notes textarea::placeholder{color:var(--d)}
-.notes-status{font-size:11px;font-weight:600;margin-top:6px;height:16px}
+.notes-status{font-size:11px;font-weight:600;margin-top:4px;height:14px}
 .notes-status.saved{color:var(--green)}
-.voice-section{margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.btn-mic{width:32px;height:32px;border-radius:8px;background:var(--bg);border:1px solid var(--bdr);color:var(--d);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0}
+.voice-section{margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn-mic{height:30px;border-radius:8px;background:var(--bg);border:1px solid var(--bdr);color:var(--d);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;padding:0 10px;font-family:inherit;font-size:11px;font-weight:600}
 .btn-mic svg{width:14px;height:14px}
 .btn-mic:hover{border-color:var(--bdr-h);color:var(--g)}
 .btn-mic.recording{background:var(--red-g);border-color:var(--red);color:var(--red);animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.voice-player{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
-.voice-player audio{height:32px;flex:1;min-width:0}
-.btn-del-voice{background:none;border:none;color:var(--d);cursor:pointer;font-size:12px;padding:4px 6px;border-radius:6px;transition:.2s}
+.voice-player{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+.btn-play{width:30px;height:30px;border-radius:8px;background:var(--blue-g);border:1px solid rgba(37,99,235,.2);color:var(--blue);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0}
+.btn-play:hover{background:rgba(37,99,235,.2);border-color:rgba(37,99,235,.3)}
+.btn-play svg{width:14px;height:14px}
+.voice-progress{flex:1;height:4px;background:var(--bdr);border-radius:4px;overflow:hidden;min-width:40px}
+.voice-progress-bar{height:100%;background:var(--blue);border-radius:4px;width:0;transition:width .1s linear}
+.voice-duration{font-size:10px;color:var(--d);font-weight:600;white-space:nowrap;min-width:28px}
+.btn-del-voice{background:none;border:none;color:var(--d);cursor:pointer;font-size:12px;padding:4px 6px;border-radius:6px;transition:.2s;display:flex;align-items:center;justify-content:center}
 .btn-del-voice:hover{color:var(--red);background:var(--red-g)}
 .voice-time{font-size:11px;color:var(--m);font-weight:600}
+
+/* LEAD SCORE BADGE */
+.lead-score{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:100px;margin-left:8px}
+.lead-score.hot{color:#f97316;background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.2)}
+.lead-score.warm{color:#eab308;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.2)}
+.lead-score.cold{color:var(--d);background:rgba(68,68,68,.15);border:1px solid rgba(68,68,68,.3)}
+
+/* SPEED TO LEAD */
+.speed-badge{font-size:10px;font-weight:600;margin-left:6px;padding:2px 8px;border-radius:100px}
+.speed-badge.fast{color:var(--green);background:var(--green-s)}
+.speed-badge.medium{color:#eab308;background:rgba(234,179,8,.1)}
+.speed-badge.slow{color:var(--red);background:var(--red-g)}
+
+/* ENRICHMENT PANEL */
+.lead-enrichment{margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr)}
+.enrichment-header{margin-bottom:0}
+.enrichment-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;cursor:pointer;padding:0;font-family:inherit}
+.enrichment-arrow{font-size:10px;color:var(--d);transition:.3s}
+.enrichment-toggle.open .enrichment-arrow{transform:rotate(180deg)}
+.enrichment-body{display:none;padding-top:10px}
+.enrichment-body.open{display:block}
+.enrichment-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:6px}
+.enrichment-title svg{width:12px;height:12px}
+.enrichment-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.enrichment-field{position:relative}
+.enrichment-label{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--d);margin-bottom:1px}
+.enrichment-value{font-size:13px;color:var(--g);font-weight:500}
+.enrichment-locked-section{position:relative;margin-top:12px}
+.enrichment-locked-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;filter:blur(5px);user-select:none;pointer-events:none}
+.enrichment-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;background:rgba(0,0,0,.3);border-radius:10px}
+.enrichment-lock-icon{font-size:20px;margin-bottom:6px}
+.enrichment-empty{text-align:center;padding:16px 0}
+.enrichment-noaddr{font-size:12px;color:var(--d)}
+.enrichment-error{font-size:12px;color:var(--red);display:block}
+.btn-enrich{padding:10px 24px;background:var(--blue);color:var(--w);border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
+.btn-enrich:hover{background:var(--blue-h);transform:translateY(-1px)}
+.btn-enrich-refresh{background:transparent;color:var(--m);border:1px solid var(--bdr);font-size:11px;padding:6px 14px}
+.btn-enrich-refresh:hover{border-color:var(--bdr-h);color:var(--g);background:var(--card-h);transform:none}
+.enrichment-loading{font-size:13px;color:var(--g);display:flex;align-items:center;gap:10px;padding:16px 0;justify-content:center}
+.enrich-spinner{width:16px;height:16px;border:2px solid var(--bdr);border-top-color:var(--blue);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.upgrade-cta{font-size:12px;font-weight:700;color:var(--blue);text-decoration:none;padding:8px 20px;border:1px solid rgba(37,99,235,.3);border-radius:100px;background:rgba(37,99,235,.08);transition:.2s;cursor:pointer}
+.upgrade-cta:hover{background:rgba(37,99,235,.15);border-color:rgba(37,99,235,.5)}
+.new-homeowner{font-size:10px;font-weight:700;color:var(--green);background:var(--green-s);padding:2px 8px;border-radius:100px;margin-left:6px}
+
+/* ROI CARD */
+.roi-card{background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(37,99,235,.02));border:1px solid rgba(37,99,235,.2);border-radius:16px;padding:28px;margin-top:24px;text-align:center}
+.roi-card h3{font-size:14px;font-weight:700;color:var(--g);margin-bottom:16px}
+.roi-stats{display:flex;justify-content:center;gap:32px;margin-bottom:20px;flex-wrap:wrap}
+.roi-stat{text-align:center}
+.roi-stat-value{font-size:clamp(22px,3vw,28px);font-weight:900;letter-spacing:-1px;color:var(--w)}
+.roi-stat-label{font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-top:2px}
+.roi-highlight{font-size:15px;font-weight:600;color:var(--g);margin-bottom:16px;line-height:1.6}
+.roi-highlight strong{color:var(--green);font-weight:800}
+.roi-cta{display:inline-block;font-size:14px;font-weight:700;color:var(--w);background:var(--blue);padding:12px 32px;border-radius:10px;text-decoration:none;transition:.2s;border:none;cursor:pointer;font-family:inherit}
+.roi-cta:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-gs)}
 
 /* ADD LEAD FORM */
 .add-lead-form{display:none;margin-bottom:20px}
@@ -244,6 +306,8 @@ footer{padding:32px 20px;flex-direction:column;text-align:center}
 footer .fr{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 footer a{margin-left:0}
 .hide-mobile{display:none}
+.enrichment-grid,.enrichment-locked-grid{grid-template-columns:1fr 1fr}
+.roi-stats{gap:20px}
 }
 </style>
 </head>
@@ -392,6 +456,8 @@ footer a{margin-left:0}
 <h3>Recent Activity</h3>
 <div id="activity-feed"></div>
 </div>
+<button class="btn-export" style="width:100%;margin-top:24px;padding:16px;font-size:15px;border-radius:12px" onclick="exportCSV()">⬇ Export All Leads as CSV</button>
+<div class="roi-card" id="roi-calculator"></div>
 </div>
 
 <!-- INTAKE FORM TAB -->
@@ -476,14 +542,14 @@ var now=new Date();
 function ago(mins){return new Date(now.getTime()-mins*60000).toISOString()}
 
 var leads=[
-{id:'1',name:'Sarah Mitchell',email:'sarah.m@gmail.com',phone:'(416) 555-0142',address:'42 Maple Ridge Dr, Toronto ON M4B 1T7',interests:['Kitchen','Bathroom'],customer_notes:'Looking for a modern island layout with quartz countertops',notes:'',created_at:ago(3)},
-{id:'2',name:'David Chen',email:'dchen@outlook.com',phone:'(647) 555-0387',address:'118 Bloor St W, Unit 2204, Toronto ON M5S 1M4',interests:['Bathroom'],customer_notes:'',notes:'',created_at:ago(18)},
-{id:'3',name:'Priya Patel',email:'priya.p@yahoo.com',phone:'(905) 555-0219',address:'7 Oakwood Cres, Mississauga ON L5B 3H2',interests:['Smart Home','Electrical'],customer_notes:'Already has Nest — wants everything integrated',notes:'',created_at:ago(35)},
-{id:'4',name:'Marcus Williams',email:'m.williams@icloud.com',phone:'(416) 555-0891',address:'305 Queen St E, Toronto ON M5A 1S7',interests:['Flooring'],customer_notes:'',notes:'',created_at:ago(52)},
-{id:'5',name:'Jennifer Okafor',email:'jen.okafor@gmail.com',phone:'(647) 555-0634',address:'89 Weston Rd, York ON M6N 3P4',interests:['Windows','Doors'],customer_notes:'Townhouse, 12 windows total. Wants energy efficient options.',notes:'',created_at:ago(78)},
-{id:'6',name:'Tom Bergeron',email:'tberg@rogers.com',phone:'(905) 555-0445',address:'15 Lakeshore Blvd, Oakville ON L6J 1H3',interests:['Roofing','Insulation'],customer_notes:'',notes:'',created_at:ago(105)},
-{id:'7',name:'Aisha Rahman',email:'aisha.r@hotmail.com',phone:'(416) 555-0776',address:'201 Danforth Ave, Toronto ON M4K 1N2',interests:['Basement'],customer_notes:'Need a home office and rec room for the kids',notes:'',created_at:ago(140)},
-{id:'8',name:'Mike Thornton',email:'mthornton22@gmail.com',phone:'(647) 555-0158',address:'53 Royal York Rd, Etobicoke ON M8V 2B7',interests:['Deck','Outdoor'],customer_notes:'Has architectural drawings already',notes:'',created_at:ago(195)}
+{id:'1',name:'Sarah Mitchell',email:'sarah.m@gmail.com',phone:'(416) 555-0142',address:'42 Maple Ridge Dr, Toronto ON M4B 1T7',interests:['Kitchen','Bathroom'],customer_notes:'Looking for a modern island layout with quartz countertops',notes:'',created_at:ago(3),enrichment:{year_built:1972,home_value:'$985,000',property_type:'Detached',sqft:1850,storeys:2,lot_size:'30 x 120 ft',last_sale:'Mar 2023',last_sale_price:'$910,000',neighbourhood:'Birch Cliff',nearby_projects:3,rebate_eligible:true,estimated_roof_age:'30+ yrs',permits_on_file:1}},
+{id:'2',name:'David Chen',email:'dchen@outlook.com',phone:'(647) 555-0387',address:'118 Bloor St W, Unit 2204, Toronto ON M5S 1M4',interests:['Bathroom'],customer_notes:'',notes:'',created_at:ago(18),enrichment:{year_built:2015,home_value:'$720,000',property_type:'Condo',sqft:890,storeys:1,lot_size:'N/A',last_sale:'Nov 2024',last_sale_price:'$695,000',neighbourhood:'Yorkville',nearby_projects:1,rebate_eligible:false,estimated_roof_age:'N/A',permits_on_file:0}},
+{id:'3',name:'Priya Patel',email:'priya.p@yahoo.com',phone:'(905) 555-0219',address:'7 Oakwood Cres, Mississauga ON L5B 3H2',interests:['Smart Home','Electrical'],customer_notes:'Already has Nest — wants everything integrated',notes:'',created_at:ago(35),enrichment:{year_built:1998,home_value:'$1,150,000',property_type:'Detached',sqft:2400,storeys:2,lot_size:'45 x 110 ft',last_sale:'Jun 2021',last_sale_price:'$1,020,000',neighbourhood:'Cooksville',nearby_projects:2,rebate_eligible:true,estimated_roof_age:'27 yrs',permits_on_file:2}},
+{id:'4',name:'Marcus Williams',email:'m.williams@icloud.com',phone:'(416) 555-0891',address:'305 Queen St E, Toronto ON M5A 1S7',interests:['Flooring'],customer_notes:'',notes:'',created_at:ago(52),enrichment:{year_built:1890,home_value:'$1,350,000',property_type:'Semi-Detached',sqft:1600,storeys:3,lot_size:'18 x 95 ft',last_sale:'Aug 2019',last_sale_price:'$1,100,000',neighbourhood:'Corktown',nearby_projects:5,rebate_eligible:true,estimated_roof_age:'15 yrs',permits_on_file:3}},
+{id:'5',name:'Jennifer Okafor',email:'jen.okafor@gmail.com',phone:'(647) 555-0634',address:'89 Weston Rd, York ON M6N 3P4',interests:['Windows','Doors'],customer_notes:'Townhouse, 12 windows total. Wants energy efficient options.',notes:'',created_at:ago(78),enrichment:{year_built:1965,home_value:'$675,000',property_type:'Townhouse',sqft:1200,storeys:2,lot_size:'20 x 80 ft',last_sale:'Jan 2025',last_sale_price:'$650,000',neighbourhood:'Weston',nearby_projects:4,rebate_eligible:true,estimated_roof_age:'35+ yrs',permits_on_file:0}},
+{id:'6',name:'Tom Bergeron',email:'tberg@rogers.com',phone:'(905) 555-0445',address:'15 Lakeshore Blvd, Oakville ON L6J 1H3',interests:['Roofing','Insulation'],customer_notes:'',notes:'',created_at:ago(105),enrichment:{year_built:1988,home_value:'$1,480,000',property_type:'Detached',sqft:2800,storeys:2,lot_size:'50 x 130 ft',last_sale:'May 2017',last_sale_price:'$980,000',neighbourhood:'Bronte',nearby_projects:2,rebate_eligible:true,estimated_roof_age:'37 yrs',permits_on_file:1}},
+{id:'7',name:'Aisha Rahman',email:'aisha.r@hotmail.com',phone:'(416) 555-0776',address:'201 Danforth Ave, Toronto ON M4K 1N2',interests:['Basement'],customer_notes:'Need a home office and rec room for the kids',notes:'',created_at:ago(140),enrichment:{year_built:1948,home_value:'$1,100,000',property_type:'Detached',sqft:1500,storeys:2,lot_size:'25 x 100 ft',last_sale:'Sep 2022',last_sale_price:'$1,050,000',neighbourhood:'The Danforth',nearby_projects:6,rebate_eligible:true,estimated_roof_age:'20 yrs',permits_on_file:0}},
+{id:'8',name:'Mike Thornton',email:'mthornton22@gmail.com',phone:'(647) 555-0158',address:'53 Royal York Rd, Etobicoke ON M8V 2B7',interests:['Deck','Outdoor'],customer_notes:'Has architectural drawings already',notes:'',created_at:ago(195),enrichment:{year_built:1955,home_value:'$870,000',property_type:'Detached',sqft:1650,storeys:1,lot_size:'40 x 125 ft',last_sale:'Feb 2024',last_sale_price:'$825,000',neighbourhood:'Mimico',nearby_projects:2,rebate_eligible:true,estimated_roof_age:'25 yrs',permits_on_file:1}}
 ];
 
 /* ══ TIME AGO ══ */
@@ -518,6 +584,22 @@ leads.forEach(function(l){list.appendChild(createLeadCard(l))});
 document.getElementById('tab-lead-count').textContent=leads.length;
 }
 
+function getLeadScore(l){
+if(!l.enrichment)return{label:'--',cls:'cold'};
+var age=new Date().getFullYear()-l.enrichment.year_built;
+var lastSaleDate=l.enrichment.last_sale?new Date(l.enrichment.last_sale+' 1, 2025'):null;
+var isNewOwner=lastSaleDate&&((now-lastSaleDate)/(1000*60*60*24*365))<2;
+if(age>30)return{label:'Hot',cls:'hot'};
+if(age>20||isNewOwner)return{label:'Warm',cls:'warm'};
+return{label:'Cold',cls:'cold'};
+}
+function getSpeedStatus(iso){
+var diff=Math.floor((now-new Date(iso))/1000);
+if(diff<300)return{label:'Respond now',cls:'fast'};
+if(diff<1800)return{label:'Getting cold',cls:'medium'};
+return{label:'No follow-up',cls:'slow'};
+}
+
 function createLeadCard(l){
 var card=document.createElement('div');
 card.className='lead-card'+(l.starred?' starred':'');
@@ -529,10 +611,21 @@ l.interests.forEach(function(t){tagsHtml+='<span class="lead-tag">'+esc(t)+'</sp
 tagsHtml+='</div>';
 }
 var custNotes=l.customer_notes?'<div class="lead-custnote"><strong>Customer Notes</strong>'+esc(l.customer_notes)+'</div>':'';
+var score=getLeadScore(l);
+var speed=getSpeedStatus(l.created_at);
+var eid='enrich-'+l.id;
+var enrichHtml='<div class="lead-enrichment">'+
+'<div class="enrichment-header"><button class="enrichment-toggle" onclick="toggleEnrichment(this)"><span class="enrichment-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Property Intelligence</span><span class="enrichment-arrow">&#9660;</span></button></div>'+
+'<div class="enrichment-body">'+
+'<div class="enrichment-content" id="'+eid+'">'+
+buildEnrichmentContent(l)+
+'</div>'+
+'</div>'+
+'</div>';
 card.innerHTML=
 '<div class="lead-header">'+
-'<div class="lead-info"><button class="lead-star'+(l.starred?' active':'')+'" onclick="toggleStar(this,\''+l.id+'\')" aria-label="Star lead">'+(l.starred?'&#9733;':'&#9734;')+'</button><span class="lead-name">'+esc(l.name)+'</span><span class="lead-time">'+timeAgo(l.created_at)+'</span></div>'+
-'<button class="lead-toggle" onclick="toggleNotes(this)" aria-label="Toggle notes">&#9660;</button>'+
+'<div class="lead-info"><span class="lead-name">'+esc(l.name)+'</span><span class="lead-time">'+timeAgo(l.created_at)+'</span></div>'+
+'<div class="lead-actions"><button class="lead-toggle" onclick="toggleNotes(this)" aria-label="Toggle notes">Add Note +</button><button class="lead-star'+(l.starred?' active':'')+'" onclick="toggleStar(this,\''+l.id+'\')" aria-label="Hot lead">'+(l.starred?'&#128293;':'&#128293;')+'</button></div>'+
 '</div>'+
 '<div class="lead-details">'+
 '<div class="lead-field"><div class="lead-label">Email</div><a class="lead-value" href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a></div>'+
@@ -545,11 +638,12 @@ custNotes+
 '<textarea placeholder="Add notes about this lead..." oninput="saveNotes(this,\''+l.id+'\')">'+esc(l.notes)+'</textarea>'+
 '<div class="notes-status" id="ns-'+l.id+'"></div>'+
 '<div class="voice-section" id="voice-'+l.id+'">'+
-'<button class="btn-mic" onclick="toggleRecording(\''+l.id+'\')" id="mic-'+l.id+'" aria-label="Record voice note" title="Record voice note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="1" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/></svg></button>'+
+'<button class="btn-mic" onclick="toggleRecording(\''+l.id+'\')" id="mic-'+l.id+'" aria-label="Record voice note" title="Record voice note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="1" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/></svg> Record</button>'+
 '<span class="voice-time" id="vtime-'+l.id+'"></span>'+
 '<div class="voice-player" id="vplayer-'+l.id+'" style="display:none"></div>'+
 '</div>'+
-'</div>';
+'</div>'+
+enrichHtml;
 /* Restore existing voice note if any */
 if(l.voiceUrl){
 setTimeout(function(){showVoicePlayer(l.id,l.voiceUrl)},0);
@@ -566,6 +660,78 @@ var card=btn.closest('.lead-card');
 var notes=card.querySelector('.lead-notes');
 notes.classList.toggle('open');
 if(notes.classList.contains('open'))notes.querySelector('textarea').focus();
+}
+
+function toggleEnrichment(btn){
+btn.classList.toggle('open');
+var body=btn.closest('.lead-enrichment').querySelector('.enrichment-body');
+body.classList.toggle('open');
+}
+
+function buildEnrichmentContent(l){
+var e=l.enrichment;
+if(!e){
+return '<div class="enrichment-empty">'+(l.address?
+'<button class="btn-enrich" onclick="fetchEnrichment(\''+l.id+'\')">Fetch Property Data</button>':
+'<span class="enrichment-noaddr">No address — add one to enrich</span>')+
+'</div>';
+}
+var fields=[
+['Year Built',e.year_built],['Property Type',e.property_type],['Neighbourhood',e.neighbourhood],
+['Home Value',e.home_value],['Square Feet',e.sqft?(e.sqft+(/sqft|feet/i.test(String(e.sqft))?'':' sqft')):null],['Lot Size',e.lot_size],
+['Last Sale',e.last_sale],['Sale Price',e.last_sale_price],['Est. Roof Age',e.estimated_roof_age],
+['Bedrooms',e.bedrooms],['Bathrooms',e.bathrooms],['Construction',e.construction],
+['Basement',e.basement],['Heating',e.heating],['Cooling',e.cooling],
+['Parking',e.parking],['Tax',e.tax],['Est. Rent',e.estimated_rent],
+];
+var html='<div class="enrichment-locked-section">'+
+'<div class="enrichment-overlay" id="enrich-'+l.id+'-overlay"><div class="enrichment-lock-icon">&#128274;</div><button class="upgrade-cta" onclick="unlockEnrichment(\'enrich-'+l.id+'\')">Unlock with YourEdge Enrichment &rarr;</button></div>'+
+'<div class="enrichment-locked-grid" id="enrich-'+l.id+'-grid">';
+fields.forEach(function(f){
+if(f[1]&&f[1]!=='null'&&f[1]!=='-'&&f[1]!=='N/A'){
+html+='<div class="enrichment-field"><div class="enrichment-label">'+f[0]+'</div><div class="enrichment-value">'+esc(String(f[1]))+'</div></div>';
+}
+});
+html+='</div></div>';
+if(l.address){
+html+='<button class="btn-enrich btn-enrich-refresh" onclick="fetchEnrichment(\''+l.id+'\')" style="margin-top:8px">Refresh Data</button>';
+}
+return html;
+}
+
+function unlockEnrichment(eid){
+var overlay=document.getElementById(eid+'-overlay');
+var grid=document.getElementById(eid+'-grid');
+if(overlay)overlay.style.display='none';
+if(grid){grid.style.filter='none';grid.style.userSelect='auto';grid.style.pointerEvents='auto';}
+}
+
+var ENRICH_API='http://localhost:3001';
+function fetchEnrichment(id){
+var lead=leads.find(function(l){return l.id===id});
+if(!lead||!lead.address)return;
+var container=document.getElementById('enrich-'+id);
+if(!container)return;
+container.innerHTML='<div class="enrichment-loading"><div class="enrich-spinner"></div> Fetching property data...</div>';
+// Make sure enrichment body is visible
+var body=container.closest('.enrichment-body');
+if(body&&!body.classList.contains('open'))body.classList.add('open');
+var toggle=container.closest('.lead-enrichment').querySelector('.enrichment-toggle');
+if(toggle&&!toggle.classList.contains('open'))toggle.classList.add('open');
+
+fetch(ENRICH_API+'/enrich',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({address:lead.address})})
+.then(function(r){return r.json()})
+.then(function(data){
+if(data.success&&data.enrichment){
+lead.enrichment=data.enrichment;
+container.innerHTML=buildEnrichmentContent(lead);
+}else{
+container.innerHTML='<div class="enrichment-empty"><span class="enrichment-error">Could not find property data for this address.</span><button class="btn-enrich" onclick="fetchEnrichment(\''+id+'\')" style="margin-top:8px">Try Again</button></div>';
+}
+})
+.catch(function(err){
+container.innerHTML='<div class="enrichment-empty"><span class="enrichment-error">Enrichment server not running. Start with: node enrichment/server.js</span></div>';
+});
 }
 
 function toggleStar(btn,id){
@@ -705,12 +871,36 @@ alert('Microphone access is required for voice notes.');
 });
 }
 
+function fmtTime(s){var m=Math.floor(s/60);var sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec}
 function showVoicePlayer(id,url){
 var player=document.getElementById('vplayer-'+id);
 if(!player)return;
 player.style.display='flex';
-player.innerHTML='<audio controls src="'+url+'"></audio>'+
+var audio=new Audio(url);
+var playId='vplay-'+id;
+var progId='vprog-'+id;
+var durId='vdur-'+id;
+player.innerHTML=
+'<button class="btn-play" id="'+playId+'" aria-label="Play"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6,3 20,12 6,21"/></svg></button>'+
+'<div class="voice-progress"><div class="voice-progress-bar" id="'+progId+'"></div></div>'+
+'<span class="voice-duration" id="'+durId+'">0:00</span>'+
 '<button class="btn-del-voice" onclick="deleteVoice(\''+id+'\')" title="Delete">&#10005;</button>';
+var playBtn=document.getElementById(playId);
+var progBar=document.getElementById(progId);
+var durSpan=document.getElementById(durId);
+audio.addEventListener('loadedmetadata',function(){durSpan.textContent=fmtTime(audio.duration)});
+audio.addEventListener('timeupdate',function(){
+if(audio.duration){progBar.style.width=(audio.currentTime/audio.duration*100)+'%';durSpan.textContent=fmtTime(audio.currentTime)+' / '+fmtTime(audio.duration)}
+});
+audio.addEventListener('ended',function(){
+playBtn.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6,3 20,12 6,21"/></svg>';
+progBar.style.width='0';durSpan.textContent=fmtTime(audio.duration);
+});
+playBtn.onclick=function(){
+if(audio.paused){audio.play();playBtn.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>'}
+else{audio.pause();playBtn.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6,3 20,12 6,21"/></svg>'}
+};
+player._audio=audio;
 var mic=document.getElementById('mic-'+id);
 if(mic)mic.style.display='none';
 var vtime=document.getElementById('vtime-'+id);
@@ -721,7 +911,7 @@ function deleteVoice(id){
 var lead=leads.find(function(l){return l.id===id});
 if(lead)delete lead.voiceUrl;
 var player=document.getElementById('vplayer-'+id);
-if(player){player.style.display='none';player.innerHTML=''}
+if(player){if(player._audio){player._audio.pause();player._audio=null}player.style.display='none';player.innerHTML=''}
 var mic=document.getElementById('mic-'+id);
 if(mic){mic.style.display='flex';mic.classList.remove('recording')}
 }
@@ -744,7 +934,7 @@ var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c).repla
 var blob=new Blob([csv],{type:'text/csv'});
 var url=URL.createObjectURL(blob);
 var a=document.createElement('a');
-a.href=url;a.download='leads-acme-home-renovations.csv';a.click();
+a.href=url;a.download='leads-above-all-awnings.csv';a.click();
 URL.revokeObjectURL(url);
 }
 
@@ -790,6 +980,32 @@ var item=document.createElement('div');item.className='activity-item';
 item.innerHTML='<div><div class="activity-name">'+esc(l.name)+'</div>'+(l.interests&&l.interests.length?'<div class="activity-interest">'+l.interests.map(function(t){return esc(t)}).join(', ')+'</div>':'')+'</div><div class="activity-time">'+timeAgo(l.created_at)+'</div>';
 feed.appendChild(item);
 });
+
+/* ROI Calculator */
+var roiDiv=document.getElementById('roi-calculator');
+if(roiDiv){
+var totalVal=0,count=0;
+leads.forEach(function(l){
+if(l.enrichment&&l.enrichment.home_value){
+totalVal+=parseInt(l.enrichment.home_value.replace(/[^0-9]/g,''));
+count++;
+}
+});
+var avgVal=count?totalVal/count:0;
+var closeRate=0.08;
+var avgProject=25000;
+var pipeline=Math.round(leads.length*closeRate*avgProject);
+var enrichedPipeline=Math.round(pipeline*2.4);
+roiDiv.innerHTML=
+'<h3>Revenue Potential</h3>'+
+'<div class="roi-stats">'+
+'<div class="roi-stat"><div class="roi-stat-value">'+leads.length+'</div><div class="roi-stat-label">Leads Captured</div></div>'+
+'<div class="roi-stat"><div class="roi-stat-value">$'+(avgVal/1000).toFixed(0)+'K</div><div class="roi-stat-label">Avg Home Value</div></div>'+
+'<div class="roi-stat"><div class="roi-stat-value">$'+(pipeline/1000).toFixed(0)+'K</div><div class="roi-stat-label">Est. Pipeline</div></div>'+
+'</div>'+
+'<div class="roi-highlight">Enriched leads close at <strong>2.4x</strong> the rate of standard leads.<br>That\'s <strong>$'+(enrichedPipeline/1000).toFixed(0)+'K in potential revenue</strong> with enrichment.</div>'+
+'<a class="roi-cta" href="/">Learn About Enrichment &rarr;</a>';
+}
 }
 
 /* ══ QR CODE ══ */
@@ -865,6 +1081,8 @@ created_at:new Date().toISOString()
 leads.unshift(newLead);
 renderLeads();
 renderAnalytics();
+/* Auto-enrich if address provided */
+if(address){setTimeout(function(){fetchEnrichment(newLead.id)},500)}
 
 /* Reset form */
 document.getElementById('add-name').value='';
@@ -944,6 +1162,8 @@ source:'intake'
 leads.unshift(newLead);
 renderLeads();
 renderAnalytics();
+/* Auto-enrich if address provided */
+if(address){setTimeout(function(){fetchEnrichment(newLead.id)},500)}
 
 /* Show success */
 document.getElementById('intakeForm').style.display='none';
