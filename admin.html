@@ -326,7 +326,7 @@ async function saveContact(slug){
     contacts[slug][inp.dataset.field]=inp.value.trim();
   });
   // Save to localStorage as immediate cache
-  localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
+  safeSetLocal();
   var msg=document.getElementById('saved-'+slug);
   var vName=vendors.find(function(v){return v.slug===slug;}).name;
 
@@ -361,34 +361,56 @@ async function saveContact(slug){
   }
 }
 
+function safeSetLocal(){
+  try{localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));}
+  catch(e){showToast('Local storage full — data saved to database only');}
+}
+
+var captureInProgress=false;
 function captureCard(slug){
+  if(captureInProgress)return;
+  captureInProgress=true;
   currentPhotoTarget=slug;
   document.getElementById('cardFileInput').click();
+  // Reset lock if user cancels file dialog (no change event fires)
+  setTimeout(function(){captureInProgress=false;},60000);
+}
+
+function resizeImage(file,maxW,quality,cb){
+  var img=new Image();
+  img.onload=function(){
+    var w=img.width,h=img.height;
+    if(w>maxW){h=Math.round(h*(maxW/w));w=maxW;}
+    var canvas=document.createElement('canvas');
+    canvas.width=w;canvas.height=h;
+    canvas.getContext('2d').drawImage(img,0,0,w,h);
+    cb(canvas.toDataURL('image/jpeg',quality));
+  };
+  img.src=URL.createObjectURL(file);
 }
 
 document.getElementById('cardFileInput').addEventListener('change',function(e){
+  captureInProgress=false;
   if(!e.target.files[0]||!currentPhotoTarget)return;
+  var slug=currentPhotoTarget;
+  currentPhotoTarget=null;
   var file=e.target.files[0];
-  if(file.size>500*1024){showToast('Photo too large (max 500KB). Please use a smaller image.');e.target.value='';return;}
-  var reader=new FileReader();
-  reader.onload=function(ev){
-    var slug=currentPhotoTarget;
+  e.target.value='';
+  showToast('Processing photo...');
+  resizeImage(file,1200,0.7,function(dataUrl){
     if(!contacts[slug])contacts[slug]={};
-    contacts[slug].cardPhoto=ev.target.result;
-    localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
-    // Save photo to database immediately
+    contacts[slug].cardPhoto=dataUrl;
+    safeSetLocal();
     saveContact(slug);
     render();
-    setTimeout(function(){toggleRow(slug);currentPhotoTarget=null;},50);
-  };
-  reader.readAsDataURL(e.target.files[0]);
-  e.target.value='';
+    setTimeout(function(){toggleRow(slug);},50);
+  });
 });
 
 function removePhoto(slug){
+  if(!confirm('Delete this business card photo? This cannot be undone.'))return;
   if(contacts[slug]){contacts[slug].cardPhoto='';}
-  localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
-  // Persist removal to database
+  safeSetLocal();
   saveContact(slug);
   render();
   setTimeout(function(){toggleRow(slug);},50);
@@ -412,7 +434,7 @@ function unlockAdmin(){
     .then(function(r){return r.ok?r.json():{}})
     .then(function(dbContacts){
       contacts=dbContacts||{};
-      localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
+      safeSetLocal();
       loadVendors();
     }).catch(function(){loadVendors();});
 }
@@ -499,8 +521,12 @@ function rebuildCategoryDropdown(){
   });
 }
 
-// Search
-document.getElementById('searchInput').addEventListener('input',function(){render();});
+// Search (debounced)
+var searchTimer;
+document.getElementById('searchInput').addEventListener('input',function(){
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(render,200);
+});
 
 // Init — auto-unlock if password saved
 if(adminPw){
