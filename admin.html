@@ -318,20 +318,45 @@ function copyUrl(slug,btn){
   });
 }
 
-function saveContact(slug){
+async function saveContact(slug){
   if(!contacts[slug])contacts[slug]={};
   document.querySelectorAll('[data-slug="'+slug+'"]').forEach(function(inp){
     contacts[slug][inp.dataset.field]=inp.value.trim();
   });
+  // Save to localStorage as immediate cache
   localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
   var msg=document.getElementById('saved-'+slug);
-  if(msg){msg.classList.add('show');setTimeout(function(){msg.classList.remove('show');},2000);}
+  var vName=vendors.find(function(v){return v.slug===slug;}).name;
+
+  // Save to database
+  var c=contacts[slug];
+  try{
+    var res=await fetch('/api/save-contact',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        password:adminPw,
+        vendor_slug:slug,
+        contact_name:c.name||'',
+        contact_title:c.title||'',
+        contact_email:c.email||'',
+        contact_phone:c.phone||'',
+        notes:c.notes||'',
+        card_photo:c.cardPhoto||''
+      })
+    });
+    if(!res.ok)throw new Error('save failed');
+    if(msg){msg.textContent='Saved to database';msg.classList.add('show');setTimeout(function(){msg.classList.remove('show');},2500);}
+    showToast('Contact saved for '+vName);
+  }catch(e){
+    if(msg){msg.textContent='Saved locally (DB sync failed)';msg.style.color='var(--amber)';msg.classList.add('show');setTimeout(function(){msg.classList.remove('show');msg.style.color='';msg.textContent='Saved';},3000);}
+    showToast('Saved locally — will retry on next save');
+  }
   // Update the contact button state
   var ab=document.querySelector('#vr-'+slug+' .act-btn');
-  if(ab&&(contacts[slug].name||contacts[slug].email||contacts[slug].phone)){
+  if(ab&&(c.name||c.email||c.phone)){
     ab.classList.add('has-contact');
   }
-  showToast('Contact saved for '+vendors.find(function(v){return v.slug===slug;}).name);
 }
 
 function captureCard(slug){
@@ -343,20 +368,24 @@ document.getElementById('cardFileInput').addEventListener('change',function(e){
   if(!e.target.files[0]||!currentPhotoTarget)return;
   var reader=new FileReader();
   reader.onload=function(ev){
-    if(!contacts[currentPhotoTarget])contacts[currentPhotoTarget]={};
-    contacts[currentPhotoTarget].cardPhoto=ev.target.result;
+    var slug=currentPhotoTarget;
+    if(!contacts[slug])contacts[slug]={};
+    contacts[slug].cardPhoto=ev.target.result;
     localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
+    // Save photo to database immediately
+    saveContact(slug);
     render();
-    // Re-open the row
-    setTimeout(function(){toggleRow(currentPhotoTarget);currentPhotoTarget=null;},50);
+    setTimeout(function(){toggleRow(slug);currentPhotoTarget=null;},50);
   };
   reader.readAsDataURL(e.target.files[0]);
   e.target.value='';
 });
 
 function removePhoto(slug){
-  if(contacts[slug])delete contacts[slug].cardPhoto;
+  if(contacts[slug]){contacts[slug].cardPhoto='';}
   localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
+  // Persist removal to database
+  saveContact(slug);
   render();
   setTimeout(function(){toggleRow(slug);},50);
 }
@@ -374,7 +403,14 @@ var adminPw=localStorage.getItem('ye-admin-pw')||'';
 function unlockAdmin(){
   document.getElementById('lockScreen').style.display='none';
   document.getElementById('adminContent').style.display='block';
-  loadVendors();
+  // Load contacts from database first, then vendors
+  fetch('/api/get-contacts',{headers:{'x-admin-password':adminPw}})
+    .then(function(r){return r.ok?r.json():{}})
+    .then(function(dbContacts){
+      contacts=dbContacts||{};
+      localStorage.setItem('ye-admin-contacts',JSON.stringify(contacts));
+      loadVendors();
+    }).catch(function(){loadVendors();});
 }
 
 function checkPassword(){
