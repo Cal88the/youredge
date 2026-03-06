@@ -78,20 +78,24 @@ nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
 /* LEAD CARDS */
 .lead-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:20px 24px;margin-bottom:12px;transition:.2s}
 .lead-card:hover{border-color:var(--bdr-h)}
-.lead-card.starred{border-color:rgba(249,115,22,.25)}
-.lead-actions{display:flex;align-items:center;gap:4px}
-.lead-star{background:none;border:none;cursor:pointer;font-size:18px;padding:4px;line-height:1;opacity:.25;transition:.2s;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;filter:grayscale(1)}
-.lead-star:hover{opacity:.7;filter:none}
-.lead-star.active{opacity:1;filter:none}
+.lead-card.pinned{border-color:rgba(37,99,235,.3);background:rgba(37,99,235,.03)}
+.lead-actions{position:relative}
+.lead-menu-btn{background:none;border:none;cursor:pointer;color:var(--d);font-size:18px;padding:6px 8px;border-radius:8px;transition:.2s;display:flex;align-items:center;justify-content:center;letter-spacing:2px;line-height:1}
+.lead-menu-btn:hover{background:var(--card-h);color:var(--g)}
+.lead-dropdown{display:none;position:absolute;top:100%;right:0;background:var(--card);border:1px solid var(--bdr-h);border-radius:10px;min-width:160px;z-index:20;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.lead-dropdown.open{display:block}
+.lead-dropdown-item{display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;background:none;border:none;color:var(--g);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:.15s;text-align:left}
+.lead-dropdown-item:hover{background:var(--card-h);color:var(--w)}
+.lead-dropdown-item.danger{color:var(--red)}
+.lead-dropdown-item.danger:hover{background:var(--red-g)}
+.lead-dropdown-item svg{width:14px;height:14px;flex-shrink:0}
+.lead-dropdown-sep{height:1px;background:var(--bdr);margin:2px 0}
 .lead-card.new-lead{animation:slideIn .4s ease-out}
 @keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 .lead-header{display:flex;justify-content:space-between;align-items:center}
 .lead-info{display:flex;align-items:center;gap:12px}
 .lead-name{font-size:16px;font-weight:700}
 .lead-time{font-size:12px;color:var(--m)}
-.lead-toggle{background:none;border:none;color:var(--m);cursor:pointer;font-size:12px;padding:8px;transition:.2s;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
-.lead-toggle:hover{background:var(--card-h);color:var(--g)}
-.lead-toggle.open{color:var(--blue)}
 .lead-details{display:flex;gap:24px;margin-top:12px;flex-wrap:wrap}
 .lead-field{}
 .lead-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--d);margin-bottom:2px}
@@ -602,7 +606,6 @@ return{label:'No follow-up',cls:'slow'};
 
 function createLeadCard(l){
 var card=document.createElement('div');
-card.className='lead-card'+(l.starred?' starred':'');
 card.dataset.leadId=l.id;
 var tagsHtml='';
 if(l.interests&&l.interests.length){
@@ -622,10 +625,20 @@ buildEnrichmentContent(l)+
 '</div>'+
 '</div>'+
 '</div>';
+card.className='lead-card'+(l.pinned?' pinned':'');
 card.innerHTML=
 '<div class="lead-header">'+
 '<div class="lead-info"><span class="lead-name">'+esc(l.name)+'</span><span class="lead-time">'+timeAgo(l.created_at)+'</span></div>'+
-'<div class="lead-actions"><button class="lead-toggle" onclick="toggleNotes(this)" aria-label="Toggle notes">Add Note +</button><button class="lead-star'+(l.starred?' active':'')+'" onclick="toggleStar(this,\''+l.id+'\')" aria-label="Hot lead">'+(l.starred?'&#128293;':'&#128293;')+'</button></div>'+
+'<div class="lead-actions">'+
+'<button class="lead-menu-btn" onclick="toggleMenu(this)" aria-label="Actions">&#8943;</button>'+
+'<div class="lead-dropdown">'+
+'<button class="lead-dropdown-item" onclick="menuAddNote(this,\''+l.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Add Note</button>'+
+'<button class="lead-dropdown-item" onclick="menuEditLead(\''+l.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg> Edit</button>'+
+'<button class="lead-dropdown-item" onclick="menuPinLead(\''+l.id+'\')">'+(l.pinned?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Unpin':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17v5"/><path d="M5 17h14v-1.76a2 2 0 00-1.11-1.79l-1.78-.9A2 2 0 0115 10.76V6h1a2 2 0 000-4H8a2 2 0 000 4h1v4.76a2 2 0 01-1.11 1.79l-1.78.9A2 2 0 005 15.24V17z"/></svg> Pin Lead')+'</button>'+
+'<div class="lead-dropdown-sep"></div>'+
+'<button class="lead-dropdown-item danger" onclick="menuDeleteLead(\''+l.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg> Delete</button>'+
+'</div>'+
+'</div>'+
 '</div>'+
 '<div class="lead-details">'+
 '<div class="lead-field"><div class="lead-label">Email</div><a class="lead-value" href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a></div>'+
@@ -654,13 +667,6 @@ return card;
 function esc(s){if(!s)return '';var d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
 /* ══ NOTES ══ */
-function toggleNotes(btn){
-btn.classList.toggle('open');
-var card=btn.closest('.lead-card');
-var notes=card.querySelector('.lead-notes');
-notes.classList.toggle('open');
-if(notes.classList.contains('open'))notes.querySelector('textarea').focus();
-}
 
 function toggleEnrichment(btn){
 btn.classList.toggle('open');
@@ -706,20 +712,81 @@ if(grid){grid.style.filter='none';grid.style.userSelect='auto';grid.style.pointe
    It reads leads from this page, fetches property data, and injects it back.
    No API calls needed from the CRM — just add a lead and the watcher picks it up. */
 
-function toggleStar(btn,id){
+/* ══ DROPDOWN MENU ══ */
+var openMenu=null;
+function toggleMenu(btn){
+var dd=btn.nextElementSibling;
+if(openMenu&&openMenu!==dd){openMenu.classList.remove('open')}
+dd.classList.toggle('open');
+openMenu=dd.classList.contains('open')?dd:null;
+}
+/* Close menu on outside click */
+document.addEventListener('click',function(e){
+if(openMenu&&!e.target.closest('.lead-actions')){openMenu.classList.remove('open');openMenu=null}
+});
+
+function menuAddNote(btn,id){
+openMenu.classList.remove('open');openMenu=null;
+var card=document.querySelector('[data-lead-id="'+id+'"]');
+var notes=card.querySelector('.lead-notes');
+notes.classList.add('open');
+notes.querySelector('textarea').focus();
+}
+
+function menuPinLead(id){
+openMenu.classList.remove('open');openMenu=null;
 var lead=leads.find(function(l){return l.id===id});
 if(!lead)return;
-lead.starred=!lead.starred;
-btn.classList.toggle('active');
-btn.innerHTML=lead.starred?'&#9733;':'&#9734;';
-btn.closest('.lead-card').classList.toggle('starred');
-/* Re-sort: starred first, then by date */
+lead.pinned=!lead.pinned;
 leads.sort(function(a,b){
-if(a.starred&&!b.starred)return -1;
-if(!a.starred&&b.starred)return 1;
+if(a.pinned&&!b.pinned)return -1;
+if(!a.pinned&&b.pinned)return 1;
 return new Date(b.created_at)-new Date(a.created_at);
 });
 renderLeads();
+}
+
+function menuDeleteLead(id){
+openMenu.classList.remove('open');openMenu=null;
+if(!confirm('Delete this lead?'))return;
+leads=leads.filter(function(l){return l.id!==id});
+renderLeads();
+renderAnalytics();
+}
+
+function menuEditLead(id){
+openMenu.classList.remove('open');openMenu=null;
+var lead=leads.find(function(l){return l.id===id});
+if(!lead)return;
+var card=document.querySelector('[data-lead-id="'+id+'"]');
+var details=card.querySelector('.lead-details');
+details.innerHTML=
+'<div class="edit-form" style="width:100%">'+
+'<div class="add-lead-row">'+
+'<div class="form-group"><label class="form-label">Name</label><input class="form-input" id="edit-name-'+id+'" value="'+esc(lead.name)+'"></div>'+
+'<div class="form-group"><label class="form-label">Email</label><input class="form-input" id="edit-email-'+id+'" value="'+esc(lead.email)+'"></div>'+
+'</div>'+
+'<div class="add-lead-row">'+
+'<div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="edit-phone-'+id+'" value="'+esc(lead.phone||'')+'"></div>'+
+'<div class="form-group"><label class="form-label">Address</label><input class="form-input" id="edit-addr-'+id+'" value="'+esc(lead.address||'')+'"></div>'+
+'</div>'+
+'<div style="display:flex;gap:8px;margin-top:8px">'+
+'<button class="btn-p" style="padding:10px 24px;font-size:13px" onclick="saveEdit(\''+id+'\')">Save</button>'+
+'<button class="btn-s" style="padding:10px 24px;font-size:13px" onclick="renderLeads()">Cancel</button>'+
+'</div>'+
+'</div>';
+document.getElementById('edit-name-'+id).focus();
+}
+
+function saveEdit(id){
+var lead=leads.find(function(l){return l.id===id});
+if(!lead)return;
+lead.name=document.getElementById('edit-name-'+id).value.trim()||lead.name;
+lead.email=document.getElementById('edit-email-'+id).value.trim()||lead.email;
+lead.phone=document.getElementById('edit-phone-'+id).value.trim();
+lead.address=document.getElementById('edit-addr-'+id).value.trim();
+renderLeads();
+renderAnalytics();
 }
 
 var noteTimers={};
