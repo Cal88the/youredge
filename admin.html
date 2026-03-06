@@ -73,13 +73,13 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .contact-input:focus{border-color:var(--blue)}
 .contact-input::placeholder{color:var(--d)}
 .contact-full{grid-column:1/-1}
-.card-photo-area{margin-top:12px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.card-save-row{margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card-photo-area{margin-top:8px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
 .card-photo-btn{padding:12px 20px;background:var(--card);border:1px solid var(--bdr-l);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--g);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px}
 .card-photo-btn:hover{border-color:var(--bdr-h);color:var(--w)}
 .card-thumb{width:120px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--bdr)}
 .card-thumb-wrap{position:relative;display:inline-block}
 .card-thumb-x{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;border:none;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
-.save-row{margin-top:12px;display:flex;gap:8px;align-items:center}
 .save-btn{padding:12px 24px;background:var(--blue);color:var(--w);border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
 .save-btn:hover{background:var(--blue-h)}
 .save-msg{font-size:13px;color:var(--green);font-weight:600;opacity:0;transition:.3s}
@@ -233,21 +233,17 @@ function render(){
     html+='<input class="contact-input contact-full" placeholder="Notes (interests, conversation, follow-up...)" data-slug="'+v.slug+'" data-field="notes" value="'+(c.notes||'')+'">';
     html+='</div>';
 
-    // Business card photo
-    html+='<div class="card-photo-area">';
+    // Business card photo + save
+    html+='<div class="card-save-row">';
     html+='<button class="card-photo-btn" onclick="captureCard(\''+v.slug+'\')">';
     html+='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>';
-    html+=(c.cardPhoto?'Retake':'Snap Business Card')+'</button>';
-    if(c.cardPhoto){
-      html+='<div class="card-thumb-wrap"><img class="card-thumb" src="'+c.cardPhoto+'" onclick="window.open(this.src)"><button class="card-thumb-x" onclick="removePhoto(\''+v.slug+'\')">&times;</button></div>';
-    }
-    html+='</div>';
-
-    // Save
-    html+='<div class="save-row">';
+    html+=(c.cardPhoto?'Retake':'Snap Card')+'</button>';
     html+='<button class="save-btn" onclick="saveContact(\''+v.slug+'\')">Save Contact</button>';
     html+='<span class="save-msg" id="saved-'+v.slug+'">Saved</span>';
     html+='</div>';
+    if(c.cardPhoto){
+      html+='<div class="card-photo-area"><div class="card-thumb-wrap"><img class="card-thumb" src="'+c.cardPhoto+'" onclick="window.open(this.src)"><button class="card-thumb-x" onclick="removePhoto(\''+v.slug+'\')">&times;</button></div></div>';
+    }
 
     html+='</div>';
     html+='</div></div>';
