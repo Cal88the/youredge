@@ -40,12 +40,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .stat-pill{padding:10px 16px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;font-size:13px;font-weight:600;color:var(--g);white-space:nowrap}
 .stat-pill strong{color:var(--w)}
 
-/* FILTER TABS */
-.filters{max-width:700px;margin:16px auto 0;padding:0 24px;display:flex;gap:8px;flex-wrap:wrap}
-.filter-btn{padding:8px 16px;background:var(--card);border:1px solid var(--bdr);border-radius:100px;font-family:inherit;font-size:12px;font-weight:600;color:var(--g);cursor:pointer;transition:.2s}
-.filter-btn:hover{border-color:var(--bdr-h)}
-.filter-btn.active{background:var(--blue-g);border-color:var(--blue);color:var(--blue-h)}
-
 /* VENDOR LIST */
 .list{max-width:700px;margin:20px auto;padding:0 24px 120px}
 .vendor-row{background:var(--card);border:1px solid var(--bdr);border-radius:14px;margin-bottom:8px;overflow:hidden;transition:.2s}
@@ -108,7 +102,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 @media(max-width:600px){
 .header{padding:24px 16px 20px}
 .toolbar{padding:0 16px}
-.filters{padding:0 16px}
 .list{padding:0 16px 120px}
 .vendor-main{padding:14px 16px;gap:10px}
 .vendor-actions{gap:6px}
@@ -132,8 +125,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div class="stat-pill" id="statPill"><strong>0</strong> vendors</div>
 </div>
 
-<div class="filters" id="filters"></div>
-
 <div class="list" id="vendorList"></div>
 
 <div class="toast" id="toast"></div>
@@ -146,7 +137,6 @@ var SUPABASE_ANON='sb_publishable_E0-8ppn-ZfRqEa5GWicwtQ_uW_dK1fL';
 var BASE_URL='https://weareyouredge.com';
 var vendors=[];
 var contacts=JSON.parse(localStorage.getItem('ye-admin-contacts')||'{}');
-var activeFilter='All';
 var currentPhotoTarget=null;
 
 // Fetch vendors from Supabase
@@ -156,7 +146,6 @@ async function loadVendors(){
       headers:{'apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON}
     });
     vendors=await res.json();
-    buildFilters();
     render();
     document.getElementById('statPill').innerHTML='<strong>'+vendors.length+'</strong> vendors';
   }catch(e){
@@ -164,32 +153,10 @@ async function loadVendors(){
   }
 }
 
-function buildFilters(){
-  var cats={};
-  vendors.forEach(function(v){if(v.category)cats[v.category]=(cats[v.category]||0)+1;});
-  var sorted=Object.entries(cats).sort(function(a,b){return b[1]-a[1];});
-  var html='<button class="filter-btn active" onclick="setFilter(\'All\')">All</button>';
-  html+='<button class="filter-btn" onclick="setFilter(\'_contacted\')">Contacted</button>';
-  sorted.forEach(function(c){
-    html+='<button class="filter-btn" onclick="setFilter(\''+c[0].replace(/'/g,"\\'")+'\')">'+c[0]+' <span style="opacity:.5">('+c[1]+')</span></button>';
-  });
-  document.getElementById('filters').innerHTML=html;
-}
-
-function setFilter(f){
-  activeFilter=f;
-  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
-  event.target.classList.add('active');
-  render();
-}
-
 function getFiltered(){
   var q=document.getElementById('searchInput').value.toLowerCase().trim();
+  if(!q)return vendors;
   return vendors.filter(function(v){
-    if(activeFilter==='_contacted'){
-      if(!contacts[v.slug]||!contacts[v.slug].name)return false;
-    }else if(activeFilter!=='All'&&v.category!==activeFilter)return false;
-    if(!q)return true;
     return (v.name+' '+v.category+' '+v.booth).toLowerCase().indexOf(q)>=0;
   });
 }
