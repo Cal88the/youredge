@@ -53,6 +53,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .list{max-width:700px;margin:20px auto;padding:0 24px 120px}
 .vendor-row{background:var(--card);border:1px solid var(--bdr);border-radius:14px;margin-bottom:8px;overflow:hidden;transition:.2s}
 .vendor-row:hover{border-color:var(--bdr-h)}
+.vendor-row.contacted{border-left:3px solid var(--green)}
 .vendor-main{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .vendor-info{flex:1;min-width:0}
 .vendor-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -157,6 +158,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 <div class="filter-row">
   <select class="filter-select" id="categoryFilter" onchange="render()">
     <option value="">All Industries</option>
+    <option value="_contacted">Contacted Only</option>
   </select>
 </div>
 
@@ -222,7 +224,8 @@ function getFiltered(){
   var q=document.getElementById('searchInput').value.toLowerCase().trim();
   var cat=document.getElementById('categoryFilter').value;
   return vendors.filter(function(v){
-    if(cat&&v.category!==cat)return false;
+    if(cat==='_contacted'){var cc=contacts[v.slug];if(!cc||(!cc.name&&!cc.email&&!cc.phone))return false;}
+    else if(cat&&v.category!==cat)return false;
     if(!q)return true;
     return (v.name+' '+v.category+' '+v.booth).toLowerCase().indexOf(q)>=0;
   });
@@ -238,7 +241,7 @@ function render(){
   filtered.forEach(function(v){
     var c=contacts[v.slug]||{};
     var hasContact=c.name||c.email||c.phone;
-    html+='<div class="vendor-row" id="vr-'+v.slug+'">';
+    html+='<div class="vendor-row'+(hasContact?' contacted':'')+'" id="vr-'+v.slug+'">';
     html+='<div class="vendor-main" onclick="toggleRow(\''+v.slug+'\')">';
     html+='<div class="vendor-info">';
     html+='<div class="vendor-name">'+v.name+'</div>';
