@@ -465,11 +465,11 @@ footer a{margin-left:0}
 <div class="form-group"><label class="form-label">Name *</label><input class="form-input" type="text" id="add-name" placeholder="Full name" autocomplete="off"></div>
 <div class="form-group"><label class="form-label">Email *</label><input class="form-input" type="email" id="add-email" placeholder="email@example.com" autocomplete="off"></div>
 </div>
-<div class="form-group"><label class="form-label">Phone *</label><input class="form-input" type="tel" id="add-phone" placeholder="(416) 555-0000" autocomplete="off" oninput="formatPhone(this)" maxlength="14"><div class="intake-error" id="add-err-phone"></div></div>
-<div class="form-group"><label class="form-label">Street Address *</label><input class="form-input" type="text" id="add-street" placeholder="Start typing an address..." autocomplete="off"><div class="intake-error" id="add-err-street"></div></div>
+<div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" id="add-phone" placeholder="(416) 555-0000" autocomplete="off" oninput="formatPhone(this)" maxlength="14"></div>
+<div class="form-group"><label class="form-label">Street Address</label><input class="form-input" type="text" id="add-street" placeholder="Start typing an address..." autocomplete="off"></div>
 <div class="add-lead-row">
 <div class="form-group"><label class="form-label">Suite / Unit</label><input class="form-input" type="text" id="add-unit" placeholder="Apt 4, Unit 12, etc." autocomplete="off"></div>
-<div class="form-group"><label class="form-label">City *</label><input class="form-input" type="text" id="add-city" placeholder="Toronto" autocomplete="off"><div class="intake-error" id="add-err-city"></div></div>
+<div class="form-group"><label class="form-label">City</label><input class="form-input" type="text" id="add-city" placeholder="Toronto" autocomplete="off"></div>
 </div>
 <div class="add-lead-row">
 <div class="form-group"><label class="form-label">Province</label><select class="form-input" id="add-province" style="height:48px"><option value="ON">ON</option><option value="AB">AB</option><option value="BC">BC</option><option value="MB">MB</option><option value="NB">NB</option><option value="NL">NL</option><option value="NS">NS</option><option value="NT">NT</option><option value="NU">NU</option><option value="PE">PE</option><option value="QC">QC</option><option value="SK">SK</option><option value="YT">YT</option></select></div>
@@ -526,14 +526,12 @@ footer a{margin-left:0}
 <div class="intake-error" id="in-err-email"></div>
 </div>
 <div class="form-group">
-<label class="form-label" for="in-phone">Phone *</label>
+<label class="form-label" for="in-phone">Phone</label>
 <input class="form-input" type="tel" id="in-phone" placeholder="(416) 555-0000" autocomplete="tel" oninput="formatPhone(this)" maxlength="14">
-<div class="intake-error" id="in-err-phone"></div>
 </div>
 <div class="form-group">
-<label class="form-label" for="in-street">Street Address *</label>
+<label class="form-label" for="in-street">Street Address</label>
 <input class="form-input" type="text" id="in-street" placeholder="Start typing an address..." autocomplete="off">
-<div class="intake-error" id="in-err-street"></div>
 </div>
 <div class="intake-row">
 <div class="form-group">
@@ -541,9 +539,8 @@ footer a{margin-left:0}
 <input class="form-input" type="text" id="in-unit" placeholder="Apt 4, Unit 12, etc." autocomplete="off">
 </div>
 <div class="form-group">
-<label class="form-label" for="in-city">City *</label>
+<label class="form-label" for="in-city">City</label>
 <input class="form-input" type="text" id="in-city" placeholder="Toronto" autocomplete="address-level2">
-<div class="intake-error" id="in-err-city"></div>
 </div>
 </div>
 <div class="intake-row row-half">
@@ -818,23 +815,30 @@ persistLeads();
 renderLeads();
 }
 
-function menuDeleteLead(id){
-openMenu.classList.remove('open');openMenu=null;
-var lead=leads.find(function(l){return l.id===id});
-var name=lead?lead.name:'this lead';
+function showConfirm(title,message,confirmText,onConfirm,cancelText){
 var overlay=document.createElement('div');
 overlay.className='confirm-overlay';
-overlay.innerHTML='<div class="confirm-box"><h3>Delete Lead</h3><p>Are you sure you want to delete <strong>'+esc(name)+'</strong>? This cannot be undone.</p><div class="confirm-actions"><button class="confirm-cancel" onclick="this.closest(\'.confirm-overlay\').remove()">Cancel</button><button class="confirm-delete" id="confirm-del-btn">Delete</button></div></div>';
+overlay.innerHTML='<div class="confirm-box"><h3>'+title+'</h3><p>'+message+'</p><div class="confirm-actions"><button class="confirm-cancel" id="confirm-cancel-btn">'+(cancelText||'Cancel')+'</button><button class="confirm-delete" id="confirm-action-btn" style="background:var(--blue)">'+confirmText+'</button></div></div>';
 document.body.appendChild(overlay);
 requestAnimationFrame(function(){overlay.classList.add('visible')});
 overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.remove()});
-document.getElementById('confirm-del-btn').onclick=function(){
+document.getElementById('confirm-cancel-btn').onclick=function(){overlay.remove()};
+document.getElementById('confirm-action-btn').onclick=function(){overlay.remove();onConfirm()};
+}
+
+function menuDeleteLead(id){
+openMenu.classList.remove('open');openMenu=null;
+var lead=leads.find(function(l){return l.id===id});
+var leadName=lead?lead.name:'this lead';
+showConfirm('Delete Lead','Are you sure you want to delete <strong>'+esc(leadName)+'</strong>? This cannot be undone.','Delete',function(){
 leads=leads.filter(function(l){return l.id!==id});
 persistLeads();
-overlay.remove();
 renderLeads();
 renderAnalytics();
-};
+});
+/* Style delete button red */
+var btn=document.getElementById('confirm-action-btn');
+if(btn){btn.style.background='var(--red)'}
 }
 
 function menuEditLead(id){
@@ -1221,11 +1225,7 @@ function validatePhone(val){
 return /^\(\d{3}\) \d{3}-\d{4}$/.test(val);
 }
 
-function clearAddErrors(){
-['add-err-phone','add-err-street','add-err-city'].forEach(function(id){
-var el=document.getElementById(id);if(el)el.textContent='';
-});
-}
+function clearAddErrors(){}
 
 function buildAddress(street,unit,city,province,postal){
 var addr=street;
@@ -1249,17 +1249,13 @@ var province=document.getElementById('add-province').value;
 var postal=document.getElementById('add-postal').value.trim();
 var notes=document.getElementById('add-notes').value.trim();
 
-var valid=true;
 if(!name||!email){alert('Name and email are required.');return}
-if(!phone||!validatePhone(phone)){document.getElementById('add-err-phone').textContent='Enter a valid phone: (416) 555-0000';valid=false}
-if(!street){document.getElementById('add-err-street').textContent='Street address is required';valid=false}
-if(!city){document.getElementById('add-err-city').textContent='City is required';valid=false}
-if(!valid)return;
+if(phone&&!validatePhone(phone)){alert('Please enter a valid phone number.');return}
 
+function doAddLead(){
 var address=buildAddress(street,unit,city,province,postal);
 var selected=[];
 document.querySelectorAll('#add-tags .interest-item.selected').forEach(function(t){selected.push(t.getAttribute('data-interest'))});
-
 var newLead={
 id:String(Date.now()),
 name:name,email:email,phone:phone,address:address,
@@ -1270,8 +1266,6 @@ leads.unshift(newLead);
 persistLeads();
 renderLeads();
 renderAnalytics();
-
-/* Reset form */
 document.getElementById('add-name').value='';
 document.getElementById('add-email').value='';
 document.getElementById('add-phone').value='';
@@ -1283,6 +1277,11 @@ document.getElementById('add-postal').value='';
 document.getElementById('add-notes').value='';
 clearAddErrors();
 document.getElementById('addLeadForm').classList.remove('open');
+}
+
+if(!phone||!street){
+showConfirm('Incomplete Lead','Are you sure you want to add an incomplete lead? Missing info may limit follow-up.','Add Anyway',doAddLead);
+}else{doAddLead()}
 }
 
 /* ══ INTAKE FORM ══ */
@@ -1315,7 +1314,7 @@ document.getElementById('in-postal').value='';
 document.getElementById('in-notes').value='';
 document.getElementById('intakeSubmitBtn').textContent='Add Lead \u2192';
 document.getElementById('intakeSubmitBtn').disabled=false;
-['in-err-name','in-err-email','in-err-phone','in-err-street','in-err-city'].forEach(function(id){clearIntakeError(id)});
+['in-err-name','in-err-email','in-err-phone'].forEach(function(id){clearIntakeError(id)});
 renderIntakeTags();
 document.getElementById('in-name').focus();
 }
@@ -1337,17 +1336,14 @@ document.querySelectorAll('#intakeTags .interest-item.selected').forEach(functio
 var valid=true;
 if(!name||name.length<2){showIntakeError('in-err-name','Please enter your name');valid=false}else{clearIntakeError('in-err-name')}
 if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){showIntakeError('in-err-email','Please enter a valid email');valid=false}else{clearIntakeError('in-err-email')}
-if(!phone||!validatePhone(phone)){showIntakeError('in-err-phone','Enter a valid phone: (416) 555-0000');valid=false}else{clearIntakeError('in-err-phone')}
-if(!street){showIntakeError('in-err-street','Street address is required');valid=false}else{clearIntakeError('in-err-street')}
-if(!city){showIntakeError('in-err-city','City is required');valid=false}else{clearIntakeError('in-err-city')}
+if(phone&&!validatePhone(phone)){showIntakeError('in-err-phone','Please enter a valid phone number');valid=false}else{clearIntakeError('in-err-phone')}
 if(!valid)return;
 
+function doAddIntakeLead(){
 var address=buildAddress(street,unit,city,province,postal);
-
 var btn=document.getElementById('intakeSubmitBtn');
 btn.textContent='Adding...';
 btn.disabled=true;
-
 var newLead={
 id:String(Date.now()),
 name:name,email:email,phone:phone,address:address,
@@ -1355,15 +1351,17 @@ interests:selected,customer_notes:notes,notes:'',
 created_at:new Date().toISOString(),
 source:'intake'
 };
-
 leads.unshift(newLead);
 persistLeads();
 renderLeads();
 renderAnalytics();
-
-/* Show success */
 document.getElementById('intakeForm').style.display='none';
 document.getElementById('intakeSuccess').classList.add('visible');
+}
+
+if(!phone||!street){
+showConfirm('Incomplete Lead','Are you sure you want to add an incomplete lead? Missing info may limit follow-up.','Add Anyway',doAddIntakeLead);
+}else{doAddIntakeLead()}
 });
 
 /* Clear errors on input */
@@ -1405,11 +1403,10 @@ if(!name||name.length<2){errName.textContent='Please enter your name';valid=fals
 if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){errEmail.textContent='Please enter a valid email';valid=false}else{errEmail.textContent=''}
 if(!valid)return;
 
+function doAddQrLead(){
 var btn=document.getElementById('qrSubmitBtn');
 btn.textContent='Submitting...';
 btn.disabled=true;
-
-/* Save to localStorage so dashboard picks it up */
 var newLead={
 id:String(Date.now()),
 name:name,email:email,phone:phone,address:address,
@@ -1421,9 +1418,13 @@ var stored=[];
 try{stored=JSON.parse(localStorage.getItem(LS_KEY))||[]}catch(ex){}
 stored.unshift(newLead);
 localStorage.setItem(LS_KEY,JSON.stringify(stored));
-
 document.getElementById('qrIntakeForm').style.display='none';
 document.getElementById('qrIntakeSuccess').classList.add('visible');
+}
+
+if(!phone||!address){
+showConfirm('Share More Details?','Are you sure you don\'t want to share more details for more personalized correspondence?','Submit Anyway',doAddQrLead,'Go Back');
+}else{doAddQrLead()}
 });
 
 /* Clear errors on QR form input */
