@@ -92,9 +92,25 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .url-copy-btn:hover{border-color:var(--bdr-h);color:var(--w)}
 .url-copy-btn.copied{background:var(--green-s);border-color:var(--green);color:var(--green)}
 
-/* CHEVRON */
-.chev{transition:transform .2s;color:var(--d);flex-shrink:0}
-.vendor-row.open .chev{transform:rotate(180deg)}
+/* ADD VENDOR */
+.add-section{max-width:700px;margin:16px auto 0;padding:0 24px}
+.add-toggle{width:100%;padding:14px 20px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;font-family:inherit;font-size:14px;font-weight:700;color:var(--blue-h);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px;justify-content:center}
+.add-toggle:hover{border-color:var(--blue);background:var(--blue-g)}
+.add-form{display:none;margin-top:8px;background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:20px}
+.add-form.open{display:block}
+.add-form .contact-grid{margin-bottom:12px}
+.add-form .add-row{display:flex;gap:8px;align-items:center}
+.add-form .add-btn{padding:12px 24px;background:var(--blue);color:var(--w);border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.add-form .add-btn:hover{background:var(--blue-h)}
+.add-form .add-btn:disabled{opacity:.5;cursor:not-allowed}
+.add-result{font-size:13px;color:var(--green);font-weight:600;margin-top:8px;display:none}
+.add-result.show{display:block}
+.add-result.error{color:var(--red)}
+.pw-gate{text-align:center;padding:16px}
+.pw-gate input{padding:12px 16px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;color:var(--w);font-family:inherit;font-size:14px;outline:none;width:200px;text-align:center}
+.pw-gate input:focus{border-color:var(--blue)}
+.pw-gate button{margin-left:8px;padding:12px 20px;background:var(--blue);color:var(--w);border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.pw-gate p{font-size:12px;color:var(--m);margin-bottom:10px}
 
 /* EMPTY */
 .empty{text-align:center;padding:60px 24px;color:var(--m);font-size:15px}
@@ -133,6 +149,31 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <select class="filter-select" id="categoryFilter" onchange="render()">
     <option value="">All Industries</option>
   </select>
+</div>
+
+<div class="add-section">
+  <button class="add-toggle" onclick="toggleAddForm()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Add New Vendor
+  </button>
+  <div class="add-form" id="addForm">
+    <div id="pwGate" class="pw-gate">
+      <p>Enter admin password</p>
+      <input type="password" id="pwInput" placeholder="Password">
+      <button onclick="checkPassword()">Unlock</button>
+    </div>
+    <div id="addFields" style="display:none">
+      <div class="contact-grid">
+        <input class="contact-input" id="addName" placeholder="Vendor name *">
+        <input class="contact-input" id="addCategory" placeholder="Industry / Category">
+        <input class="contact-input" id="addBooth" placeholder="Booth number">
+      </div>
+      <div class="add-row">
+        <button class="add-btn" id="addBtn" onclick="addVendor()">Create Vendor + CRM</button>
+      </div>
+      <div class="add-result" id="addResult"></div>
+    </div>
+  </div>
 </div>
 
 <div class="list" id="vendorList"></div>
@@ -318,6 +359,89 @@ function showToast(msg){
   t.textContent=msg;
   t.classList.add('show');
   setTimeout(function(){t.classList.remove('show');},2500);
+}
+
+// Add vendor
+var adminPw=localStorage.getItem('ye-admin-pw')||'';
+
+function toggleAddForm(){
+  var f=document.getElementById('addForm');
+  f.classList.toggle('open');
+  if(f.classList.contains('open')&&adminPw){
+    document.getElementById('pwGate').style.display='none';
+    document.getElementById('addFields').style.display='block';
+  }
+}
+
+function checkPassword(){
+  var pw=document.getElementById('pwInput').value;
+  if(!pw)return;
+  adminPw=pw;
+  localStorage.setItem('ye-admin-pw',pw);
+  document.getElementById('pwGate').style.display='none';
+  document.getElementById('addFields').style.display='block';
+}
+
+async function addVendor(){
+  var name=document.getElementById('addName').value.trim();
+  var category=document.getElementById('addCategory').value.trim();
+  var booth=document.getElementById('addBooth').value.trim();
+  var result=document.getElementById('addResult');
+  if(!name){result.textContent='Vendor name is required';result.className='add-result show error';return;}
+
+  var btn=document.getElementById('addBtn');
+  btn.disabled=true;btn.textContent='Creating...';
+  result.className='add-result';
+
+  try{
+    var res=await fetch('/api/add-vendor',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:name,category:category,booth:booth,password:adminPw})
+    });
+    var data=await res.json();
+    if(!res.ok){
+      if(res.status===401){adminPw='';localStorage.removeItem('ye-admin-pw');document.getElementById('pwGate').style.display='block';document.getElementById('addFields').style.display='none';}
+      result.textContent=data.error||'Failed to create vendor';
+      result.className='add-result show error';
+      btn.disabled=false;btn.textContent='Create Vendor + CRM';
+      return;
+    }
+    // Success
+    var url=BASE_URL+'/'+data.slug;
+    result.innerHTML='Created! <a href="/'+data.slug+'" target="_blank" style="color:var(--blue-h)">'+url+'</a>';
+    result.className='add-result show';
+    showToast('Vendor created: '+data.name);
+    // Add to local list and re-render
+    vendors.push(data);
+    vendors.sort(function(a,b){return a.name.localeCompare(b.name);});
+    document.getElementById('statPill').innerHTML='<strong>'+vendors.length+'</strong> vendors';
+    // Rebuild category dropdown
+    rebuildCategoryDropdown();
+    render();
+    // Clear form
+    document.getElementById('addName').value='';
+    document.getElementById('addCategory').value='';
+    document.getElementById('addBooth').value='';
+  }catch(e){
+    result.textContent='Network error';result.className='add-result show error';
+  }
+  btn.disabled=false;btn.textContent='Create Vendor + CRM';
+}
+
+function rebuildCategoryDropdown(){
+  var cats={};
+  vendors.forEach(function(v){if(v.category)cats[v.category]=(cats[v.category]||0)+1;});
+  var sorted=Object.entries(cats).sort(function(a,b){return a[0].localeCompare(b[0]);});
+  var sel=document.getElementById('categoryFilter');
+  var cur=sel.value;
+  sel.innerHTML='<option value="">All Industries</option>';
+  sorted.forEach(function(c){
+    var opt=document.createElement('option');
+    opt.value=c[0];opt.textContent=c[0]+' ('+c[1]+')';
+    if(c[0]===cur)opt.selected=true;
+    sel.appendChild(opt);
+  });
 }
 
 // Search
