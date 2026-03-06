@@ -30,6 +30,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .header h1 span{color:var(--blue)}
 .header p{font-size:13px;color:var(--m);font-weight:500}
 
+/* LOCK SCREEN */
+.lock-screen{display:flex;align-items:center;justify-content:center;min-height:calc(100dvh - 120px);padding:24px}
+.lock-box{max-width:280px;width:100%;text-align:center}
+
 /* SEARCH + STATS */
 .toolbar{max-width:700px;margin:24px auto 0;padding:0 24px;display:flex;gap:12px;align-items:center}
 .search-wrap{flex:1;position:relative}
@@ -106,12 +110,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .add-result{font-size:13px;color:var(--green);font-weight:600;margin-top:8px;display:none}
 .add-result.show{display:block}
 .add-result.error{color:var(--red)}
-.pw-gate{text-align:center;padding:16px}
-.pw-gate input{padding:12px 16px;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;color:var(--w);font-family:inherit;font-size:14px;outline:none;width:200px;text-align:center}
-.pw-gate input:focus{border-color:var(--blue)}
-.pw-gate button{margin-left:8px;padding:12px 20px;background:var(--blue);color:var(--w);border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
-.pw-gate p{font-size:12px;color:var(--m);margin-bottom:10px}
-
 /* EMPTY */
 .empty{text-align:center;padding:60px 24px;color:var(--m);font-size:15px}
 
@@ -137,6 +135,17 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <p>NATIONAL HOME SHOW 2026 — VENDOR DIRECTORY</p>
 </div>
 
+<div id="lockScreen" class="lock-screen">
+  <div class="lock-box">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--m)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <input type="password" class="contact-input" id="pwInput" placeholder="Enter password" style="text-align:center;margin-top:12px" onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="save-btn" style="margin-top:10px;width:100%" onclick="checkPassword()">Unlock</button>
+    <p id="pwError" style="font-size:12px;color:var(--red);margin-top:8px;display:none">Incorrect password</p>
+  </div>
+</div>
+
+<div id="adminContent" style="display:none">
+
 <div class="toolbar">
   <div class="search-wrap">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -157,26 +166,21 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     Add New Vendor
   </button>
   <div class="add-form" id="addForm">
-    <div id="pwGate" class="pw-gate">
-      <p>Enter admin password</p>
-      <input type="password" id="pwInput" placeholder="Password">
-      <button onclick="checkPassword()">Unlock</button>
+    <div class="contact-grid">
+      <input class="contact-input" id="addName" placeholder="Vendor name *">
+      <input class="contact-input" id="addCategory" placeholder="Industry / Category">
+      <input class="contact-input" id="addBooth" placeholder="Booth number">
     </div>
-    <div id="addFields" style="display:none">
-      <div class="contact-grid">
-        <input class="contact-input" id="addName" placeholder="Vendor name *">
-        <input class="contact-input" id="addCategory" placeholder="Industry / Category">
-        <input class="contact-input" id="addBooth" placeholder="Booth number">
-      </div>
-      <div class="add-row">
-        <button class="add-btn" id="addBtn" onclick="addVendor()">Create Vendor + CRM</button>
-      </div>
-      <div class="add-result" id="addResult"></div>
+    <div class="add-row">
+      <button class="add-btn" id="addBtn" onclick="addVendor()">Create Vendor + CRM</button>
     </div>
+    <div class="add-result" id="addResult"></div>
   </div>
 </div>
 
 <div class="list" id="vendorList"></div>
+
+</div><!-- end adminContent -->
 
 <div class="toast" id="toast"></div>
 
@@ -361,25 +365,33 @@ function showToast(msg){
   setTimeout(function(){t.classList.remove('show');},2500);
 }
 
-// Add vendor
+// Auth
 var adminPw=localStorage.getItem('ye-admin-pw')||'';
 
-function toggleAddForm(){
-  var f=document.getElementById('addForm');
-  f.classList.toggle('open');
-  if(f.classList.contains('open')&&adminPw){
-    document.getElementById('pwGate').style.display='none';
-    document.getElementById('addFields').style.display='block';
-  }
+function unlockAdmin(){
+  document.getElementById('lockScreen').style.display='none';
+  document.getElementById('adminContent').style.display='block';
+  loadVendors();
 }
 
 function checkPassword(){
   var pw=document.getElementById('pwInput').value;
   if(!pw)return;
-  adminPw=pw;
-  localStorage.setItem('ye-admin-pw',pw);
-  document.getElementById('pwGate').style.display='none';
-  document.getElementById('addFields').style.display='block';
+  // Verify against server
+  fetch('/api/add-vendor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw,name:''})}).then(function(r){
+    if(r.status===401){
+      document.getElementById('pwError').style.display='block';
+      return;
+    }
+    // 400 = bad request (empty name) means password was correct
+    adminPw=pw;
+    localStorage.setItem('ye-admin-pw',pw);
+    unlockAdmin();
+  });
+}
+
+function toggleAddForm(){
+  document.getElementById('addForm').classList.toggle('open');
 }
 
 async function addVendor(){
@@ -401,7 +413,7 @@ async function addVendor(){
     });
     var data=await res.json();
     if(!res.ok){
-      if(res.status===401){adminPw='';localStorage.removeItem('ye-admin-pw');document.getElementById('pwGate').style.display='block';document.getElementById('addFields').style.display='none';}
+      if(res.status===401){adminPw='';localStorage.removeItem('ye-admin-pw');document.getElementById('adminContent').style.display='none';document.getElementById('lockScreen').style.display='flex';}
       result.textContent=data.error||'Failed to create vendor';
       result.className='add-result show error';
       btn.disabled=false;btn.textContent='Create Vendor + CRM';
@@ -447,8 +459,14 @@ function rebuildCategoryDropdown(){
 // Search
 document.getElementById('searchInput').addEventListener('input',function(){render();});
 
-// Init
-loadVendors();
+// Init — auto-unlock if password saved
+if(adminPw){
+  // Verify saved password still works
+  fetch('/api/add-vendor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:adminPw,name:''})}).then(function(r){
+    if(r.status===401){adminPw='';localStorage.removeItem('ye-admin-pw');}
+    else{unlockAdmin();}
+  });
+}
 </script>
 </body>
 </html>
