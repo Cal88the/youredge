@@ -275,7 +275,14 @@ function render(){
     html+='<div class="url-row">';
     html+='<div class="url-display">'+BASE_URL+'/'+v.slug+'</div>';
     html+='<button class="url-copy-btn" onclick="copyUrl(\''+v.slug+'\',this)">Copy</button>';
-    html+='</div></div>';
+    html+='</div>';
+    if(v.pin){
+      html+='<div class="url-row" style="margin-top:6px;">';
+      html+='<div class="url-display" style="font-family:monospace;letter-spacing:3px;font-size:18px;font-weight:700;">PIN: '+esc(v.pin)+'</div>';
+      html+='<button class="url-copy-btn" onclick="copyPin(\''+esc(v.pin)+'\',this)">Copy PIN</button>';
+      html+='</div>';
+    }
+    html+='</div>';
 
     // Contact form
     html+='<div class="expand-section">';
@@ -322,6 +329,13 @@ function copyUrl(slug,btn){
     if(btn){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);}
     var ab=document.getElementById('copy-'+slug);
     if(ab){ab.classList.add('copied');setTimeout(function(){ab.classList.remove('copied');},2000);}
+  });
+}
+
+function copyPin(pin,btn){
+  navigator.clipboard.writeText(pin).then(function(){
+    showToast('PIN copied: '+pin);
+    if(btn){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy PIN';btn.classList.remove('copied');},2000);}
   });
 }
 
@@ -517,9 +531,9 @@ async function addVendor(){
     }
     // Success
     var url=BASE_URL+'/'+data.slug;
-    result.innerHTML='Created! <a href="/'+data.slug+'" target="_blank" style="color:var(--blue-h)">'+url+'</a>';
+    result.innerHTML='Created! <a href="/'+data.slug+'" target="_blank" style="color:var(--blue-h)">'+url+'</a>'+(data.pin?' &nbsp;|&nbsp; PIN: <strong style="letter-spacing:2px">'+esc(data.pin)+'</strong>':'');
     result.className='add-result show';
-    showToast('Vendor created: '+data.name);
+    showToast('Vendor created: '+data.name+(data.pin?' | PIN: '+data.pin:''));
     // Add to local list and re-render
     vendors.push(data);
     vendors.sort(function(a,b){return a.name.localeCompare(b.name);});

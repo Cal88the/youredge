@@ -23,6 +23,12 @@ html{scroll-behavior:smooth;overflow-x:hidden;touch-action:manipulation}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--w);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--blue);color:var(--w)}
 
+/* PIN GATE */
+.pin-digit{width:44px;height:52px;text-align:center;font-size:22px;font-weight:700;background:var(--card);border:1.5px solid var(--bdr-l);border-radius:10px;color:var(--w);outline:none;transition:border-color .2s}
+.pin-digit:focus{border-color:var(--blue)}
+.pin-digit.error{border-color:var(--red);animation:pinShake .4s}
+@keyframes pinShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.04);transition:.3s}
 nav.scrolled{background:rgba(0,0,0,.92);border-bottom-color:var(--bdr)}
@@ -453,8 +459,28 @@ footer a{margin-left:0}
 </div>
 </div>
 
+<!-- ═══ PIN GATE ═══ -->
+<div id="pinGate" style="display:none;min-height:100vh;background:var(--bg);display:flex;align-items:center;justify-content:center;">
+<div style="text-align:center;max-width:340px;padding:32px 24px;">
+<div style="font-size:40px;margin-bottom:16px;">&#128274;</div>
+<h2 style="font-size:22px;font-weight:700;margin-bottom:6px;" id="pinVendorName">Vendor Dashboard</h2>
+<p style="color:var(--g);font-size:14px;margin-bottom:24px;">Enter your 6-digit PIN to access your lead dashboard.</p>
+<div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;" id="pinInputRow">
+<input type="tel" maxlength="1" class="pin-digit" autofocus>
+<input type="tel" maxlength="1" class="pin-digit">
+<input type="tel" maxlength="1" class="pin-digit">
+<input type="tel" maxlength="1" class="pin-digit">
+<input type="tel" maxlength="1" class="pin-digit">
+<input type="tel" maxlength="1" class="pin-digit">
+</div>
+<div id="pinError" style="color:var(--red);font-size:13px;min-height:20px;margin-bottom:12px;"></div>
+<button onclick="submitPin()" id="pinSubmitBtn" style="background:var(--blue);color:#fff;border:none;padding:10px 32px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;width:100%;">Unlock</button>
+<p style="color:var(--d);font-size:12px;margin-top:20px;">Powered by <a href="/" style="color:var(--blue-h);text-decoration:none;">YourEdge</a></p>
+</div>
+</div>
+
 <!-- ═══ DASHBOARD ═══ -->
-<div id="dashboardView">
+<div id="dashboardView" style="display:none;">
 
 <!-- CRM TOP BAR -->
 <div class="crm-topbar">
@@ -1665,6 +1691,9 @@ function customizeDemoLeads(category){
     vendorName=v.name;
     LS_KEY='ye-leads-'+v.slug;
     document.title=v.name+' \u2014 Lead Dashboard';
+    /* Update PIN gate vendor name */
+    var pnEl=document.getElementById('pinVendorName');
+    if(pnEl)pnEl.textContent=v.name;
     var els=document.querySelectorAll('#qr-company-name, #dash-company-name');
     els.forEach(function(el){el.textContent=v.name});
     document.querySelectorAll('.vendor-name').forEach(function(el){el.textContent=v.name});
@@ -1682,16 +1711,84 @@ var params=new URLSearchParams(window.location.search);
 var boothSlug=params.get('booth');
 
 if(boothSlug){
-/* Visitor scanned QR — show only the intake form */
+/* Visitor scanned QR — show only the intake form, no PIN needed */
 document.getElementById('qrIntakeView').classList.add('active');
 document.getElementById('dashboardView').style.display='none';
+document.getElementById('pinGate').style.display='none';
 document.querySelector('nav').style.display='none';
 document.querySelector('footer').style.display='none';
 renderQrIntakeTags();
 }else{
-/* Vendor dashboard — hide main site nav, show CRM top bar */
+/* Vendor dashboard — check for PIN */
 var nav=document.querySelector('nav');if(nav)nav.style.display='none';
 var mm=document.querySelector('.mobile-menu');if(mm)mm.style.display='none';
+var pinKey='ye-pin-'+pathSlug;
+var savedPin=localStorage.getItem(pinKey);
+if(savedPin){
+  /* Already authenticated — go straight to dashboard */
+  unlockDashboard();
+}else{
+  /* Show PIN gate */
+  document.getElementById('pinGate').style.display='flex';
+  document.getElementById('dashboardView').style.display='none';
+  var pn=document.getElementById('pinVendorName');
+  if(window.__vendorName)pn.textContent=window.__vendorName;
+  initPinInputs();
+}
+}
+
+function initPinInputs(){
+var digits=document.querySelectorAll('.pin-digit');
+digits.forEach(function(inp,i){
+  inp.addEventListener('input',function(){
+    this.value=this.value.replace(/\D/g,'').slice(0,1);
+    if(this.value&&i<5)digits[i+1].focus();
+    if(i===5&&this.value)submitPin();
+  });
+  inp.addEventListener('keydown',function(e){
+    if(e.key==='Backspace'&&!this.value&&i>0){digits[i-1].focus();digits[i-1].value='';}
+    if(e.key==='Enter')submitPin();
+  });
+  inp.addEventListener('paste',function(e){
+    e.preventDefault();
+    var text=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);
+    for(var j=0;j<text.length&&j<6;j++){digits[j].value=text[j];}
+    if(text.length>=6)submitPin();
+    else if(text.length>0)digits[Math.min(text.length,5)].focus();
+  });
+});
+digits[0].focus();
+}
+
+async function submitPin(){
+var digits=document.querySelectorAll('.pin-digit');
+var pin='';
+digits.forEach(function(d){pin+=d.value;});
+if(pin.length!==6){document.getElementById('pinError').textContent='Enter all 6 digits';return;}
+var btn=document.getElementById('pinSubmitBtn');
+btn.disabled=true;btn.textContent='Verifying...';
+document.getElementById('pinError').textContent='';
+try{
+  var res=await fetch('/api/verify-pin',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({slug:pathSlug,pin:pin})
+  });
+  if(!res.ok)throw new Error('wrong');
+  localStorage.setItem('ye-pin-'+pathSlug,pin);
+  unlockDashboard();
+}catch(e){
+  document.getElementById('pinError').textContent='Incorrect PIN. Try again.';
+  digits.forEach(function(d){d.value='';d.classList.add('error');});
+  setTimeout(function(){digits.forEach(function(d){d.classList.remove('error');});},500);
+  digits[0].focus();
+}
+btn.disabled=false;btn.textContent='Unlock';
+}
+
+function unlockDashboard(){
+document.getElementById('pinGate').style.display='none';
+document.getElementById('dashboardView').style.display='';
 try{loadLocalLeads()}catch(ex){console.error('loadLocalLeads:',ex)}
 try{renderLeads()}catch(ex){console.error('renderLeads:',ex)}
 try{renderAnalytics()}catch(ex){console.error('renderAnalytics:',ex)}

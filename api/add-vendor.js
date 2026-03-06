@@ -23,11 +23,15 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Vendor name produces an invalid URL. Try a different name.' });
   }
 
+  // Generate random 6-digit PIN
+  var pin = String(Math.floor(100000 + Math.random() * 900000));
+
   var row = {
     slug: slug,
     name: name.trim(),
     category: (category || '').trim() || null,
     booth: (booth || '').trim() || null,
+    pin: pin,
     demo: true
   };
 
