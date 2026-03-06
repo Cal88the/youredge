@@ -453,7 +453,7 @@ footer a{margin-left:0}
 <div class="intake-success" id="qrIntakeSuccess">
 <div class="check-icon">&check;</div>
 <h3>You're all set!</h3>
-<p>Thanks for connecting with <span class="vendor-name">us</span>. We'll be in touch soon!</p>
+<p>Thanks for visiting <span class="vendor-name">us</span>. Enjoy the rest of your day at the National Home Show!</p>
 </div>
 </div>
 </div>
@@ -994,7 +994,7 @@ function confirmNote(id){
 var lead=leads.find(function(l){return l.id===id});
 var card=document.querySelector('[data-lead-id="'+id+'"]');
 var textarea=card.querySelector('.lead-notes textarea');
-if(lead){lead.notes=textarea.value;persistLeads()}
+if(lead){lead.notes=textarea.value;persistLeads();saveLeadToDB(lead);}
 var btn=document.getElementById('nbtn-'+id);
 var status=document.getElementById('ns-'+id);
 if(btn)btn.classList.add('saved');
@@ -1374,6 +1374,7 @@ created_at:new Date().toISOString()
 };
 leads.unshift(newLead);
 persistLeads();
+saveLeadToDB(newLead);
 renderLeads();
 renderAnalytics();
 document.getElementById('add-name').value='';
@@ -1463,6 +1464,7 @@ source:'intake'
 };
 leads.unshift(newLead);
 persistLeads();
+saveLeadToDB(newLead);
 renderLeads();
 renderAnalytics();
 document.getElementById('intakeHeader').style.display='none';
@@ -1529,6 +1531,8 @@ var stored=[];
 try{stored=JSON.parse(localStorage.getItem(LS_KEY))||[]}catch(ex){}
 stored.unshift(newLead);
 localStorage.setItem(LS_KEY,JSON.stringify(stored));
+/* Save to database */
+saveLeadToDB(newLead);
 document.getElementById('qrIntakeForm').style.display='none';
 document.getElementById('qrIntakeSuccess').classList.add('visible');
 }
@@ -1551,6 +1555,60 @@ if(el)el.textContent='';
 var LS_KEY='ye-leads-'+(window.__vendorSlug||'default');
 function persistLeads(){
 try{localStorage.setItem(LS_KEY,JSON.stringify(leads))}catch(ex){}
+}
+
+/* Save a single lead to the database */
+function saveLeadToDB(lead){
+if(!vendorSlug)return;
+fetch('/api/save-lead',{
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({vendor_slug:vendorSlug,lead:{
+    id:lead.id,name:lead.name,email:lead.email,phone:lead.phone,
+    address:lead.address,interests:lead.interests,
+    customer_notes:lead.customer_notes,notes:lead.notes,
+    source:lead.source,created_at:lead.created_at
+  }})
+}).catch(function(e){console.error('saveLeadToDB:',e)});
+}
+
+/* Fetch leads from DB and merge with localStorage */
+function loadLeadsFromDB(pin){
+if(!vendorSlug)return Promise.resolve();
+return fetch('/api/get-leads',{
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({vendor_slug:vendorSlug,pin:pin||''})
+}).then(function(r){return r.ok?r.json():[]}).then(function(dbLeads){
+  if(!dbLeads||!dbLeads.length)return;
+  /* Merge: DB is source of truth for real leads, localStorage may have enrichment/voice */
+  var localMap={};
+  leads.forEach(function(l){localMap[l.id]=l;});
+  dbLeads.forEach(function(db){
+    var local=localMap[db.id];
+    if(local){
+      /* Keep local enrichment, voiceData, and vendor notes if newer */
+      db.enrichment=local.enrichment||db.enrichment;
+      db.voiceData=local.voiceData;
+      db.voiceUrl=local.voiceUrl;
+      if(local.notes&&!db.notes)db.notes=local.notes;
+    }
+    localMap[db.id]=db;
+  });
+  /* Rebuild leads: DB leads first, then any local-only leads */
+  var merged=[];
+  var seen={};
+  dbLeads.forEach(function(db){
+    var final=localMap[db.id]||db;
+    merged.push(final);
+    seen[db.id]=true;
+  });
+  leads.forEach(function(l){
+    if(!seen[l.id])merged.push(l);
+  });
+  leads=merged;
+  persistLeads();
+}).catch(function(e){console.error('loadLeadsFromDB:',e)});
 }
 function loadLocalLeads(){
 try{
@@ -1793,6 +1851,11 @@ try{loadLocalLeads()}catch(ex){console.error('loadLocalLeads:',ex)}
 try{renderLeads()}catch(ex){console.error('renderLeads:',ex)}
 try{renderAnalytics()}catch(ex){console.error('renderAnalytics:',ex)}
 try{renderIntakeTags()}catch(ex){console.error('renderIntakeTags:',ex)}
+/* Fetch leads from DB and merge */
+var pin=localStorage.getItem('ye-pin-'+pathSlug)||'';
+loadLeadsFromDB(pin).then(function(){
+  try{renderLeads();renderAnalytics()}catch(ex){}
+});
 }
 
 /* ══ MULTI-TAB CONFLICT DETECTION (#23) ══ */
