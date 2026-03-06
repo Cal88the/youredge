@@ -337,28 +337,45 @@ async function saveContact(slug){
 
   // Save to database
   var c=contacts[slug];
+  var payload={
+    password:adminPw,
+    vendor_slug:slug,
+    contact_name:c.name||'',
+    contact_title:c.title||'',
+    contact_email:c.email||'',
+    contact_phone:c.phone||'',
+    notes:c.notes||'',
+    card_photo:c.cardPhoto||''
+  };
   try{
     var res=await fetch('/api/save-contact',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        password:adminPw,
-        vendor_slug:slug,
-        contact_name:c.name||'',
-        contact_title:c.title||'',
-        contact_email:c.email||'',
-        contact_phone:c.phone||'',
-        notes:c.notes||'',
-        card_photo:c.cardPhoto||''
-      })
+      body:JSON.stringify(payload)
     });
     if(!res.ok){var errBody=await res.json().catch(function(){return{}});throw new Error(errBody.error||'save failed ('+res.status+')');}
     if(msg){msg.textContent='Saved to database';msg.classList.add('show');setTimeout(function(){msg.classList.remove('show');},2500);}
     showToast('Contact saved for '+vName);
   }catch(e){
-    console.error('save-contact error:',e.message);
-    if(msg){msg.textContent='Saved locally (DB sync failed)';msg.style.color='var(--amber)';msg.classList.add('show');setTimeout(function(){msg.classList.remove('show');msg.style.color='';msg.textContent='Saved';},3000);}
-    showToast('Saved locally — will retry on next save');
+    console.error('save-contact error:',e.message,'payload size:',JSON.stringify(payload).length);
+    /* If save with photo failed, retry without photo to at least persist text fields */
+    if(c.cardPhoto){
+      try{
+        payload.card_photo='';
+        var r2=await fetch('/api/save-contact',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(payload)
+        });
+        if(r2.ok){
+          if(msg){msg.textContent='Saved (photo kept locally only)';msg.style.color='var(--amber)';msg.classList.add('show');setTimeout(function(){msg.classList.remove('show');msg.style.color='';msg.textContent='Saved';},3000);}
+          showToast('Contact saved — photo too large for DB, kept locally');
+          return;
+        }
+      }catch(e2){}
+    }
+    if(msg){msg.textContent='DB save failed: '+e.message;msg.style.color='var(--amber)';msg.classList.add('show');setTimeout(function(){msg.classList.remove('show');msg.style.color='';msg.textContent='Saved';},5000);}
+    showToast('Saved locally — DB error: '+e.message);
   }
   // Update the contact button state
   var ab=document.querySelector('#vr-'+slug+' .act-btn');
@@ -403,7 +420,7 @@ document.getElementById('cardFileInput').addEventListener('change',function(e){
   var file=e.target.files[0];
   e.target.value='';
   showToast('Processing photo...');
-  resizeImage(file,800,0.5,function(dataUrl){
+  resizeImage(file,600,0.4,function(dataUrl){
     if(!contacts[slug])contacts[slug]={};
     contacts[slug].cardPhoto=dataUrl;
     safeSetLocal();
