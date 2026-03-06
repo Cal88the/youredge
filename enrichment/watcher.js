@@ -4,13 +4,32 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
 const CHECK_INTERVAL = 60000; // 60 seconds
 const CRM_URL_MATCH = 'samplecrm';
 
-function stripCity(addr) {
-  return addr
-    .replace(/,\s*(Toronto|Mississauga|Oakville|Etobicoke|North York|Scarborough|Markham|Richmond Hill|Vaughan|Brampton|Burlington|Hamilton|Oshawa|Whitby|Ajax|Pickering|Milton|Newmarket|Aurora|Barrie|Thornhill|York)\s*$/i, '')
-    .replace(/,?\s*(ON|Ontario|Canada)\b/gi, '')
-    .replace(/\s+[A-Z]\d[A-Z]\s*\d[A-Z]\d\s*$/i, '')
+function cleanAddress(addr) {
+  var s = addr
+    .replace(/\s+[A-Z]\d[A-Z]\s*\d[A-Z]\d/i, '')           // postal code
+    .replace(/,?\s*(ON|Ontario|Canada)\b/gi, '')              // province/country
+    .replace(/,\s*(Toronto|Mississauga|Oakville|Etobicoke|North York|Scarborough|Markham|Richmond Hill|Vaughan|Brampton|Burlington|Hamilton|Oshawa|Whitby|Ajax|Pickering|Milton|Newmarket|Aurora|Barrie|Thornhill|York)\s*/i, '')
     .replace(/,\s*$/, '')
     .trim();
+
+  // Extract unit number — formats: "Unit 5", "Apt 12", "#3", or bare number after street type
+  var unit = null;
+  var unitMatch = s.match(/\s+(Unit|Apt|Suite|#)\s*(\w+)/i);
+  if (unitMatch) {
+    unit = unitMatch[2];
+    s = s.replace(unitMatch[0], '').trim();
+  } else {
+    // Bare unit number after street type + direction: "1121 Steeles Ave W 1514"
+    var bareMatch = s.match(/(Ave|St|Rd|Dr|Blvd|Cres|Crescent|Ct|Pl|Way|Lane|Ln|Terr|Tr|Trail|Cir|Gate|Pkwy|Hwy|Line)\s*(N|S|E|W|NE|NW|SE|SW)?\s+(\d+)\s*$/i);
+    if (bareMatch) {
+      unit = bareMatch[3];
+      s = s.replace(/\s+\d+\s*$/, '').trim();
+    }
+  }
+
+  // HouseSigma format: "unit-street" for condos, just "street" for houses
+  if (unit) return unit + '-' + s;
+  return s;
 }
 
 let browser = null;
@@ -161,6 +180,62 @@ async function enrichAddress(searchAddr) {
       });
     }
 
+    // Scrape property photos — click gallery and navigate to lazy-load all
+    let photos = [];
+    if (pageReady) {
+      // Click the main photo or gallery button to open the swiper
+      await page.evaluate(() => {
+        const btn = document.querySelector('.photos-btn') || document.querySelector('[class*="photo-btn"]');
+        if (btn) btn.click();
+        else { const img = document.querySelector('img[src*="cache"]'); if (img) img.click(); }
+      });
+      await wait(2000);
+
+      // Navigate through the swiper to lazy-load all images
+      for (let i = 0; i < 30; i++) {
+        const clicked = await page.evaluate(() => {
+          const next = document.querySelector('.pc-swiper-arrow.right, .swiper-button-next, [class*="swiper-arrow"][class*="right"]');
+          if (next) { next.click(); return true; }
+          return false;
+        });
+        if (!clicked) break;
+        await wait(300);
+      }
+      await wait(1000);
+
+      // Collect all property images
+      photos = await page.evaluate(() => {
+        const imgs = [];
+        const seen = new Set();
+        document.querySelectorAll('img').forEach(img => {
+          const src = img.src || img.getAttribute('data-src') || '';
+          if (!src.includes('cache') || !src.includes('housesigma')) return;
+          if (src.includes('.svg')) return;
+          // Prefer .jpg over _1200.webp duplicates
+          const normalized = src.replace(/_1200\.webp/, '.jpg');
+          if (seen.has(normalized) || seen.has(src)) return;
+          seen.add(src);
+          seen.add(normalized);
+          imgs.push({ url: src, label: null });
+        });
+        return imgs;
+      });
+    }
+
+    // Prepend the API photo as first if not already present
+    if (apiData.photo_url) {
+      const exists = photos.some(p => p.url === apiData.photo_url);
+      if (!exists) photos.unshift({ url: apiData.photo_url, label: 'Exterior' });
+    }
+
+    // Deduplicate and cap at 30
+    const seenUrls = new Set();
+    photos = photos.filter(p => {
+      if (seenUrls.has(p.url)) return false;
+      seenUrls.add(p.url);
+      return true;
+    }).slice(0, 30);
+
     // Merge and format for CRM
     const merged = { ...apiData, ...pageData };
     const yearBuilt = parseAge(merged.building_age);
@@ -187,6 +262,7 @@ async function enrichAddress(searchAddr) {
       parking: merged.parking,
       tax: merged.tax ? '$' + merged.tax : null,
       estimated_rent: merged.estimated_rent ? '$' + merged.estimated_rent + '/mo' : null,
+      photos,
     };
   } finally {
     await page.close();
@@ -223,7 +299,7 @@ async function tick() {
     console.log(`[watcher] Found ${unenriched.length} lead(s) to enrich`);
 
     for (const lead of unenriched) {
-      const searchAddr = stripCity(lead.address);
+      const searchAddr = cleanAddress(lead.address);
       console.log(`[watcher] Enriching "${lead.address}" -> "${searchAddr}"`);
 
       try {
@@ -237,6 +313,8 @@ async function tick() {
               // Re-render the enrichment panel for this lead
               const container = document.getElementById('enrich-' + leadId);
               if (container) container.innerHTML = buildEnrichmentContent(lead);
+              // Persist to localStorage so data survives refresh
+              if (typeof persistLeads === 'function') persistLeads();
             }
           }, lead.id, data);
 
@@ -246,7 +324,10 @@ async function tick() {
           // Mark as attempted so we don't retry endlessly
           await crmPage.evaluate((leadId) => {
             const lead = leads.find(l => l.id === leadId);
-            if (lead) lead.enrichment = { _notFound: true };
+            if (lead) {
+              lead.enrichment = { _notFound: true };
+              if (typeof persistLeads === 'function') persistLeads();
+            }
           }, lead.id);
           console.log(`[watcher]   No data found for this address`);
         }
@@ -254,6 +335,8 @@ async function tick() {
         console.log(`[watcher]   Error: ${e.message}`);
       }
 
+      // Bring CRM tab back to foreground
+      await crmPage.bringToFront();
       await wait(1000); // pace between lookups
     }
   } catch (e) {

@@ -203,6 +203,35 @@ a.lead-value:hover{color:var(--blue)}
 .upgrade-cta:hover{background:rgba(37,99,235,.15);border-color:rgba(37,99,235,.5)}
 .new-homeowner{font-size:10px;font-weight:700;color:var(--green);background:var(--green-s);padding:2px 8px;border-radius:100px;margin-left:6px}
 
+/* Photo strip */
+.photo-strip{display:flex;gap:8px;overflow-x:auto;padding:10px 0 6px;scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x mandatory}
+.photo-strip::-webkit-scrollbar{display:none}
+.photo-thumb{position:relative;flex:0 0 100px;height:72px;border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--bdr);transition:.2s;scroll-snap-align:start}
+.photo-thumb:hover{border-color:var(--bdr-h);transform:translateY(-1px)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-thumb-label{position:absolute;bottom:0;left:0;right:0;padding:3px 6px;background:linear-gradient(transparent,rgba(0,0,0,.8));font-size:9px;font-weight:600;color:#fff;letter-spacing:.3px;text-transform:uppercase}
+.photo-thumb-match{position:absolute;top:4px;right:4px;width:16px;height:16px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.photo-thumb-match svg{width:10px;height:10px}
+
+/* Lightbox */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+.lightbox.visible{opacity:1}
+.lightbox-close{position:absolute;top:16px;right:16px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;padding:8px;z-index:2;line-height:1;opacity:.7;transition:.2s}
+.lightbox-close:hover{opacity:1}
+.lightbox-img{max-width:90vw;max-height:75vh;object-fit:contain;border-radius:8px;user-select:none}
+.lightbox-label{font-size:13px;color:var(--g);margin-top:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.lightbox-counter{font-size:12px;color:var(--d);margin-top:4px}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:none;color:#fff;font-size:24px;cursor:pointer;padding:16px 12px;border-radius:10px;transition:.2s;z-index:2}
+.lightbox-nav:hover{background:rgba(255,255,255,.2)}
+.lightbox-prev{left:12px}
+.lightbox-next{right:12px}
+@media(max-width:768px){
+.lightbox-nav{padding:12px 8px;font-size:20px}
+.lightbox-prev{left:4px}
+.lightbox-next{right:4px}
+.photo-thumb{flex:0 0 85px;height:62px}
+}
+
 /* ROI CARD */
 .roi-card{background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(37,99,235,.02));border:1px solid rgba(37,99,235,.2);border-radius:16px;padding:28px;margin-top:24px;text-align:center}
 .roi-card h3{font-size:14px;font-weight:700;color:var(--g);margin-bottom:16px}
@@ -512,9 +541,11 @@ footer a{margin-left:0}
 <!-- INTAKE FORM TAB -->
 <div id="tab-intake" class="tab-content active">
 <div class="intake-card">
+<div id="intakeHeader">
 <h2 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px">New Lead Intake</h2>
 <p style="font-size:13px;color:var(--m);margin-bottom:24px">Hand this device to a visitor or fill it in together at the booth.</p>
-<form id="intakeForm">
+</div>
+<form id="intakeForm" onsubmit="event.preventDefault();submitIntakeLead()">
 <div class="form-group">
 <label class="form-label" for="in-name">Name *</label>
 <input class="form-input" type="text" id="in-name" placeholder="Full name" autocomplete="name">
@@ -561,7 +592,7 @@ footer a{margin-left:0}
 <label class="form-label" for="in-notes">Anything else?</label>
 <textarea class="form-input" id="in-notes" placeholder="Budget, timeline, specific requirements..." style="min-height:90px"></textarea>
 </div>
-<button type="submit" class="intake-submit" id="intakeSubmitBtn">Add Lead &rarr;</button>
+<button type="button" class="intake-submit" id="intakeSubmitBtn" onclick="submitIntakeLead()">Add Lead &rarr;</button>
 </form>
 
 <div class="intake-success" id="intakeSuccess">
@@ -611,14 +642,14 @@ var now=new Date();
 function ago(mins){return new Date(now.getTime()-mins*60000).toISOString()}
 
 var leads=[
-{id:'1',name:'Sarah Mitchell',email:'sarah.m@gmail.com',phone:'(416) 555-0142',address:'42 Maple Ridge Dr, Toronto ON M4B 1T7',interests:['Kitchen','Bathroom'],customer_notes:'Looking for a modern island layout with quartz countertops',notes:'',created_at:ago(3),enrichment:{year_built:1972,home_value:'$985,000',property_type:'Detached',sqft:1850,storeys:2,lot_size:'30 x 120 ft',last_sale:'Mar 2023',last_sale_price:'$910,000',neighbourhood:'Birch Cliff',nearby_projects:3,rebate_eligible:true,estimated_roof_age:'30+ yrs',permits_on_file:1}},
-{id:'2',name:'David Chen',email:'dchen@outlook.com',phone:'(647) 555-0387',address:'118 Bloor St W, Unit 2204, Toronto ON M5S 1M4',interests:['Bathroom'],customer_notes:'',notes:'',created_at:ago(18),enrichment:{year_built:2015,home_value:'$720,000',property_type:'Condo',sqft:890,storeys:1,lot_size:'N/A',last_sale:'Nov 2024',last_sale_price:'$695,000',neighbourhood:'Yorkville',nearby_projects:1,rebate_eligible:false,estimated_roof_age:'N/A',permits_on_file:0}},
-{id:'3',name:'Priya Patel',email:'priya.p@yahoo.com',phone:'(905) 555-0219',address:'7 Oakwood Cres, Mississauga ON L5B 3H2',interests:['Smart Home','Electrical'],customer_notes:'Already has Nest — wants everything integrated',notes:'',created_at:ago(35),enrichment:{year_built:1998,home_value:'$1,150,000',property_type:'Detached',sqft:2400,storeys:2,lot_size:'45 x 110 ft',last_sale:'Jun 2021',last_sale_price:'$1,020,000',neighbourhood:'Cooksville',nearby_projects:2,rebate_eligible:true,estimated_roof_age:'27 yrs',permits_on_file:2}},
-{id:'4',name:'Marcus Williams',email:'m.williams@icloud.com',phone:'(416) 555-0891',address:'305 Queen St E, Toronto ON M5A 1S7',interests:['Flooring'],customer_notes:'',notes:'',created_at:ago(52),enrichment:{year_built:1890,home_value:'$1,350,000',property_type:'Semi-Detached',sqft:1600,storeys:3,lot_size:'18 x 95 ft',last_sale:'Aug 2019',last_sale_price:'$1,100,000',neighbourhood:'Corktown',nearby_projects:5,rebate_eligible:true,estimated_roof_age:'15 yrs',permits_on_file:3}},
-{id:'5',name:'Jennifer Okafor',email:'jen.okafor@gmail.com',phone:'(647) 555-0634',address:'89 Weston Rd, York ON M6N 3P4',interests:['Windows','Doors'],customer_notes:'Townhouse, 12 windows total. Wants energy efficient options.',notes:'',created_at:ago(78),enrichment:{year_built:1965,home_value:'$675,000',property_type:'Townhouse',sqft:1200,storeys:2,lot_size:'20 x 80 ft',last_sale:'Jan 2025',last_sale_price:'$650,000',neighbourhood:'Weston',nearby_projects:4,rebate_eligible:true,estimated_roof_age:'35+ yrs',permits_on_file:0}},
-{id:'6',name:'Tom Bergeron',email:'tberg@rogers.com',phone:'(905) 555-0445',address:'15 Lakeshore Blvd, Oakville ON L6J 1H3',interests:['Roofing','Insulation'],customer_notes:'',notes:'',created_at:ago(105),enrichment:{year_built:1988,home_value:'$1,480,000',property_type:'Detached',sqft:2800,storeys:2,lot_size:'50 x 130 ft',last_sale:'May 2017',last_sale_price:'$980,000',neighbourhood:'Bronte',nearby_projects:2,rebate_eligible:true,estimated_roof_age:'37 yrs',permits_on_file:1}},
-{id:'7',name:'Aisha Rahman',email:'aisha.r@hotmail.com',phone:'(416) 555-0776',address:'201 Danforth Ave, Toronto ON M4K 1N2',interests:['Basement'],customer_notes:'Need a home office and rec room for the kids',notes:'',created_at:ago(140),enrichment:{year_built:1948,home_value:'$1,100,000',property_type:'Detached',sqft:1500,storeys:2,lot_size:'25 x 100 ft',last_sale:'Sep 2022',last_sale_price:'$1,050,000',neighbourhood:'The Danforth',nearby_projects:6,rebate_eligible:true,estimated_roof_age:'20 yrs',permits_on_file:0}},
-{id:'8',name:'Mike Thornton',email:'mthornton22@gmail.com',phone:'(647) 555-0158',address:'53 Royal York Rd, Etobicoke ON M8V 2B7',interests:['Deck','Outdoor'],customer_notes:'Has architectural drawings already',notes:'',created_at:ago(195),enrichment:{year_built:1955,home_value:'$870,000',property_type:'Detached',sqft:1650,storeys:1,lot_size:'40 x 125 ft',last_sale:'Feb 2024',last_sale_price:'$825,000',neighbourhood:'Mimico',nearby_projects:2,rebate_eligible:true,estimated_roof_age:'25 yrs',permits_on_file:1}}
+{id:'1',name:'Sarah Mitchell',email:'sarah.m@gmail.com',phone:'(416) 555-0142',address:'78 Brookside Ave',interests:['Kitchen','Bathroom'],customer_notes:'Looking for a modern island layout with quartz countertops',notes:'',created_at:ago(3),enrichment:{year_built:1961,home_value:'$642,900',property_type:'Detached, 2-Storey',sqft:null,storeys:null,lot_size:'24 x 111 feet',last_sale:'Sep 2009',last_sale_price:'$642,900',neighbourhood:'Runnymede-Bloor West Village',estimated_roof_age:'~15 yrs',bedrooms:'3',bathrooms:3,construction:'Brick',basement:'Fin W/O',heating:'Forced Air',cooling:'Central Air',parking:'Detached 2 garage, 2 parking',tax:'$3,693',photos:[{url:'https://cache18.housesigma.com/file/pix-treb/W1696063/c3e8c_1_1200.webp?5bb35f2c',label:null},{url:'https://cache19.housesigma.com/file/pix-treb/W1696063/c3e8c_2.jpg?5bb35f2c',label:null},{url:'https://cache-e11.housesigma.com/file/pix-treb/W1696063/c3e8c_3.jpg?5bb35f2c',label:null}]}},
+{id:'2',name:'David Chen',email:'dchen@outlook.com',phone:'(647) 555-0387',address:'2552 Kingsberry Crescent',interests:['Bathroom'],customer_notes:'',notes:'',created_at:ago(18),enrichment:{year_built:null,home_value:'$1,063,100',property_type:'Semi-Detached, Backsplit 5',sqft:null,storeys:null,lot_size:'30 x 126 feet',last_sale:'13 days ago',last_sale_price:null,neighbourhood:'Cooksville',estimated_roof_age:null,bedrooms:'4+2',bathrooms:3,construction:'Aluminum Siding, Brick',basement:'Apartment',heating:'Forced Air',cooling:'Central Air',parking:'Attached 1 garage, total 4 parkings',tax:'$5,800',photos:[{url:'https://cache18.housesigma.com/file/pix-treb/W12806318/bb1d1_1_1200.webp?58b0817c',label:null},{url:'https://cache19.housesigma.com/file/pix-treb/W12806318/bb1d1_2_1200.webp?58b0817c',label:null},{url:'https://cache-e11.housesigma.com/file/pix-treb/W12806318/bb1d1_3_1200.webp?58b0817c',label:null},{url:'https://cache-e12.housesigma.com/file/pix-treb/W12806318/bb1d1_4.jpg?58b0817c',label:null},{url:'https://cache-e13.housesigma.com/file/pix-treb/W12806318/bb1d1_5.jpg?58b0817c',label:null},{url:'https://cache-e14.housesigma.com/file/pix-treb/W12806318/bb1d1_6.jpg?58b0817c',label:null},{url:'https://cache-e15.housesigma.com/file/pix-treb/W12806318/bb1d1_7.jpg?58b0817c',label:null},{url:'https://cache-e16.housesigma.com/file/pix-treb/W12806318/bb1d1_8.jpg?58b0817c',label:null},{url:'https://cache-e17.housesigma.com/file/pix-treb/W12806318/bb1d1_9.jpg?58b0817c',label:null},{url:'https://cache-e18.housesigma.com/file/pix-treb/W12806318/bb1d1_10.jpg?58b0817c',label:null},{url:'https://cache05.housesigma.com/file/pix-treb/W12806318/bb1d1_11.jpg?58b0817c',label:null},{url:'https://cache06.housesigma.com/file/pix-treb/W12806318/bb1d1_12.jpg?58b0817c',label:null},{url:'https://cache08.housesigma.com/file/pix-treb/W12806318/bb1d1_13.jpg?58b0817c',label:null},{url:'https://cache09.housesigma.com/file/pix-treb/W12806318/bb1d1_14.jpg?58b0817c',label:null},{url:'https://cache16.housesigma.com/file/pix-treb/W12806318/bb1d1_15.jpg?58b0817c',label:null}]}},
+{id:'3',name:'Priya Patel',email:'priya.p@yahoo.com',phone:'(905) 555-0219',address:'44 Brentwood Dr',interests:['Smart Home','Electrical'],customer_notes:'Already has Nest - wants everything integrated',notes:'',created_at:ago(35),enrichment:{year_built:null,home_value:'$714,000',property_type:'Detached, Backsplit 4',sqft:null,storeys:null,lot_size:'56 x 100 feet',last_sale:'2022-08-31',last_sale_price:null,neighbourhood:'June Avenue',estimated_roof_age:null,bedrooms:'4',bathrooms:2,construction:'Vinyl Siding',basement:'Finished',heating:'Forced Air',cooling:'Central Air',parking:'Carport 1 garage, 3 parking',tax:'$4,041',photos:[{url:'https://cache08.housesigma.com/file/pix-treb/X5648091/d11c7_1_1200.webp?a320f1d0',label:null},{url:'https://cache09.housesigma.com/file/pix-treb/X5648091/d11c7_2.jpg?a320f1d0',label:null},{url:'https://cache16.housesigma.com/file/pix-treb/X5648091/d11c7_3.jpg?a320f1d0',label:null},{url:'https://cache17.housesigma.com/file/pix-treb/X5648091/d11c7_4.jpg?a320f1d0',label:null},{url:'https://cache18.housesigma.com/file/pix-treb/X5648091/d11c7_5.jpg?a320f1d0',label:null},{url:'https://cache19.housesigma.com/file/pix-treb/X5648091/d11c7_6.jpg?a320f1d0',label:null},{url:'https://cache-e11.housesigma.com/file/pix-treb/X5648091/d11c7_7.jpg?a320f1d0',label:null},{url:'https://cache-e12.housesigma.com/file/pix-treb/X5648091/d11c7_8.jpg?a320f1d0',label:null},{url:'https://cache-e13.housesigma.com/file/pix-treb/X5648091/d11c7_9.jpg?a320f1d0',label:null},{url:'https://cache-e14.housesigma.com/file/pix-treb/X5648091/d11c7_10.jpg?a320f1d0',label:null},{url:'https://cache-e15.housesigma.com/file/pix-treb/X5648091/d11c7_11.jpg?a320f1d0',label:null},{url:'https://cache-e16.housesigma.com/file/pix-treb/X5648091/d11c7_12.jpg?a320f1d0',label:null},{url:'https://cache-e17.housesigma.com/file/pix-treb/X5648091/d11c7_13.jpg?a320f1d0',label:null},{url:'https://cache-e18.housesigma.com/file/pix-treb/X5648091/d11c7_14.jpg?a320f1d0',label:null},{url:'https://cache05.housesigma.com/file/pix-treb/X5648091/d11c7_15.jpg?a320f1d0',label:null}]}},
+{id:'4',name:'Marcus Williams',email:'m.williams@icloud.com',phone:'(416) 555-0891',address:'162 Glebemount Ave',interests:['Flooring'],customer_notes:'',notes:'',created_at:ago(52),enrichment:{year_built:null,home_value:'$440,162',property_type:'Detached, Bungalow',sqft:null,storeys:null,lot_size:'33 x 100 feet',last_sale:'May 2010',last_sale_price:'$440,162',neighbourhood:'Danforth Village-East York',estimated_roof_age:null,bedrooms:'2',bathrooms:2,construction:'Brick, Stone',basement:'Finished',heating:'Forced Air',cooling:'Central Air',parking:'0 garage, 1 parking',tax:'$2,581',photos:[{url:'https://cache05.housesigma.com/file/pix-treb/E1852600/7df9d_1_1200.webp?0f5f537f',label:null},{url:'https://cache06.housesigma.com/file/pix-treb/E1852600/7df9d_2.jpg?0f5f537f',label:null},{url:'https://cache08.housesigma.com/file/pix-treb/E1852600/7df9d_3.jpg?0f5f537f',label:null},{url:'https://cache09.housesigma.com/file/pix-treb/E1852600/7df9d_4.jpg?0f5f537f',label:null},{url:'https://cache16.housesigma.com/file/pix-treb/E1852600/7df9d_5.jpg?0f5f537f',label:null},{url:'https://cache17.housesigma.com/file/pix-treb/E1852600/7df9d_6.jpg?0f5f537f',label:null},{url:'https://cache18.housesigma.com/file/pix-treb/E1852600/7df9d_7.jpg?0f5f537f',label:null},{url:'https://cache19.housesigma.com/file/pix-treb/E1852600/7df9d_8.jpg?0f5f537f',label:null},{url:'https://cache-e11.housesigma.com/file/pix-treb/E1852600/7df9d_9.jpg?0f5f537f',label:null}]}},
+{id:'5',name:'Jennifer Okafor',email:'jen.okafor@gmail.com',phone:'(647) 555-0634',address:'14 Fenwick Ave',interests:['Windows','Doors'],customer_notes:'Townhouse, 12 windows total. Wants energy efficient options.',notes:'',created_at:ago(78),enrichment:{year_built:null,home_value:'$661,800',property_type:'Link, Bungalow-Raised',sqft:null,storeys:null,lot_size:'29 x 114 feet',last_sale:'Dec 2009',last_sale_price:'$193,000',neighbourhood:'Bowmanville',estimated_roof_age:null,bedrooms:'3',bathrooms:2,construction:'Alum Siding, Brick',basement:'Crawl Space, Finished',heating:'Forced Air',cooling:null,parking:'Attached 1 garage, 2 parking',tax:'$2,546',photos:[{url:'https://cache-e11.housesigma.com/file/pix-treb/E1726337/61733_1_1200.webp?1a3747fa',label:null},{url:'https://cache-e12.housesigma.com/file/pix-treb/E1726337/61733_2.jpg?1a3747fa',label:null},{url:'https://cache-e13.housesigma.com/file/pix-treb/E1726337/61733_3.jpg?1a3747fa',label:null},{url:'https://cache-e14.housesigma.com/file/pix-treb/E1726337/61733_4.jpg?1a3747fa',label:null},{url:'https://cache-e15.housesigma.com/file/pix-treb/E1726337/61733_5.jpg?1a3747fa',label:null},{url:'https://cache-e16.housesigma.com/file/pix-treb/E1726337/61733_6.jpg?1a3747fa',label:null},{url:'https://cache-e17.housesigma.com/file/pix-treb/E1726337/61733_7.jpg?1a3747fa',label:null}]}},
+{id:'6',name:'Tom Bergeron',email:'tberg@rogers.com',phone:'(905) 555-0445',address:'48 Ridgevale Dr',interests:['Roofing','Insulation'],customer_notes:'',notes:'',created_at:ago(105),enrichment:{year_built:2024,home_value:'$2,781,700',property_type:'Detached, 2-Storey',sqft:null,storeys:null,lot_size:'49 x 120 feet',last_sale:'Jul 2015',last_sale_price:'$1,861,000',neighbourhood:'Englemount-Lawrence',estimated_roof_age:'~2 yrs',bedrooms:'4+1',bathrooms:5,construction:'Stone',basement:'Finished',heating:'Forced Air',cooling:'Central Air',parking:'Attached 2 garage, 4 parking',tax:null,photos:[{url:'https://cache-e14.housesigma.com/file/pix-treb/C3224669/b52d6_1_1200.webp?16505cb4',label:null},{url:'https://cache-e15.housesigma.com/file/pix-treb/C3224669/b52d6_2.jpg?16505cb4',label:null},{url:'https://cache-e16.housesigma.com/file/pix-treb/C3224669/b52d6_3.jpg?16505cb4',label:null},{url:'https://cache-e17.housesigma.com/file/pix-treb/C3224669/b52d6_4.jpg?16505cb4',label:null},{url:'https://cache-e18.housesigma.com/file/pix-treb/C3224669/b52d6_5.jpg?16505cb4',label:null},{url:'https://cache05.housesigma.com/file/pix-treb/C3224669/b52d6_6.jpg?16505cb4',label:null},{url:'https://cache06.housesigma.com/file/pix-treb/C3224669/b52d6_7.jpg?16505cb4',label:null},{url:'https://cache08.housesigma.com/file/pix-treb/C3224669/b52d6_8.jpg?16505cb4',label:null},{url:'https://cache09.housesigma.com/file/pix-treb/C3224669/b52d6_9.jpg?16505cb4',label:null},{url:'https://cache16.housesigma.com/file/pix-treb/C3224669/b52d6_10.jpg?16505cb4',label:null},{url:'https://cache17.housesigma.com/file/pix-treb/C3224669/b52d6_11.jpg?16505cb4',label:null},{url:'https://cache18.housesigma.com/file/pix-treb/C3224669/b52d6_12.jpg?16505cb4',label:null},{url:'https://cache19.housesigma.com/file/pix-treb/C3224669/b52d6_13.jpg?16505cb4',label:null},{url:'https://cache-e11.housesigma.com/file/pix-treb/C3224669/b52d6_14.jpg?16505cb4',label:null},{url:'https://cache-e12.housesigma.com/file/pix-treb/C3224669/b52d6_15.jpg?16505cb4',label:null}]}},
+{id:'7',name:'Aisha Rahman',email:'aisha.r@hotmail.com',phone:'(416) 555-0776',address:'85 Glendonwynne Rd',interests:['Basement'],customer_notes:'Need a home office and rec room for the kids',notes:'',created_at:ago(140),enrichment:{year_built:null,home_value:'$1,696,300',property_type:'Detached, 2-Storey',sqft:null,storeys:null,lot_size:'86 x 100 feet',last_sale:'Mar 2010',last_sale_price:'$850,000',neighbourhood:'High Park North',estimated_roof_age:null,bedrooms:'3',bathrooms:2,construction:'Brick',basement:'Part Fin',heating:'Water',cooling:null,parking:'Attached 1 garage, 1 parking',tax:'$4,731',photos:[{url:'https://cache-e13.housesigma.com/file/pix-treb/W1781943/6e8ff_1_1200.webp?c10d21f2',label:null},{url:'https://cache-e14.housesigma.com/file/pix-treb/W1781943/6e8ff_2.jpg?c10d21f2',label:null},{url:'https://cache-e15.housesigma.com/file/pix-treb/W1781943/6e8ff_3.jpg?c10d21f2',label:null},{url:'https://cache-e16.housesigma.com/file/pix-treb/W1781943/6e8ff_4.jpg?c10d21f2',label:null},{url:'https://cache-e17.housesigma.com/file/pix-treb/W1781943/6e8ff_5.jpg?c10d21f2',label:null},{url:'https://cache-e18.housesigma.com/file/pix-treb/W1781943/6e8ff_6.jpg?c10d21f2',label:null},{url:'https://cache05.housesigma.com/file/pix-treb/W1781943/6e8ff_7.jpg?c10d21f2',label:null},{url:'https://cache06.housesigma.com/file/pix-treb/W1781943/6e8ff_8.jpg?c10d21f2',label:null},{url:'https://cache08.housesigma.com/file/pix-treb/W1781943/6e8ff_9.jpg?c10d21f2',label:null}]}},
+{id:'8',name:'Mike Thornton',email:'mthornton22@gmail.com',phone:'(647) 555-0158',address:'531 Royal York Rd',interests:['Deck','Outdoor'],customer_notes:'Has architectural drawings already',notes:'',created_at:ago(195),enrichment:{year_built:null,home_value:'$337,000',property_type:'Detached, Bungalow',sqft:null,storeys:null,lot_size:'32 x 108 feet',last_sale:'Jun 2009',last_sale_price:'$337,000',neighbourhood:'Stonegate-Queensway',estimated_roof_age:null,bedrooms:'2+1',bathrooms:2,construction:'Brick',basement:'Finished, Sep Entrance',heating:'Forced Air',cooling:'Central Air',parking:'Detached 1 garage, 3 parking',tax:'$2,243',photos:[{url:'https://cache-e16.housesigma.com/file/pix-treb/W1635369/45e21_1_1200.webp?25ed1c20',label:null},{url:'https://cache-e17.housesigma.com/file/pix-treb/W1635369/45e21_2.jpg?25ed1c20',label:null},{url:'https://cache-e18.housesigma.com/file/pix-treb/W1635369/45e21_3.jpg?25ed1c20',label:null},{url:'https://cache05.housesigma.com/file/pix-treb/W1635369/45e21_4.jpg?25ed1c20',label:null}]}}
 ];
 
 /* ══ TIME AGO ══ */
@@ -655,11 +686,11 @@ document.getElementById('tab-lead-count').textContent=leads.length;
 
 function getLeadScore(l){
 if(!l.enrichment)return{label:'--',cls:'cold'};
-var age=new Date().getFullYear()-l.enrichment.year_built;
+var age=l.enrichment.year_built?(new Date().getFullYear()-l.enrichment.year_built):null;
 var lastSaleDate=l.enrichment.last_sale?new Date(l.enrichment.last_sale+' 1, 2025'):null;
 var isNewOwner=lastSaleDate&&((now-lastSaleDate)/(1000*60*60*24*365))<2;
-if(age>30)return{label:'Hot',cls:'hot'};
-if(age>20||isNewOwner)return{label:'Warm',cls:'warm'};
+if(age&&age>30)return{label:'Hot',cls:'hot'};
+if((age&&age>20)||isNewOwner)return{label:'Warm',cls:'warm'};
 return{label:'Cold',cls:'cold'};
 }
 function getSpeedStatus(iso){
@@ -742,13 +773,57 @@ var body=btn.closest('.lead-enrichment').querySelector('.enrichment-body');
 body.classList.toggle('open');
 }
 
+var interestToLabel={
+'Kitchen':['kitchen'],'Bathroom':['bathroom'],'Roofing':['exterior','roof'],
+'Windows':['exterior','living room'],'Doors':['exterior'],
+'Flooring':['living room','kitchen','bedroom'],'Basement':['basement'],
+'Deck':['deck','backyard'],'Smart Home':['living room','kitchen'],
+'Electrical':['kitchen','living room'],'Insulation':['exterior'],
+'Outdoor':['backyard','deck','exterior'],'Painting':['living room','bedroom'],
+'Plumbing':['bathroom','kitchen'],'HVAC':['basement','exterior']
+};
+
+function sortPhotosByRelevance(photos,interests){
+if(!photos||!photos.length)return[];
+if(!interests||!interests.length)return photos.slice();
+var relevant=[];
+interests.forEach(function(i){(interestToLabel[i]||[]).forEach(function(l){relevant.push(l.toLowerCase())})});
+var scored=photos.map(function(p,idx){
+var label=(p.label||'').toLowerCase();
+var isMatch=relevant.some(function(r){return label.includes(r)});
+return{photo:p,match:isMatch,origIdx:idx};
+});
+scored.sort(function(a,b){
+if(a.match&&!b.match)return -1;
+if(!a.match&&b.match)return 1;
+return a.origIdx-b.origIdx;
+});
+return scored;
+}
+
 function buildEnrichmentContent(l){
 var e=l.enrichment;
 if(!e){
-/* No data yet — show subtle loading if address exists, otherwise nothing */
 if(l.address) return '<div class="enrichment-loading"><div class="enrich-spinner"></div> Loading property data...</div>';
 return '<div class="enrichment-empty"><span class="enrichment-noaddr">No address provided</span></div>';
 }
+
+/* Photo strip */
+var photoHtml='';
+if(e.photos&&e.photos.length){
+var sorted=sortPhotosByRelevance(e.photos,l.interests);
+photoHtml='<div class="photo-strip">';
+sorted.forEach(function(item,idx){
+var p=item.photo;
+var matchBadge=item.match?'<div class="photo-thumb-match"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>':'';
+photoHtml+='<div class="photo-thumb" onclick="openLightbox(\''+l.id+'\','+idx+')">'+
+'<img src="'+esc(p.url)+'" alt="'+esc(p.label||'Property photo')+'" loading="lazy">'+
+(p.label?'<div class="photo-thumb-label">'+esc(p.label)+'</div>':'')+
+matchBadge+'</div>';
+});
+photoHtml+='</div>';
+}
+
 var fields=[
 ['Year Built',e.year_built],['Property Type',e.property_type],['Neighbourhood',e.neighbourhood],
 ['Home Value',e.home_value],['Square Feet',e.sqft?(e.sqft+(/sqft|feet/i.test(String(e.sqft))?'':' sqft')):null],['Lot Size',e.lot_size],
@@ -757,7 +832,7 @@ var fields=[
 ['Basement',e.basement],['Heating',e.heating],['Cooling',e.cooling],
 ['Parking',e.parking],['Tax',e.tax],['Est. Rent',e.estimated_rent],
 ];
-var html='<div class="enrichment-locked-section">'+
+var html=photoHtml+'<div class="enrichment-locked-section">'+
 '<div class="enrichment-overlay" id="enrich-'+l.id+'-overlay"><div class="enrichment-lock-icon">&#128274;</div><button class="upgrade-cta" onclick="unlockEnrichment(\'enrich-'+l.id+'\')">Unlock with YourEdge Enrichment &rarr;</button></div>'+
 '<div class="enrichment-locked-grid" id="enrich-'+l.id+'-grid">';
 fields.forEach(function(f){
@@ -1301,6 +1376,7 @@ if(el)el.textContent='';
 }
 
 function resetIntakeForm(){
+document.getElementById('intakeHeader').style.display='';
 document.getElementById('intakeForm').style.display='';
 document.getElementById('intakeSuccess').classList.remove('visible');
 document.getElementById('in-name').value='';
@@ -1319,8 +1395,7 @@ renderIntakeTags();
 document.getElementById('in-name').focus();
 }
 
-document.getElementById('intakeForm').addEventListener('submit',function(e){
-e.preventDefault();
+function submitIntakeLead(){
 var name=document.getElementById('in-name').value.trim();
 var email=document.getElementById('in-email').value.trim();
 var phone=document.getElementById('in-phone').value.trim();
@@ -1355,6 +1430,7 @@ leads.unshift(newLead);
 persistLeads();
 renderLeads();
 renderAnalytics();
+document.getElementById('intakeHeader').style.display='none';
 document.getElementById('intakeForm').style.display='none';
 document.getElementById('intakeSuccess').classList.add('visible');
 }
@@ -1362,7 +1438,7 @@ document.getElementById('intakeSuccess').classList.add('visible');
 if(!phone||!street){
 showConfirm('Incomplete Lead','Are you sure you want to add an incomplete lead? Missing info may limit follow-up.','Add Anyway',doAddIntakeLead);
 }else{doAddIntakeLead()}
-});
+}
 
 /* Clear errors on input */
 document.querySelectorAll('#intakeForm input, #intakeForm select').forEach(function(input){
@@ -1437,7 +1513,7 @@ if(el)el.textContent='';
 });
 
 /* ══ PERSIST & LOAD LEADS ══ */
-var LS_KEY='ye-leads-acme-home';
+var LS_KEY='ye-leads-acme-home-v2';
 function persistLeads(){
 try{localStorage.setItem(LS_KEY,JSON.stringify(leads))}catch(ex){}
 }
@@ -1464,13 +1540,70 @@ document.querySelector('footer').style.display='none';
 renderQrIntakeTags();
 }else{
 /* Vendor dashboard — hide main site nav, show CRM top bar */
-document.querySelector('nav').style.display='none';
-document.querySelector('.mobile-menu').style.display='none';
-loadLocalLeads();
-renderLeads();
-renderAnalytics();
-renderIntakeTags();
+var nav=document.querySelector('nav');if(nav)nav.style.display='none';
+var mm=document.querySelector('.mobile-menu');if(mm)mm.style.display='none';
+try{loadLocalLeads()}catch(ex){console.error('loadLocalLeads:',ex)}
+try{renderLeads()}catch(ex){console.error('renderLeads:',ex)}
+try{renderAnalytics()}catch(ex){console.error('renderAnalytics:',ex)}
+try{renderIntakeTags()}catch(ex){console.error('renderIntakeTags:',ex)}
 }
+
+/* ══ LIGHTBOX ══ */
+var lbLeadId=null,lbIdx=0,lbPhotos=[];
+function openLightbox(leadId,idx){
+var lead=leads.find(function(l){return l.id===leadId});
+if(!lead||!lead.enrichment||!lead.enrichment.photos)return;
+lbLeadId=leadId;
+lbPhotos=sortPhotosByRelevance(lead.enrichment.photos,lead.interests);
+lbIdx=idx;
+var el=document.createElement('div');
+el.className='lightbox';
+el.id='lightbox';
+el.innerHTML='<button class="lightbox-close" onclick="closeLightbox()">&times;</button>'+
+'<button class="lightbox-nav lightbox-prev" onclick="lbNav(-1)">&lsaquo;</button>'+
+'<button class="lightbox-nav lightbox-next" onclick="lbNav(1)">&rsaquo;</button>'+
+'<img class="lightbox-img" id="lb-img">'+
+'<div class="lightbox-label" id="lb-label"></div>'+
+'<div class="lightbox-counter" id="lb-counter"></div>';
+document.body.appendChild(el);
+requestAnimationFrame(function(){el.classList.add('visible')});
+el.addEventListener('click',function(e){if(e.target===el)closeLightbox()});
+updateLightbox();
+document.addEventListener('keydown',lbKey);
+}
+function updateLightbox(){
+var p=lbPhotos[lbIdx];
+if(!p)return;
+document.getElementById('lb-img').src=p.photo.url.replace('w=400','w=1200');
+document.getElementById('lb-label').textContent=p.photo.label||'';
+document.getElementById('lb-counter').textContent=(lbIdx+1)+' / '+lbPhotos.length;
+if(p.match)document.getElementById('lb-label').textContent=(p.photo.label||'')+' — matches interest';
+}
+function lbNav(dir){
+lbIdx=(lbIdx+dir+lbPhotos.length)%lbPhotos.length;
+updateLightbox();
+}
+function closeLightbox(){
+var el=document.getElementById('lightbox');
+if(el)el.remove();
+document.removeEventListener('keydown',lbKey);
+}
+function lbKey(e){
+if(e.key==='Escape')closeLightbox();
+if(e.key==='ArrowLeft')lbNav(-1);
+if(e.key==='ArrowRight')lbNav(1);
+}
+/* Touch swipe for lightbox */
+var lbTouchX=0;
+document.addEventListener('touchstart',function(e){
+if(!document.getElementById('lightbox'))return;
+lbTouchX=e.touches[0].clientX;
+});
+document.addEventListener('touchend',function(e){
+if(!document.getElementById('lightbox'))return;
+var dx=e.changedTouches[0].clientX-lbTouchX;
+if(Math.abs(dx)>50){lbNav(dx<0?1:-1)}
+});
 
 /* ══ GOOGLE PLACES AUTOCOMPLETE ══ */
 window.initAutocomplete=function(){

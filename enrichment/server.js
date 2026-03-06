@@ -7,13 +7,21 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
 let browser = null;
 let bearerToken = null;
 
-function stripCity(addr) {
-  return addr
-    .replace(/,\s*(Toronto|Mississauga|Oakville|Etobicoke|North York|Scarborough|Markham|Richmond Hill|Vaughan|Brampton|Burlington|Hamilton|Oshawa|Whitby|Ajax|Pickering|Milton|Newmarket|Aurora|Barrie|Thornhill|York)\s*$/i, '')
+function cleanAddress(addr) {
+  var s = addr
+    .replace(/\s+[A-Z]\d[A-Z]\s*\d[A-Z]\d/i, '')
     .replace(/,?\s*(ON|Ontario|Canada)\b/gi, '')
-    .replace(/\s+[A-Z]\d[A-Z]\s*\d[A-Z]\d\s*$/i, '') // strip postal code
-    .replace(/,\s*$/, '')
-    .trim();
+    .replace(/,\s*(Toronto|Mississauga|Oakville|Etobicoke|North York|Scarborough|Markham|Richmond Hill|Vaughan|Brampton|Burlington|Hamilton|Oshawa|Whitby|Ajax|Pickering|Milton|Newmarket|Aurora|Barrie|Thornhill|York)\s*/i, '')
+    .replace(/,\s*$/, '').trim();
+  var unit = null;
+  var unitMatch = s.match(/\s+(Unit|Apt|Suite|#)\s*(\w+)/i);
+  if (unitMatch) { unit = unitMatch[2]; s = s.replace(unitMatch[0], '').trim(); }
+  else {
+    var bareMatch = s.match(/(Ave|St|Rd|Dr|Blvd|Cres|Crescent|Ct|Pl|Way|Lane|Ln|Terr|Tr|Trail|Cir|Gate|Pkwy|Hwy|Line)\s*(N|S|E|W|NE|NW|SE|SW)?\s+(\d+)\s*$/i);
+    if (bareMatch) { unit = bareMatch[3]; s = s.replace(/\s+\d+\s*$/, '').trim(); }
+  }
+  if (unit) return unit + '-' + s;
+  return s;
 }
 
 async function init() {
@@ -48,7 +56,7 @@ async function init() {
 }
 
 async function enrichAddress(address) {
-  const searchAddr = stripCity(address);
+  const searchAddr = cleanAddress(address);
   console.log(`Enriching: "${address}" -> search: "${searchAddr}"`);
 
   const page = await browser.newPage();
@@ -177,6 +185,56 @@ async function enrichAddress(address) {
       });
     }
 
+    // Scrape property photos — click gallery and navigate to lazy-load all
+    let photos = [];
+    if (pageReady) {
+      await page.evaluate(() => {
+        const btn = document.querySelector('.photos-btn') || document.querySelector('[class*="photo-btn"]');
+        if (btn) btn.click();
+        else { const img = document.querySelector('img[src*="cache"]'); if (img) img.click(); }
+      });
+      await wait(2000);
+
+      for (let i = 0; i < 30; i++) {
+        const clicked = await page.evaluate(() => {
+          const next = document.querySelector('.pc-swiper-arrow.right, .swiper-button-next, [class*="swiper-arrow"][class*="right"]');
+          if (next) { next.click(); return true; }
+          return false;
+        });
+        if (!clicked) break;
+        await wait(300);
+      }
+      await wait(1000);
+
+      photos = await page.evaluate(() => {
+        const imgs = [];
+        const seen = new Set();
+        document.querySelectorAll('img').forEach(img => {
+          const src = img.src || img.getAttribute('data-src') || '';
+          if (!src.includes('cache') || !src.includes('housesigma')) return;
+          if (src.includes('.svg')) return;
+          const normalized = src.replace(/_1200\.webp/, '.jpg');
+          if (seen.has(normalized) || seen.has(src)) return;
+          seen.add(src);
+          seen.add(normalized);
+          imgs.push({ url: src, label: null });
+        });
+        return imgs;
+      });
+    }
+
+    if (apiData.photo_url) {
+      const exists = photos.some(p => p.url === apiData.photo_url);
+      if (!exists) photos.unshift({ url: apiData.photo_url, label: 'Exterior' });
+    }
+
+    const seenUrls = new Set();
+    photos = photos.filter(p => {
+      if (seenUrls.has(p.url)) return false;
+      seenUrls.add(p.url);
+      return true;
+    }).slice(0, 30);
+
     // Merge
     const merged = { ...apiData };
     for (const [key, val] of Object.entries(pageData)) {
@@ -216,6 +274,7 @@ async function enrichAddress(address) {
       cross_street: merged.cross_street,
       postal_code: merged.postal_code || null,
       photo_url: merged.photo_url,
+      photos,
       source_url: `https://housesigma.com/app/on/listing/${bestHouse.id_listing}`,
     };
 
