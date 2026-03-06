@@ -1,5 +1,6 @@
 .vercel
 .DS_Store
+.env
 node_modules/
 enrichment/node_modules/
 enrichment/api-test*.js

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Above All Awnings Inc. — Lead Dashboard</title>
+<title>Lead Dashboard — YourEdge</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='g'><stop offset='0%25' stop-color='%23fff'/><stop offset='40%25' stop-color='%23bfdbfe'/><stop offset='100%25' stop-color='%232563eb'/></radialGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23g)'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -409,7 +409,7 @@ footer a{margin-left:0}
 <div class="intake-view" id="qrIntakeView">
 <section class="intake-hero">
 <div class="intake-event">National Home Show 2026</div>
-<h1>Above All Awnings Inc.</h1>
+<h1 id="qr-company-name">Loading...</h1>
 <p>Connect with us! Fill out the form below and we'll follow up with you.</p>
 <div class="intake-powered">Powered by <a href="/">YourEdge</a></div>
 </section>
@@ -447,7 +447,7 @@ footer a{margin-left:0}
 <div class="intake-success" id="qrIntakeSuccess">
 <div class="check-icon">&check;</div>
 <h3>You're all set!</h3>
-<p>Thanks for connecting with Above All Awnings Inc.. We'll be in touch soon!</p>
+<p>Thanks for connecting with <span class="vendor-name">us</span>. We'll be in touch soon!</p>
 </div>
 </div>
 </div>
@@ -466,7 +466,7 @@ footer a{margin-left:0}
 <!-- HEADER -->
 <div class="dash-header">
 <div class="dash-event">National Home Show <span class="hide-mobile">2026 </span>| LEAD CAPTURE PORTAL</div>
-<h1 class="dash-company">Above All Awnings Inc.</h1>
+<h1 class="dash-company" id="dash-company-name">Loading...</h1>
 <div class="dash-powered">Powered by <a href="/">YourEdge</a></div>
 </div>
 
@@ -1224,9 +1224,12 @@ roiDiv.innerHTML=
 }
 
 /* ══ QR CODE ══ */
-var qrUrl='https://weareyouredge.com/samplecrm?booth=acme-home';
+var vendorSlug=window.__vendorSlug||'';
+var vendorName=window.__vendorName||'';
+var qrUrl='https://weareyouredge.com/'+vendorSlug+'?booth=true';
 var qrRendered=false;
 function renderQR(){
+qrUrl='https://weareyouredge.com/'+vendorSlug+'?booth=true';
 document.getElementById('qr-url-input').value=qrUrl;
 if(qrRendered)return;
 var apiUrl='https://api.qrserver.com/v1/create-qr-code/?size=280x280&data='+encodeURIComponent(qrUrl);
@@ -1242,14 +1245,14 @@ setTimeout(function(){btn.textContent='Copy Link'},2000);
 }
 function downloadQR(){
 var a=document.createElement('a');
-a.download='qr-acme-home-renovations.png';
+a.download='qr-'+vendorSlug+'.png';
 a.href='https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data='+encodeURIComponent(qrUrl);
 a.click();
 }
 function printQR(){
 var imgSrc='https://api.qrserver.com/v1/create-qr-code/?size=600x600&data='+encodeURIComponent(qrUrl);
 var win=window.open('');
-win.document.write('<html><body style="display:flex;justify-content:center;align-items:center;min-height:100vh;flex-direction:column;font-family:sans-serif"><h1 style="margin-bottom:8px">Above All Awnings Inc.</h1><p style="color:#666;margin-bottom:32px">Scan to connect with us!</p><img src="'+imgSrc+'" style="width:400px;height:400px"><p style="margin-top:24px;color:#999;font-size:13px">Powered by YourEdge</p></body></html>');
+win.document.write('<html><body style="display:flex;justify-content:center;align-items:center;min-height:100vh;flex-direction:column;font-family:sans-serif"><h1 style="margin-bottom:8px">'+esc(vendorName)+'</h1><p style="color:#666;margin-bottom:32px">Scan to connect with us!</p><img src="'+imgSrc+'" style="width:400px;height:400px"><p style="margin-top:24px;color:#999;font-size:13px">Powered by YourEdge</p></body></html>');
 setTimeout(function(){win.print()},300);
 }
 
@@ -1513,7 +1516,7 @@ if(el)el.textContent='';
 });
 
 /* ══ PERSIST & LOAD LEADS ══ */
-var LS_KEY='ye-leads-acme-home-v2';
+var LS_KEY='ye-leads-'+(window.__vendorSlug||'default');
 function persistLeads(){
 try{localStorage.setItem(LS_KEY,JSON.stringify(leads))}catch(ex){}
 }
@@ -1528,6 +1531,39 @@ leads=stored;
 }
 
 /* ══ INIT / ROUTING ══ */
+var SUPABASE_URL='https://oyeedqoecsbtixiodhyp.supabase.co';
+var SUPABASE_ANON='sb_publishable_E0-8ppn-ZfRqEa5GWicwtQ_uW_dK1fL';
+
+/* Extract vendor slug from URL path or ?v= param for local testing */
+var pathSlug=new URLSearchParams(window.location.search).get('v')||window.location.pathname.replace(/^\/|\/$/g,'').split('/')[0];
+if(pathSlug==='samplecrm')pathSlug='above-all-awnings-inc';
+
+/* Fetch vendor from Supabase and populate page */
+(function(){
+  if(!pathSlug)return;
+  fetch(SUPABASE_URL+'/rest/v1/vendors?slug=eq.'+encodeURIComponent(pathSlug)+'&limit=1',{
+    headers:{'apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON}
+  }).then(function(r){return r.json()}).then(function(data){
+    if(!data||!data.length)return;
+    var v=data[0];
+    window.__vendorSlug=v.slug;
+    window.__vendorName=v.name;
+    window.__vendorCategory=v.category;
+    vendorSlug=v.slug;
+    vendorName=v.name;
+    LS_KEY='ye-leads-'+v.slug;
+    document.title=v.name+' \u2014 Lead Dashboard';
+    var els=document.querySelectorAll('#qr-company-name, #dash-company-name');
+    els.forEach(function(el){el.textContent=v.name});
+    document.querySelectorAll('.vendor-name').forEach(function(el){el.textContent=v.name});
+    /* Re-render QR with correct vendor URL */
+    qrRendered=false;
+    if(document.getElementById('tab-qrcode').classList.contains('active'))renderQR();
+    /* Reload leads from vendor-specific localStorage */
+    try{loadLocalLeads();renderLeads();renderAnalytics()}catch(ex){}
+  }).catch(function(){});
+})();
+
 var params=new URLSearchParams(window.location.search);
 var boothSlug=params.get('booth');
 
