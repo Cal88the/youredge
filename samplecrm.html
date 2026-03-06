@@ -702,43 +702,9 @@ if(overlay)overlay.style.display='none';
 if(grid){grid.style.filter='none';grid.style.userSelect='auto';grid.style.pointerEvents='auto';}
 }
 
-/* ══ AUTO-ENRICHMENT ══ */
-var ENRICH_API='http://localhost:3001';
-var enrichQueue=[];
-var enrichRunning=false;
-
-function queueEnrichment(id){
-if(enrichQueue.indexOf(id)===-1)enrichQueue.push(id);
-processEnrichQueue();
-}
-
-function processEnrichQueue(){
-if(enrichRunning||!enrichQueue.length)return;
-enrichRunning=true;
-var id=enrichQueue.shift();
-var lead=leads.find(function(l){return l.id===id});
-if(!lead||!lead.address||lead.enrichment){enrichRunning=false;processEnrichQueue();return}
-
-fetch(ENRICH_API+'/enrich',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({address:lead.address})})
-.then(function(r){return r.json()})
-.then(function(data){
-if(data.success&&data.enrichment){
-lead.enrichment=data.enrichment;
-var container=document.getElementById('enrich-'+id);
-if(container)container.innerHTML=buildEnrichmentContent(lead);
-}
-})
-.catch(function(){/* Server not running — silently skip */})
-.finally(function(){enrichRunning=false;processEnrichQueue()});
-}
-
-/* On page load, auto-enrich any leads that have an address but no enrichment data */
-function autoEnrichAll(){
-leads.forEach(function(l){
-if(l.address&&!l.enrichment)queueEnrichment(l.id);
-});
-}
-setTimeout(autoEnrichAll,1000);
+/* Enrichment is handled by the background watcher (enrichment/watcher.js).
+   It reads leads from this page, fetches property data, and injects it back.
+   No API calls needed from the CRM — just add a lead and the watcher picks it up. */
 
 function toggleStar(btn,id){
 var lead=leads.find(function(l){return l.id===id});
@@ -1087,7 +1053,7 @@ created_at:new Date().toISOString()
 leads.unshift(newLead);
 renderLeads();
 renderAnalytics();
-if(address)queueEnrichment(newLead.id);
+
 
 /* Reset form */
 document.getElementById('add-name').value='';
@@ -1167,7 +1133,7 @@ source:'intake'
 leads.unshift(newLead);
 renderLeads();
 renderAnalytics();
-if(address)queueEnrichment(newLead.id);
+
 
 /* Show success */
 document.getElementById('intakeForm').style.display='none';
