@@ -46,6 +46,7 @@ module.exports = async function handler(req, res) {
 
   if (!supaRes.ok) {
     var err = await supaRes.text();
+    console.error('save-contact supabase error:', supaRes.status, err);
     return res.status(500).json({ error: 'Failed to save contact' });
   }
 

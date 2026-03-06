@@ -1021,7 +1021,13 @@ if(chunks.length){
 var blob=new Blob(chunks,{type:rec.mimeType||'audio/webm'});
 var url=URL.createObjectURL(blob);
 var lead=leads.find(function(l){return l.id===id});
-if(lead)lead.voiceUrl=url;
+if(lead){
+lead.voiceUrl=url;
+/* Persist audio as base64 */
+var fr=new FileReader();
+fr.onload=function(){lead.voiceData=fr.result;persistLeads();};
+fr.readAsDataURL(blob);
+}
 showVoicePlayer(id,url);
 }
 activeRec=null;
@@ -1124,7 +1130,7 @@ if(vtime)vtime.textContent='';
 
 function deleteVoice(id){
 var lead=leads.find(function(l){return l.id===id});
-if(lead)delete lead.voiceUrl;
+if(lead){delete lead.voiceUrl;delete lead.voiceData;persistLeads();}
 var player=document.getElementById('vplayer-'+id);
 if(player){if(player._audio){player._audio.pause();player._audio=null}player.style.display='none';player.innerHTML=''}
 var mic=document.getElementById('mic-'+id);
@@ -1527,6 +1533,22 @@ if(stored.length){
 /* Replace hardcoded leads with stored data */
 leads=stored;
 }
+/* Restore voice notes from persisted base64 data */
+leads.forEach(function(l){
+if(l.voiceData){
+try{
+var parts=l.voiceData.split(',');
+var mime=(parts[0].match(/:(.*?);/)||[])[1]||'audio/webm';
+var bin=atob(parts[1]);
+var arr=new Uint8Array(bin.length);
+for(var i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+var blob=new Blob([arr],{type:mime});
+l.voiceUrl=URL.createObjectURL(blob);
+}catch(ex){delete l.voiceUrl;}
+}else{
+delete l.voiceUrl; /* stale blob:// URL from previous session */
+}
+});
 }catch(ex){}
 }
 
@@ -1675,6 +1697,20 @@ try{renderLeads()}catch(ex){console.error('renderLeads:',ex)}
 try{renderAnalytics()}catch(ex){console.error('renderAnalytics:',ex)}
 try{renderIntakeTags()}catch(ex){console.error('renderIntakeTags:',ex)}
 }
+
+/* ══ MULTI-TAB CONFLICT DETECTION (#23) ══ */
+window.addEventListener('storage',function(e){
+if(e.key===LS_KEY && e.newValue!==null){
+var banner=document.getElementById('tab-conflict-banner');
+if(!banner){
+banner=document.createElement('div');
+banner.id='tab-conflict-banner';
+banner.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9999;background:#f59e0b;color:#000;text-align:center;padding:10px 16px;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;gap:8px;';
+banner.innerHTML='Leads updated in another tab. <button onclick="location.reload()" style="background:#000;color:#fff;border:none;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:13px;">Reload</button> <button onclick="this.parentElement.remove()" style="background:transparent;border:1px solid #000;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:13px;">Dismiss</button>';
+document.body.appendChild(banner);
+}
+}
+});
 
 /* ══ LIGHTBOX ══ */
 var lbLeadId=null,lbIdx=0,lbPhotos=[];

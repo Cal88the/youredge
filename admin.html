@@ -352,10 +352,11 @@ async function saveContact(slug){
         card_photo:c.cardPhoto||''
       })
     });
-    if(!res.ok)throw new Error('save failed');
+    if(!res.ok){var errBody=await res.json().catch(function(){return{}});throw new Error(errBody.error||'save failed ('+res.status+')');}
     if(msg){msg.textContent='Saved to database';msg.classList.add('show');setTimeout(function(){msg.classList.remove('show');},2500);}
     showToast('Contact saved for '+vName);
   }catch(e){
+    console.error('save-contact error:',e.message);
     if(msg){msg.textContent='Saved locally (DB sync failed)';msg.style.color='var(--amber)';msg.classList.add('show');setTimeout(function(){msg.classList.remove('show');msg.style.color='';msg.textContent='Saved';},3000);}
     showToast('Saved locally — will retry on next save');
   }
@@ -402,7 +403,7 @@ document.getElementById('cardFileInput').addEventListener('change',function(e){
   var file=e.target.files[0];
   e.target.value='';
   showToast('Processing photo...');
-  resizeImage(file,1200,0.7,function(dataUrl){
+  resizeImage(file,800,0.5,function(dataUrl){
     if(!contacts[slug])contacts[slug]={};
     contacts[slug].cardPhoto=dataUrl;
     safeSetLocal();
